@@ -3,9 +3,9 @@
 import { useEffect, useRef, useId } from 'react';
 
 type MovingBorderProps = {
-  /** Wrapper width – px, %, “full”, … */
+  /** Wrapper width – px, %, "full", … */
   width?: string | number;
-  /** Wrapper height – px, %, “fit”, … */
+  /** Wrapper height – px, %, "fit", … */
   height?: string | number;
   /** Stroke thickness. */
   strokeWidth?: number;
@@ -46,8 +46,8 @@ export const MovingBorder = ({
   className = '',
   children,
   gradientColors = ['#ffc33e', '#cb2e12'],
-  background = 'transparent', // Default to transparent for glass effect
-  ariaLabel = 'Animated border container', // Provide default values
+  background = 'transparent',
+  ariaLabel = 'Animated border container',
   ariaDescribedBy = '',
   role = 'region',
   reduceMotion = false
@@ -58,7 +58,7 @@ export const MovingBorder = ({
   const filterId = useId();
 
   useEffect(() => {
-    if (reduceMotion) return; // Respect user's motion preference
+    if (reduceMotion) return;
     
     const rect = rectRef.current;
     if (!rect) return;
@@ -101,7 +101,9 @@ export const MovingBorder = ({
     rect.style.animation = `dashMove-${perimeter.toFixed(0)} ${duration}s linear infinite`;
 
     return () => {
-      document.head.removeChild(styleTag);
+      if (document.head.contains(styleTag)) {
+        document.head.removeChild(styleTag);
+      }
     };
   }, [width, height, duration, radius, opacity, strokeWidth, filterId, reduceMotion]);
 

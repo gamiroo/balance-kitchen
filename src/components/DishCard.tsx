@@ -10,7 +10,7 @@ import {
   Fish,
   Nut,
 } from 'lucide-react';
-import Image from 'next/image'; // Import Next.js Image component
+import Image from 'next/image';
 import UniversalCard from './UniversalCard';
 import styles from './styles/DishCard.module.css';
 

@@ -28,7 +28,6 @@ const hashToCategory: Record<string, DishCategory> = {
 
 export default function MenuSection() {
   const [activeTab, setActiveTab] = useState<DishCategory>('Carnivore');
-  const [isLoading, setIsLoading] = useState(false);
 
   // Handle URL hash on mount and when it changes
   useEffect(() => {
@@ -58,18 +57,10 @@ export default function MenuSection() {
 
   return (
     <section 
-      className={`${styles.menuSection} ${isLoading ? styles.disabledState : ''}`}
+      className={styles.menuSection}
       role="main"
       aria-label="Menu Section"
-      aria-busy={isLoading}
     >
-      {/* Loading Overlay */}
-      {isLoading && (
-        <div className={`${styles.loadingOverlay} ${styles.loadingOverlayActive}`}>
-          <div className={styles.loadingSpinner} aria-label="Loading menu content"></div>
-        </div>
-      )}
-      
       <div className={styles.contentContainer}>
         {/* Header */}
         <motion.div 
@@ -116,13 +107,13 @@ export default function MenuSection() {
           ))}
         </motion.div>
 
-        {/* Dishes Grid */}
+        {/* Dishes Grid - Single responsive class */}
         <motion.div 
-          className={`${styles.dishesGrid} ${styles.dishesGridMd} ${styles.dishesGridLg}`}
+          className={styles.dishesGridContainer}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          key={activeTab} // Add key to force re-render when tab changes
+          key={activeTab}
         >
           {dishes.map((dish, index) => (
             <motion.div
@@ -162,7 +153,6 @@ export default function MenuSection() {
           <CTAButton 
             href="/order"
             aria-label="Order meals now"
-            onClick={() => setIsLoading(true)}
           >
             Order Now
           </CTAButton>

@@ -72,7 +72,7 @@ export default function UniversalCard({
         glareBorderRadius: "24px",
         className: styles.tiltContainer,
       }
-    : ({} as TiltProps); // Cast empty object to TiltProps type
+    : ({} as TiltProps);
 
   // Handle touch start for swipe detection
   const handleTouchStart = (e: React.TouchEvent) => {

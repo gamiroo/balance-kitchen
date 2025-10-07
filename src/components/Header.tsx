@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image'; // Import Next.js Image component
+import Image from 'next/image';
 import { CTAButton } from './CTAButton';
 import { Menu, X } from 'lucide-react';
 import styles from './styles/Header.module.css';

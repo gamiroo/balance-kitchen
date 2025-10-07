@@ -13,7 +13,6 @@ interface FAQAccordionProps {
 
 export default function FAQAccordion({ faqs }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  // Removed unused setIsLoading state
   const [isLoading] = useState(false); // Keep isLoading but don't destructure setIsLoading
 
   const toggleAccordion = (index: number) => {
@@ -41,8 +40,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
             viewport={{ once: true }}
-            // Changed role from "article" to "group" since aria-expanded is supported on group
-            role="group"
+            role="group" // Changed from "article" to "group"
             aria-expanded={openIndex === index}
             aria-label={`Question: ${faq.question}`}
           >

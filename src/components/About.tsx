@@ -5,8 +5,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { CTAButton } from './CTAButton';
-import { MovingBorder } from './ui/AnimatedBorderBox'; // Updated import path
-import styles from './styles/AboutSection.module.css'; // CSS module for scoped styles
+import { MovingBorder } from './ui/AnimatedBorderBox';
+import styles from './styles/AboutSection.module.css';
 
 export const AboutSection = () => {
   const [inView, setInView] = useState(false);
@@ -48,7 +48,7 @@ export const AboutSection = () => {
         observer.unobserve(currentSectionRef);
       }
     };
-  }, []); // Add sectionRef to dependency array to fix exhaustive-deps warning
+  }, [sectionRef]); // Add sectionRef to dependency array
 
   return (
     <section 

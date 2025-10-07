@@ -81,19 +81,27 @@
   box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3), 0 4px 6px -2px rgba(245, 158, 11, 0.3);
 }
 
-/* Dishes Grid */
-.dishesGrid {
+/* Dishes Grid Container - Single responsive class */
+.dishesGridContainer {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
 
-.dishesGridMd {
-  grid-template-columns: repeat(2, 1fr);
+/* Tablet breakpoint */
+@media (min-width: 768px) {
+  .dishesGridContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
 }
 
-.dishesGridLg {
-  grid-template-columns: repeat(3, 1fr);
+/* Desktop breakpoint */
+@media (min-width: 1024px) {
+  .dishesGridContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
 }
 
 /* Dish Card Container */
@@ -105,6 +113,7 @@
   background-color: rgba(30, 41, 59, 0.5);
   backdrop-filter: blur(4px);
   transition: transform 0.2s ease;
+  width: 100%;
 }
 
 .dishCardContainer:hover {
@@ -122,51 +131,6 @@
 .ctaSection {
   text-align: center;
   margin-top: 4rem;
-}
-
-/* Loading Overlay */
-.loadingOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.7);
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.loadingOverlayActive {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-}
-
-.loadingSpinner {
-  width: 2rem;
-  height: 2rem;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #f59e0b;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Disabled State */
-.disabledState {
-  opacity: 0.6;
-  pointer-events: none;
 }
 
 /* Focus Styles */
@@ -207,7 +171,7 @@
     font-size: 0.875rem;
   }
   
-  .dishesGrid {
+  .dishesGridContainer {
     gap: 1.5rem;
   }
   
@@ -259,7 +223,7 @@
     font-size: 2.5rem;
   }
   
-  .dishesGrid {
+  .dishesGridContainer {
     gap: 2rem;
   }
   
@@ -281,7 +245,7 @@
     font-size: 1.25rem;
   }
   
-  .dishesGrid {
+  .dishesGridContainer {
     grid-template-columns: repeat(2, 1fr);
   }
   
@@ -291,7 +255,7 @@
 }
 
 @media (min-width: 1024px) {
-  .dishesGrid {
+  .dishesGridContainer {
     grid-template-columns: repeat(3, 1fr);
   }
   
@@ -324,7 +288,7 @@
     font-size: 4rem;
   }
   
-  .dishesGrid {
+  .dishesGridContainer {
     gap: 2.5rem;
   }
 }
@@ -356,10 +320,6 @@
   
   .dishCardContainer:hover {
     transform: none;
-  }
-  
-  .loadingSpinner {
-    animation: none;
   }
 }
 
@@ -401,9 +361,5 @@
   .tabButtonActive {
     background: #000000;
     color: #ffffff;
-  }
-  
-  .loadingOverlay {
-    display: none;
   }
 }

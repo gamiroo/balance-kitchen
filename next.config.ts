@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
-  swcMinify: true,
   // Edge runtime is default; override per route if needed
   // experimental: { serverActions: true }, // not required in v15
   images: {
@@ -13,7 +12,7 @@ const nextConfig: NextConfig = {
     domains: [
       'images.unsplash.com',
       'localhost', // for local development
-      'your-domain.com', // add your production domain
+      'balance-kitchen-git-main-gamiroos-projects.vercel.app', // add your production domain
     ],
   },
   // Optional: configure image optimization
