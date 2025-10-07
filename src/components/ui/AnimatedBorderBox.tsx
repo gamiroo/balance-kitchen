@@ -47,8 +47,8 @@ export const MovingBorder = ({
   children,
   gradientColors = ['#ffc33e', '#cb2e12'],
   background = 'transparent', // Default to transparent for glass effect
-  ariaLabel,
-  ariaDescribedBy,
+  ariaLabel = 'Animated border container', // Provide default values
+  ariaDescribedBy = '',
   role = 'region',
   reduceMotion = false
 
@@ -58,10 +58,14 @@ export const MovingBorder = ({
   const filterId = useId();
 
   useEffect(() => {
+    if (reduceMotion) return; // Respect user's motion preference
+    
     const rect = rectRef.current;
     if (!rect) return;
 
     const wrapper = rect.closest('[data-moving-border]') as HTMLElement;
+    if (!wrapper) return;
+    
     const w = typeof width === 'string' ? wrapper.clientWidth : Number(width);
     const h = typeof height === 'string' ? wrapper.clientHeight : Number(height);
 
@@ -99,13 +103,16 @@ export const MovingBorder = ({
     return () => {
       document.head.removeChild(styleTag);
     };
-  }, [width, height, duration, radius]);
+  }, [width, height, duration, radius, opacity, strokeWidth, filterId, reduceMotion]);
 
   return (
     <div
       data-moving-border
       className={`relative ${className}`}
       style={{ width, height, borderRadius: radius, overflow: 'hidden' }}
+      role={role}
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy || undefined}
     >
       <svg
         width="100%"

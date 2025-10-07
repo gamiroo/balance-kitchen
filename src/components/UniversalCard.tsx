@@ -21,11 +21,21 @@ export interface UniversalCardProps {
   front: ReactNode;
   /** Content for the back face */
   back: ReactNode;
-  actions?: ReactNode;
   /** Enable swipe gestures (for mobile) */
   enableSwipe?: boolean;
   /** Custom swipe threshold */
   swipeThreshold?: number;
+}
+
+// Define proper type for Tilt component props
+interface TiltProps {
+  glareEnable: boolean;
+  glareColor: string;
+  glareMaxOpacity: number;
+  tiltMaxAngleX: number;
+  tiltMaxAngleY: number;
+  glareBorderRadius: string;
+  className: string;
 }
 
 export default function UniversalCard({
@@ -34,7 +44,6 @@ export default function UniversalCard({
   perspective = "perspective-[1200px]",
   className = "",
   tilt = true,
-  actions = null,
   front,
   back,
   enableSwipe = false,
@@ -53,7 +62,7 @@ export default function UniversalCard({
   }, []);
 
   const Container = tilt ? Tilt : React.Fragment;
-  const containerProps = tilt
+  const containerProps: TiltProps = tilt
     ? {
         glareEnable: true,
         glareColor: "#ffffff",
@@ -63,7 +72,7 @@ export default function UniversalCard({
         glareBorderRadius: "24px",
         className: styles.tiltContainer,
       }
-    : {};
+    : ({} as TiltProps); // Cast empty object to TiltProps type
 
   // Handle touch start for swipe detection
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -124,7 +133,7 @@ export default function UniversalCard({
   };
 
   return (
-    <Container {...(containerProps as any)}>
+    <Container {...(containerProps as React.ComponentProps<typeof Tilt>)}>
       <div
         onClick={handleClick}
         onTouchStart={handleTouchStart}

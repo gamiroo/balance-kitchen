@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; // Import Next.js Image component
 import { CTAButton } from './CTAButton';
 import { Menu, X } from 'lucide-react';
 import styles from './styles/Header.module.css';
@@ -114,11 +115,13 @@ export const Header = () => {
             onClick={closeMenu}
             aria-label="Balance Kitchen Home"
           >
-            <img 
+            <Image 
               src="/balance-logo-9.svg" 
               alt="Balance Kitchen" 
               className={`${styles.logoImage} ${styles.logoImageMd}`}
-              fetchPriority="high"
+              width={120}
+              height={40}
+              priority
             />
           </Link>
         </div>
@@ -185,10 +188,12 @@ export const Header = () => {
               onClick={closeMenu}
               aria-label="Balance Kitchen Home"
             >
-              <img 
+              <Image 
                 src="/balance-logo-9.svg" 
                 alt="Balance Kitchen" 
                 className={styles.mobileLogoImage}
+                width={140}
+                height={45}
               />
             </Link>
             

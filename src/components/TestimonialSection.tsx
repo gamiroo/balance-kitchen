@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image'; // Import Next.js Image component
 import styles from './styles/Testimonials.module.css';
 
 export interface Testimonial {
@@ -171,9 +172,11 @@ export default function TestimonialsSection() {
                     {/* Author */}
                     <div className={styles.authorContainer}>
                       <div className={styles.authorImageContainer}>
-                        <img
+                        <Image
                           src={testimonial.image}
                           alt={testimonial.name}
+                          width={64}
+                          height={64}
                           className={styles.authorImage}
                         />
                         <div className={styles.authorImagePulse}></div>

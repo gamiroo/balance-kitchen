@@ -2,7 +2,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { 
   Heart, 
   Wheat, 
@@ -11,6 +10,7 @@ import {
   Fish,
   Nut,
 } from 'lucide-react';
+import Image from 'next/image'; // Import Next.js Image component
 import UniversalCard from './UniversalCard';
 import styles from './styles/DishCard.module.css';
 
@@ -33,7 +33,7 @@ export interface Dish {
 interface DishCardProps {
   dish: Dish;
   onLike?: (id: string, liked: boolean) => void;
-  enableSwipe?: boolean; // Add this prop
+  enableSwipe?: boolean;
 }
 
 const getAllergenIcon = (allergen: string) => {
@@ -48,7 +48,7 @@ const getAllergenIcon = (allergen: string) => {
   }
 };
 
-export default function DishCard({ dish, onLike, enableSwipe = false }: DishCardProps) { // Add enableSwipe prop
+export default function DishCard({ dish, onLike, enableSwipe = false }: DishCardProps) {
   const [liked, setLiked] = useState(dish.liked || false);
 
   const handleLike = () => {
@@ -61,10 +61,13 @@ export default function DishCard({ dish, onLike, enableSwipe = false }: DishCard
     <div className={styles.cardContent} role="article" aria-label={`${dish.name} dish card`}>
       {/* Image */}
       <div className={styles.imageContainer}>
-        <img 
+        <Image 
           src={dish.image} 
           alt={dish.name}
+          fill
           className={styles.dishImage}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={false}
         />
         <div className={styles.imageGradient} />
       </div>
@@ -111,7 +114,7 @@ export default function DishCard({ dish, onLike, enableSwipe = false }: DishCard
           }}
           className={styles.likeButton}
           aria-label={liked ? `Unlike ${dish.name}` : `Like ${dish.name}`}
-          aria-pressed={liked}
+          aria-checked={liked}
           role="switch"
         >
           <Heart 
@@ -148,7 +151,7 @@ export default function DishCard({ dish, onLike, enableSwipe = false }: DishCard
           }}
           className={styles.likeButton}
           aria-label={liked ? `Unlike ${dish.name}` : `Like ${dish.name}`}
-          aria-pressed={liked}
+          aria-checked={liked}
           role="switch"
         >
           <Heart 
@@ -210,7 +213,7 @@ export default function DishCard({ dish, onLike, enableSwipe = false }: DishCard
         height="h-[520px]"
         front={frontContent}
         back={backContent}
-        enableSwipe={enableSwipe} // Pass the swipe prop
+        enableSwipe={enableSwipe}
       />
     </div>
   );
