@@ -1,0 +1,610 @@
+/* app/components/DishCard.module.css */
+
+/* Base Card Container */
+.dishCardContainer {
+  width: 100%;
+  height: auto;
+  min-height: 400px;
+  position: relative;
+  perspective: 1000px;
+}
+
+/* Universal Card Styles */
+.universalCard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.cardFlipped {
+  transform: rotateY(180deg);
+}
+
+.cardFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+}
+
+/* Card Content */
+.cardContent {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, #1e293b, #0f172a);
+  border: 1px solid rgba(100, 116, 139, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-radius: 1.25rem;
+}
+
+/* Image Container */
+.imageContainer {
+  position: relative;
+  height: 66.666%;
+  overflow: hidden;
+}
+
+.dishImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 1.25rem 1.25rem 0 0;
+}
+
+.imageGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.8), transparent);
+}
+
+/* Content Container */
+.contentContainer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+
+/* Category Badge */
+.categoryBadge {
+  align-self: flex-start;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.categoryCarnivore { background-color: #ef4444; }
+.categoryBalanced { background-color: #22c55e; }
+.categoryVegetarian { background-color: #10b981; }
+.categoryKeto { background-color: #a855f7; }
+.categoryDefault { background-color: #6b7280; }
+
+/* Dish Title */
+.dishTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+/* Description */
+.dishDescription {
+  color: #d1d5db;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.descriptionClamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Allergens Container */
+.allergensContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.allergenItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: rgba(51, 65, 85, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  color: #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.allergenItem:hover {
+  background-color: rgba(71, 85, 105, 0.5);
+}
+
+.allergenIcon {
+  flex-shrink: 0;
+}
+
+/* Like Button */
+.likeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(4px);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.likeButton:hover {
+  background-color: rgba(51, 65, 85, 0.5);
+}
+
+.likeButton:focus {
+  outline: 2px solid #f87171;
+  outline-offset: 2px;
+}
+
+.likeIcon {
+  transition: color 0.2s ease;
+}
+
+.likeIconLiked {
+  color: #ef4444;
+  fill: currentColor;
+}
+
+.likeIconDefault {
+  color: #9ca3af;
+}
+
+/* Back Card Content */
+.backCardContent {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, #1e293b, #0f172a);
+  border: 1px solid rgba(100, 116, 139, 0.5);
+  border-radius: 1.25rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Back Header */
+.backHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.backTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+
+.backCategory {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.categoryTextCarnivore { color: #ef4444; }
+.categoryTextBalanced { color: #22c55e; }
+.categoryTextVegetarian { color: #10b981; }
+.categoryTextKeto { color: #a855f7; }
+.categoryTextDefault { color: #6b7280; }
+
+/* Ingredients Section */
+.ingredientsSection {
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.ingredientsSection::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ingredientsSection::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 3px;
+}
+
+.ingredientsSection::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
+
+.ingredientsSection::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.ingredientsTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.ingredientsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ingredientItem {
+  color: #d1d5db;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.ingredientBullet {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: #fbbf24;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Nutrition Panel */
+.nutritionPanel {
+  background-color: rgba(51, 65, 85, 0.3);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.nutritionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.nutritionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.nutritionCard {
+  background-color: rgba(30, 41, 59, 0.5);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.nutritionValue {
+  font-weight: 700;
+  font-size: 1.125rem;
+  margin-bottom: 0.25rem;
+}
+
+.nutritionLabel {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.caloriesValue { color: #fbbf24; }
+.proteinValue { color: #60a5fa; }
+.carbsValue { color: #4ade80; }
+.fatValue { color: #c084fc; }
+.fiberValue { color: #fbbf24; }
+
+.fiberCard {
+  grid-column: span 2;
+  background-color: rgba(30, 41, 59, 0.5);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+/* Focus Styles for Accessibility */
+.cardContent:focus,
+.backCardContent:focus {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* Loading States */
+.loadingSkeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Responsive Design */
+@media (min-width: 320px) {
+  .dishCardContainer {
+    min-height: 350px;
+  }
+  
+  .dishTitle {
+    font-size: 1.125rem;
+  }
+  
+  .backTitle {
+    font-size: 1.125rem;
+  }
+  
+  .nutritionValue {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 375px) {
+  .dishCardContainer {
+    min-height: 380px;
+  }
+  
+  .contentContainer {
+    padding: 1.25rem;
+  }
+  
+  .backCardContent {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 414px) {
+  .dishCardContainer {
+    min-height: 400px;
+  }
+}
+
+@media (min-width: 480px) {
+  .dishCardContainer {
+    min-height: 420px;
+  }
+  
+  .dishTitle {
+    font-size: 1.25rem;
+  }
+  
+  .backTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .dishCardContainer {
+    min-height: 480px;
+  }
+  
+  .contentContainer {
+    padding: 1.5rem;
+  }
+  
+  .backCardContent {
+    padding: 1.5rem;
+  }
+  
+  .nutritionGrid {
+    gap: 0.5rem;
+  }
+  
+  .nutritionCard {
+    padding: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .dishCardContainer {
+    height: 520px;
+  }
+  
+  .nutritionValue {
+    font-size: 1.125rem;
+  }
+  
+  .ingredientsSection {
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dishCardContainer {
+    height: 520px;
+  }
+  
+  .contentContainer {
+    padding: 1.75rem;
+  }
+  
+  .backCardContent {
+    padding: 1.75rem;
+  }
+  
+  .nutritionGrid {
+    gap: 0.75rem;
+  }
+  
+  .nutritionCard {
+    padding: 0.75rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dishCardContainer {
+    height: 540px;
+  }
+  
+  .dishTitle {
+    font-size: 1.5rem;
+  }
+  
+  .backTitle {
+    font-size: 1.5rem;
+  }
+  
+  .nutritionValue {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .dishCardContainer {
+    height: 560px;
+  }
+  
+  .contentContainer {
+    padding: 2rem;
+  }
+  
+  .backCardContent {
+    padding: 2rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .cardContent,
+  .backCardContent {
+    border: 2px solid #000000;
+  }
+  
+  .likeButton {
+    border: 1px solid #000000;
+  }
+  
+  .categoryBadge {
+    border: 1px solid #000000;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .universalCard {
+    transition: none;
+  }
+  
+  .likeButton {
+    transition: none;
+  }
+  
+  .allergenItem {
+    transition: none;
+  }
+}
+
+/* Dark Mode (Explicit) */
+@media (prefers-color-scheme: dark) {
+  .cardContent,
+  .backCardContent {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .dishCardContainer {
+    height: auto;
+    break-inside: avoid;
+  }
+  
+  .universalCard {
+    transform: none !important;
+  }
+  
+  .cardBack {
+    transform: none !important;
+  }
+  
+  .likeButton {
+    display: none;
+  }
+}
+
+/* ARIA States */
+[aria-expanded="true"] .universalCard {
+  transform: rotateY(180deg);
+}
+
+[aria-busy="true"] .cardContent,
+[aria-busy="true"] .backCardContent {
+  position: relative;
+  overflow: hidden;
+}
+
+[aria-busy="true"] .cardContent::before,
+[aria-busy="true"] .backCardContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.ariaDisabled .likeButton,
+.ariaDisabled .cardContent,
+.ariaDisabled .backCardContent {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.hiddenElement {
+  display: none;
+}
+
+/* Focus Visible */
+.likeButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.likeButton:focus-visible {
+  outline: 2px solid #f87171;
+  outline-offset: 2px;
+}

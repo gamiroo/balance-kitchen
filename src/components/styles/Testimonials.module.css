@@ -1,0 +1,577 @@
+/* app/components/TestimonialsSection.module.css */
+
+/* Section Container */
+.testimonialsSection {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.1), rgba(15, 23, 42, 0.3), rgba(2, 6, 23, 1));
+}
+
+/* Content Container */
+.contentContainer {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Section Header */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.badgeIcon {
+  margin-right: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.sectionTitleHighlight {
+  color: #fbbf24;
+}
+
+.sectionDescription {
+  color: #9ca3af;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.sectionTitleMd {
+  font-size: 3rem;
+}
+
+/* Carousel Container */
+.carouselContainer {
+  position: relative;
+}
+
+/* Testimonial Card */
+.testimonialCardWrapper {
+  margin-bottom: 3rem;
+}
+
+.testimonialCard {
+  position: relative;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.quoteIcon {
+  position: absolute;
+  top: -1.5rem;
+  left: -1.5rem;
+  color: rgba(251, 191, 36, 0.1);
+  width: 5rem;
+  height: 5rem;
+}
+
+.mainCard {
+  position: relative;
+  background-color: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.mainCardMd {
+  padding: 3rem;
+}
+
+.ratingContainer {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+.quoteText {
+  font-size: 1.25rem;
+  color: white;
+  font-weight: 300;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.quoteTextMd {
+  font-size: 1.5rem;
+}
+
+.authorContainer {
+  display: flex;
+  align-items: center;
+}
+
+.authorImageContainer {
+  position: relative;
+}
+
+.authorImage {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(251, 191, 36, 0.3);
+}
+
+.authorImagePulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: rgba(251, 191, 36, 0.1);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.authorInfo {
+  margin-left: 1rem;
+}
+
+.authorName {
+  color: white;
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: 0.25rem;
+}
+
+.authorRole {
+  color: #fbbf24;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.authorCompany {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/* Navigation Container */
+.navigationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.navButton {
+  padding: 0.75rem;
+  border-radius: 50%;
+  background-color: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  color: white;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton:hover {
+  background-color: rgba(51, 65, 85, 0.5);
+  transform: scale(1.05);
+}
+
+.navButton:focus {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.navButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.navButton:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+/* Dots Container */
+.dotsContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dotButton {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: #334155;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dotButton:hover {
+  background-color: #475569;
+}
+
+.dotButton:focus {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.dotButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.dotButton:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.dotButtonActive {
+  background-color: #f59e0b;
+  width: 2rem;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 5rem;
+}
+
+.statsGridMd {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.statCard {
+  background-color: rgba(30, 41, 59, 0.3);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+}
+
+.statValueMd {
+  font-size: 2.25rem;
+}
+
+.statSuffix {
+  font-size: 1.25rem;
+  color: #9ca3af;
+}
+
+.statLabel {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Focus Styles */
+.focusRing {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.focusRing:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Responsive Design */
+@media (min-width: 320px) {
+  .testimonialsSection {
+    padding: 3rem 1rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+  
+  .sectionDescription {
+    font-size: 1rem;
+  }
+  
+  .mainCard {
+    padding: 1.5rem;
+  }
+  
+  .quoteText {
+    font-size: 1.125rem;
+  }
+  
+  .authorImage {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .statValue {
+    font-size: 1.5rem;
+  }
+  
+  .statValueMd {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 375px) {
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  
+  .sectionDescription {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .testimonialsSection {
+    padding: 3.5rem 1.25rem;
+  }
+  
+  .sectionTitle {
+    font-size: 2.25rem;
+  }
+  
+  .mainCard {
+    padding: 2rem;
+  }
+  
+  .quoteText {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .testimonialsSection {
+    padding: 4rem 1.5rem;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 3.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 2.5rem;
+  }
+  
+  .mainCard {
+    padding: 2.5rem;
+  }
+  
+  .quoteText {
+    font-size: 1.375rem;
+  }
+  
+  .statsGrid {
+    gap: 1.5rem;
+  }
+  
+  .statCard {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .testimonialsSection {
+    padding: 5rem 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 2.75rem;
+  }
+  
+  .sectionDescription {
+    font-size: 1.25rem;
+  }
+  
+  .mainCard {
+    padding: 3rem;
+  }
+  
+  .quoteText {
+    font-size: 1.5rem;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .statValue {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sectionTitle {
+    font-size: 3rem;
+  }
+  
+  .quoteText {
+    font-size: 1.75rem;
+  }
+  
+  .navigationContainer {
+    gap: 1.5rem;
+  }
+  
+  .statValue {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .testimonialsSection {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 3.5rem;
+  }
+  
+  .mainCard {
+    padding: 3.5rem;
+  }
+  
+  .quoteText {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .testimonialsSection {
+    padding: 6rem 2rem;
+  }
+  
+  .sectionTitle {
+    font-size: 4rem;
+  }
+  
+  .mainCard {
+    padding: 4rem;
+  }
+  
+  .statValue {
+    font-size: 3rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .mainCard {
+    border: 2px solid #000000;
+  }
+  
+  .statCard {
+    border: 2px solid #000000;
+  }
+  
+  .navButton {
+    border: 1px solid #000000;
+  }
+  
+  .focusRing {
+    outline: 2px solid #000000;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .navButton {
+    transition: none;
+  }
+  
+  .navButton:hover {
+    transform: none;
+  }
+  
+  .dotButton {
+    transition: none;
+  }
+  
+  .authorImagePulse {
+    animation: none;
+  }
+}
+
+/* Loading States */
+.loadingSkeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 1rem;
+  height: 300px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Print Styles */
+@media print {
+  .testimonialsSection {
+    background: none;
+    color: #000000;
+  }
+  
+  .sectionTitle {
+    color: #000000;
+  }
+  
+  .sectionTitleHighlight {
+    color: #000000;
+  }
+  
+  .mainCard {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    break-inside: avoid;
+  }
+  
+  .navButton,
+  .dotsContainer {
+    display: none;
+  }
+  
+  .statCard {
+    border: 1px solid #000000;
+  }
+}

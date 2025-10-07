@@ -1,0 +1,50 @@
+/* 1️⃣ wrapper stays the same */
+.wrapper {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 20px;
+  padding: 1px;
+  box-sizing: border-box;
+}
+
+/* 2️⃣ NEW: the rotating “snake” overlay */
+.shiny {
+  /* 2.1  Make the element larger than the wrapper so it can cover the whole area
+       while still keeping its top‑left corner at the wrapper’s centre. */
+  position: absolute;
+  width: 4280px;                     /* 2–3× bigger – tweak as needed */
+  height: 4280px;
+  top: 50%;                        /* position its centre at the wrapper centre   */
+  left: 70%;
+  transform-origin: top left;       /* we want to rotate around the top‑left corner */
+  transform: translate(-50%, -50%) rotate(0deg); /* shift it so its top‑left is centred */
+  background: linear-gradient(
+    45deg,
+    #CB2E12,
+    #FFC33E
+  );
+  opacity: 0.6;
+  filter: blur(18px);
+  animation: rotate 16s linear infinite;  /* rotate forever */
+  z-index: 0;
+  clip-path: inset(0 round 20px);         /* keep it clipped to rounded corners */
+}
+
+/* 3️⃣ content area – unchanged */
+.content {
+  position: relative;
+  padding: 1.5rem;
+  background: #0c0c0c;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  z-index: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* 4️⃣ keyframes – same as before */
+@keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

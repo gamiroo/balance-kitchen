@@ -1,0 +1,177 @@
+/* components/CTAButton.module.css */
+
+.ctaButton {
+  /* Base styles */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.5rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 300ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  background: linear-gradient(to right, #dc2626, #f59e0b);
+  color: #ffffff;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  z-index: 0;
+}
+
+.ctaButton:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  background: linear-gradient(to right, #b91c1c, #b45309);
+}
+
+.ctaButton:focus {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.5);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.ctaButton:focus:not(:focus-visible) {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.ctaButton:focus-visible {
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.5);
+}
+
+.ctaButton:active {
+  box-shadow: none;
+  transform: scale(0.97);
+}
+
+.ctaButton[aria-disabled='true'] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ctaButton[aria-busy='true'] {
+  position: relative;
+  pointer-events: none;
+}
+
+.ctaButton[aria-busy='true']::after {
+  content: '';
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Text wrapper */
+.buttonText {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Responsive breakpoints */
+@media (min-width: 320px) {
+  .ctaButton {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* Mobile small (iPhone SE, Galaxy S5) */
+@media (min-width: 360px) {
+  .ctaButton {
+    padding: 0.875rem 1.25rem;
+  }
+}
+
+/* Mobile large (iPhone 12 Pro Max) */
+@media (min-width: 428px) {
+  .ctaButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.825rem;
+  }
+}
+
+/* Tablet small (iPad Mini) */
+@media (min-width: 768px) {
+  .ctaButton {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* Tablet large (iPad Air/Air 2) */
+@media (min-width: 834px) {
+  .ctaButton {
+    padding: 1.25rem 3.5rem;
+  }
+}
+
+/* Desktop small */
+@media (min-width: 1024px) {
+  .ctaButton {
+    padding: 0.875rem 2.5rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* Desktop large */
+@media (min-width: 1280px) {
+  .ctaButton {
+    padding: 1rem 3rem;
+    font-size: 1.25rem;
+  }
+}
+
+/* Desktop extra large */
+@media (min-width: 1536px) {
+  .ctaButton {
+    padding: 0.875rem 2rem;
+    font-size: 1.175rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ctaButton {
+    border: 2px solid #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton {
+    transition: none;
+  }
+  
+  .ctaButton:hover,
+  .ctaButton:active {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .ctaButton {
+    box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05);
+  }
+  
+  .ctaButton:hover {
+    box-shadow: 0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04);
+  }
+}

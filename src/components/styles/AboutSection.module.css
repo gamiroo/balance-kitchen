@@ -1,0 +1,18 @@
+/* AboutSection.module.css */
+.animatedBadge {
+  background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

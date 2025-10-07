@@ -1,0 +1,342 @@
+/* app/components/FAQ.module.css */
+
+/* Container */
+.faqContainer {
+  max-width: 80rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Accordion Container */
+.accordionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+/* Accordion Item */
+.accordionItem {
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid #1e293b;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Accordion Button */
+.accordionButton {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.accordionButton:hover {
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+.accordionButton:focus {
+  outline: 2px solid #fbbf24;
+  outline-offset: -2px;
+}
+
+.accordionButton:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.accordionButton:focus-visible {
+  outline: 2px solid #fbbf24;
+  outline-offset: -2px;
+}
+
+/* Question Text */
+.questionText {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  padding-right: 1rem;
+  line-height: 1.4;
+}
+
+.questionTextMd {
+  font-size: 1.25rem;
+}
+
+/* Chevron Icon Container */
+.chevronContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevronIcon {
+  color: #fbbf24;
+  transition: transform 0.2s ease;
+}
+
+.chevronIconOpen {
+  transform: rotate(180deg);
+}
+
+/* Answer Container */
+.answerContainer {
+  overflow: hidden;
+}
+
+.answerContent {
+  padding: 1.5rem;
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+/* Loading Overlay */
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.loadingOverlayActive {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.loadingSpinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled State */
+.disabledState {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Motion States */
+.motionInitial {
+  opacity: 0;
+  transform: translateY(1.25rem);
+}
+
+.motionVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motionTransition {
+  transition-duration: 0.3s;
+}
+
+.motionDelay0 {
+  transition-delay: 0s;
+}
+
+.motionDelay1 {
+  transition-delay: 0.1s;
+}
+
+.motionDelay2 {
+  transition-delay: 0.2s;
+}
+
+.motionDelay3 {
+  transition-delay: 0.3s;
+}
+
+.motionDelay4 {
+  transition-delay: 0.4s;
+}
+
+.motionDelay5 {
+  transition-delay: 0.5s;
+}
+
+/* Responsive Design */
+@media (min-width: 320px) {
+  .questionText {
+    font-size: 1rem;
+    padding-right: 0.75rem;
+  }
+  
+  .accordionButton {
+    padding: 1.25rem;
+  }
+  
+  .answerContent {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 375px) {
+  .questionText {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .questionText {
+    font-size: 1.125rem;
+    padding-right: 1rem;
+  }
+  
+  .accordionButton {
+    padding: 1.5rem;
+  }
+  
+  .answerContent {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .accordionContainer {
+    gap: 1.25rem;
+  }
+  
+  .questionText {
+    padding-right: 1.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .questionText {
+    font-size: 1.25rem;
+  }
+  
+  .accordionButton {
+    padding: 1.75rem;
+  }
+  
+  .answerContent {
+    padding: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .accordionContainer {
+    gap: 1.5rem;
+  }
+  
+  .questionText {
+    font-size: 1.375rem;
+  }
+  
+  .accordionButton {
+    padding: 2rem;
+  }
+  
+  .answerContent {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .questionText {
+    font-size: 1.5rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .accordionItem {
+    border: 2px solid #000000;
+  }
+  
+  .accordionButton:focus {
+    outline: 2px solid #000000;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .accordionButton {
+    transition: none;
+  }
+  
+  .chevronIcon {
+    transition: none;
+  }
+  
+  .motionTransition {
+    transition: none;
+  }
+}
+
+/* Loading States */
+.loadingSkeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 0.75rem;
+  height: 100px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ARIA States */
+.accordionItem[aria-expanded="true"] .chevronIcon {
+  transform: rotate(180deg);
+}
+
+.accordionItem[aria-expanded="false"] .answerContainer {
+  height: 0;
+  opacity: 0;
+}
+
+.accordionItem[aria-expanded="true"] .answerContainer {
+  height: auto;
+  opacity: 1;
+}
+
+/* Print Styles */
+@media print {
+  .accordionButton:hover {
+    background: none;
+  }
+  
+  .accordionItem[aria-expanded="false"] .answerContainer {
+    display: none;
+  }
+  
+  .accordionItem[aria-expanded="true"] .answerContainer {
+    display: block;
+  }
+  
+  .chevronIcon {
+    display: none;
+  }
+}

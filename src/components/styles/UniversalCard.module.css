@@ -1,0 +1,232 @@
+/* app/components/UniversalCard.module.css */
+
+/* Container */
+.universalCardContainer {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  height: auto;
+  min-height: 400px;
+  perspective: 1200px;
+}
+
+/* Card Wrapper */
+.cardWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* Card Face */
+.cardFace {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.cardFaceFront {
+  transform: rotateY(0deg);
+}
+
+.cardFaceBack {
+  transform: rotateY(180deg);
+}
+
+/* Tilt Container */
+.tiltContainer {
+  border-radius: 1.5rem;
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom Widths */
+.width340 {
+  width: 340px;
+}
+
+.widthFull {
+  width: 100%;
+}
+
+.widthAuto {
+  width: auto;
+}
+
+/* Custom Heights */
+.height520 {
+  height: 520px;
+}
+
+.heightFull {
+  height: 100%;
+}
+
+.heightAuto {
+  height: auto;
+}
+
+/* Custom Perspectives */
+.perspective1200 {
+  perspective: 1200px;
+}
+
+.perspective1000 {
+  perspective: 1000px;
+}
+
+.perspective800 {
+  perspective: 800px;
+}
+
+/* Flip Animation */
+.flipAnimation {
+  transition-duration: 0.7s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus Styles */
+.focusRing {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.focusRing:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Responsive Design */
+@media (min-width: 320px) {
+  .universalCardContainer {
+    width: 300px;
+    height: 460px;
+  }
+}
+
+@media (min-width: 375px) {
+  .universalCardContainer {
+    width: 320px;
+    height: 480px;
+  }
+}
+
+@media (min-width: 414px) {
+  .universalCardContainer {
+    width: 330px;
+    height: 490px;
+  }
+}
+
+@media (min-width: 480px) {
+  .universalCardContainer {
+    width: 340px;
+    height: 500px;
+  }
+}
+
+@media (min-width: 640px) {
+  .universalCardContainer {
+    width: 340px;
+    height: 520px;
+  }
+}
+
+@media (min-width: 768px) {
+  .universalCardContainer {
+    height: 520px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .universalCardContainer {
+    width: 360px;
+    height: 540px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .universalCardContainer {
+    width: 370px;
+    height: 550px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .universalCardContainer {
+    width: 380px;
+    height: 560px;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .universalCardContainer {
+    border: 2px solid #000000;
+  }
+  
+  .focusRing {
+    outline: 2px solid #000000;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .flipAnimation {
+    transition: none;
+  }
+}
+
+/* Loading States */
+.loadingSkeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 1.5rem;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ARIA States */
+.universalCardContainer[aria-disabled="true"] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.universalCardContainer[aria-busy="true"] {
+  position: relative;
+  overflow: hidden;
+}
+
+.universalCardContainer[aria-busy="true"]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Print Styles */
+@media print {
+  .universalCardContainer {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+  
+  .cardFaceBack {
+    transform: none;
+  }
+}

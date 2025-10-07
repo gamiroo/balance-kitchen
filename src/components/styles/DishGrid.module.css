@@ -1,0 +1,257 @@
+/* app/components/styles/DishGrid.module.css */
+
+/* Container */
+.dishGridContainer {
+  margin-bottom: 5rem;
+  position: relative;
+}
+
+/* Category Header */
+.categoryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.categoryTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  flex: 1;
+  min-width: 200px;
+}
+
+.categoryCarnivore { color: #ef4444; }
+.categoryBalanced { color: #22c55e; }
+.categoryVegetarian { color: #10b981; }
+.categoryKeto { color: #a855f7; }
+.categoryDefault { color: #6b7280; }
+
+.categoryDescription {
+  color: #9ca3af;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  flex: 1 0 100%;
+}
+
+/* CTA Button Container */
+.ctaButtonContainer {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Grid Container - Single responsive class */
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Tablet breakpoint */
+@media (min-width: 640px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Desktop breakpoint */
+@media (min-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Grid Item */
+.gridItem {
+  display: flex;
+  justify-content: center;
+  
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gridItemContent {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Loading Overlay */
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.loadingOverlayActive {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.loadingSpinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled State */
+.disabledState {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (min-width: 320px) {
+  .dishGridContainer {
+    margin-bottom: 4rem;
+  }
+  
+  .categoryTitle {
+    font-size: 1.5rem;
+  }
+  
+  .gridContainer {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 375px) {
+  .categoryTitle {
+    font-size: 1.75rem;
+  }
+  
+  .gridContainer {
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .categoryTitle {
+    font-size: 1.875rem;
+  }
+  
+  .gridContainer {
+    gap: 1.5rem;
+  }
+  
+  .categoryDescription {
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 640px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .categoryHeader {
+    flex-wrap: nowrap;
+  }
+  
+  .categoryDescription {
+    flex: 0 0 auto;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .dishGridContainer {
+    margin-bottom: 5rem;
+  }
+  
+  .categoryHeader {
+    margin-bottom: 2.5rem;
+  }
+  
+  .categoryTitle {
+    font-size: 2.25rem;
+  }
+  
+  .categoryDescription {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .categoryTitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .dishGridContainer {
+    margin-bottom: 6rem;
+  }
+  
+  .categoryTitle {
+    font-size: 2.75rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .categoryTitle {
+    border: 1px solid #000000;
+    padding: 0.25rem;
+  }
+}
+
+/* Loading States */
+.loadingSkeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 1.5rem;
+  height: 520px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Print Styles */
+@media print {
+  .dishGridContainer {
+    break-inside: avoid;
+  }
+  
+  .categoryHeader {
+    border-bottom: 1px solid #000000;
+    padding-bottom: 1rem;
+  }
+}

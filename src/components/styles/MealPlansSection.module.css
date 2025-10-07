@@ -1,0 +1,451 @@
+/* app/components/styles/MealPlansSection.module.css */
+
+/* Section Container */
+.mealPlansSection {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.15), rgba(2, 6, 23, 1));
+  color: white;
+}
+
+/* Content Container */
+.contentContainer {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.headerTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.headerTitleMd {
+  font-size: 2.25rem;
+}
+
+.headerDescription {
+  color: #d1d5db;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+/* Tabs Container */
+.tabsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* Tab Button */
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  margin-right: .5rem;
+  border: none;
+  cursor: pointer;
+  background-color: #1e293b;
+  color: #d1d5db;
+}
+
+.tabButton:hover {
+  background-color: #334155;
+}
+
+.tabButtonActive {
+  background-color: #f59e0b;
+  color: #0f172a;
+  box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3), 0 4px 6px -2px rgba(245, 158, 11, 0.3);
+}
+
+/* Plans Grid Container */
+.plansGridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Tablet breakpoint */
+@media (min-width: 768px) {
+  .plansGridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop breakpoint */
+@media (min-width: 1024px) {
+  .plansGridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Plan Card */
+.planCard {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid #334155;
+  transition: transform 0.2s ease;
+}
+
+.planCardHighlighted {
+  border: 1px solid #fbbf24;
+  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.2), 0 4px 6px -2px rgba(251, 191, 36, 0.2);
+}
+
+.planCard:hover {
+  transform: translateY(-0.3125rem);
+}
+
+/* Highlight Badge */
+.highlightBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #f59e0b;
+  color: #0f172a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Tag */
+.tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #334155;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Card Content */
+.cardContent {
+  padding: 1.5rem;
+  padding-top: 4rem;
+}
+
+/* Title and Description */
+.titleDescription {
+  margin-bottom: 1.5rem;
+}
+
+.planTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.planDescription {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Meals and Price */
+.mealsPrice {
+  margin-bottom: 1.5rem;
+}
+
+.mealRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.mealLabel {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.mealValue {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.priceValue {
+  color: #fbbf24;
+  font-size: 1.25rem;
+}
+
+.pricePerMeal {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Bonus Discount */
+.bonusDiscount {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background-color: rgba(51, 65, 85, 0.5);
+  border-radius: 0.5rem;
+}
+
+.bonusDiscountText {
+  text-align: center;
+  color: #fde68a;
+  font-weight: 500;
+}
+
+/* CTA Container */
+.ctaContainer {
+  margin-top: 1.5rem;
+}
+
+/* Footer Note */
+.footerNote {
+  text-align: center;
+  margin-top: 3rem;
+  color: #9ca3af;
+}
+
+/* Focus Styles */
+.focusRing {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.focusRing:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Responsive Design */
+@media (min-width: 320px) {
+  .mealPlansSection {
+    padding: 3rem 1rem;
+  }
+  
+  .header {
+    margin-bottom: 3rem;
+  }
+  
+  .headerTitle {
+    font-size: 1.5rem;
+  }
+  
+  .headerDescription {
+    font-size: 1rem;
+  }
+  
+  .tabsContainer {
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  
+  .tabButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .plansGridContainer {
+    gap: 1.5rem;
+  }
+  
+  .cardContent {
+    padding: 1.25rem;
+    padding-top: 3rem;
+  }
+}
+
+@media (min-width: 375px) {
+  .headerTitle {
+    font-size: 1.75rem;
+  }
+  
+  .tabButton {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .mealPlansSection {
+    padding: 3.5rem 1.25rem;
+  }
+  
+  .headerTitle {
+    font-size: 1.875rem;
+  }
+  
+  .headerDescription {
+    font-size: 1.125rem;
+  }
+  
+  .tabButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .mealPlansSection {
+    padding: 4rem 1.5rem;
+  }
+  
+  .header {
+    margin-bottom: 3.5rem;
+  }
+  
+  .headerTitle {
+    font-size: 2rem;
+  }
+  
+  .plansGridContainer {
+    gap: 2rem;
+  }
+  
+  .cardContent {
+    padding: 1.5rem;
+    padding-top: 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .mealPlansSection {
+    padding: 5rem 1.5rem;
+  }
+  
+  .headerTitle {
+    font-size: 2.25rem;
+  }
+  
+  .plansGridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .tabButton {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .plansGridContainer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .headerTitle {
+    font-size: 2.5rem;
+  }
+  
+  .headerDescription {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mealPlansSection {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .headerTitle {
+    font-size: 2.75rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .mealPlansSection {
+    padding: 6rem 2rem;
+  }
+  
+  .headerTitle {
+    font-size: 3rem;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .planCardHighlighted {
+    border: 2px solid #000000;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .tabButtonActive {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .focusRing {
+    outline: 2px solid #000000;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .tabButton {
+    transition: none;
+  }
+  
+  .planCard {
+    transition: none;
+  }
+  
+  .planCard:hover {
+    transform: none;
+  }
+}
+
+/* Loading States */
+.loadingSkeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 1rem;
+  height: 400px;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Print Styles */
+@media print {
+  .mealPlansSection {
+    background: none;
+    color: #000000;
+  }
+  
+  .headerTitle {
+    color: #000000;
+  }
+  
+  .planCard {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    break-inside: avoid;
+  }
+  
+  .planCardHighlighted {
+    border: 1px solid #000000;
+  }
+  
+  .highlightBadge {
+    background: #000000;
+    color: #ffffff;
+  }
+}
