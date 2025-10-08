@@ -116,7 +116,7 @@ export const Header = () => {
             aria-label="Balance Kitchen Home"
           >
             <Image 
-              src="/balance-logo-9.svg" 
+              src="/balance-logo.svg" 
               alt="Balance Kitchen" 
               className={`${styles.logoImage} ${styles.logoImageMd}`}
               width={120}
@@ -189,7 +189,7 @@ export const Header = () => {
               aria-label="Balance Kitchen Home"
             >
               <Image 
-                src="/balance-logo-9.svg" 
+                src="/balance-logo.svg" 
                 alt="Balance Kitchen" 
                 className={styles.mobileLogoImage}
                 width={140}

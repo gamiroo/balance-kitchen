@@ -67,8 +67,8 @@ export default function UniversalCard({
         glareEnable: true,
         glareColor: "#ffffff",
         glareMaxOpacity: 0.2,
-        tiltMaxAngleX: 5,
-        tiltMaxAngleY: 5,
+        tiltMaxAngleX: 3,
+        tiltMaxAngleY: 3,
         glareBorderRadius: "24px",
         className: styles.tiltContainer,
       }

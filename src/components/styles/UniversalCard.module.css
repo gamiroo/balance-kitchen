@@ -1,13 +1,22 @@
 /* app/components/UniversalCard.module.css */
 
+/* Reset and base styles */
+.universalCardContainer,
+.cardWrapper,
+.cardFace,
+.tiltContainer {
+  box-sizing: border-box;
+}
+
 /* Container */
 .universalCardContainer {
   position: relative;
   cursor: pointer;
-  width: 100%;
+  min-width: 100%;
   height: auto;
   min-height: 400px;
   perspective: 1200px;
+  margin: 0 auto;
 }
 
 /* Card Wrapper */
@@ -104,6 +113,7 @@
     width: 300px;
     height: 460px;
   }
+
 }
 
 @media (min-width: 375px) {
