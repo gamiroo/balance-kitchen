@@ -15,7 +15,7 @@ import TestimonialsSection from "../../components/TestimonialSection";
 import FAQAccordion from "../../components/FAQAccordion";
 import styles from './page.module.css';
 import Link from "next/link";
-import { faqs } from "../../data/faqData"; // Import the FAQ data
+import { faqs } from "../../data/faqData";
 
 // Lazy load carousels (client-side only)
 const HowItWorksTrail = dynamic(() => import("../../components/how-it-works/HowItWorksTrail"), { ssr: false });
@@ -139,7 +139,9 @@ export default function MainPage() {
 
      <TestimonialsSection />
 
+
       <div className={styles.ctaSection}>
+        
         <Link href="/order" passHref>
           <button 
             className={`${styles.ctaButton} ${styles.focusRing}`}
