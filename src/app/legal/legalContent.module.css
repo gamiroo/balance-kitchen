@@ -1,0 +1,59 @@
+/* -------------------------------------------------
+   Small additions that sit on top of menu/page.module.css
+   ------------------------------------------------- */
+
+.legalContainer {
+  /* inherits the dark gradient from .menuSection */
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background: linear-gradient(to bottom, #0f172a, #020617);
+  color: #e5e7eb;          /* light‑gray for body text */
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  max-width: 90rem;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 1.5rem;
+}
+
+/* Headings inside the legal docs */
+.legalContainer h1,
+.legalContainer h2,
+.legalContainer h3 {
+  color: #fbbf24;          /* gold accent – same as headerHighlight */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.legalContainer p,
+.legalContainer ul,
+.legalContainer ol {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+/* Make links stand out but stay on‑theme */
+.legalContainer a {
+  color: #a5b4fc;
+  text-decoration: underline;
+}
+.legalContainer a:hover {
+  color: #c7d2fe;
+}
+
+/* Small fade‑in helper (used by motion) – optional */
+.fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Reduce motion respect – overrides motion if user prefers */
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn {
+    animation: none;
+  }
+}
