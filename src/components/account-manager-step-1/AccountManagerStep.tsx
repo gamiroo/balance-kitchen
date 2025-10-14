@@ -97,6 +97,7 @@ type DeviceProps = {
   frameSrc: string;
   businessName?: string;
   deviceType: 'mobile' | 'tablet' | 'desktop';
+  startChat: boolean; // ✅ New prop
 };
 
 type BubbleInfo = {
@@ -109,12 +110,13 @@ const Device = ({
   chat, 
   frameSrc, 
   businessName = "Balance Kitchen",
-  deviceType
+  deviceType,
+  startChat // ✅ Destructure new prop
 }: DeviceProps) => {
   const [bubbles, setBubbles] = useState<BubbleInfo[]>(
     chat.map((_, i) => ({
-      status: i === 0 ? 'typed' : 'waiting',
-      caret: i === 0,
+      status: 'waiting', // ✅ Start all as waiting
+      caret: false,      // ✅ No caret initially
     }))
   );
 
@@ -129,11 +131,24 @@ const Device = ({
     }, duration);
   };
 
+  // ✅ Reset and start chat when startChat changes to true
   useEffect(() => {
-    hideCaret(0, chat[0].text.length);
-  }, [chat]);
+    if (!startChat) return;
+
+    // Reset all bubbles to initial state
+    setBubbles(chat.map((_, i) => ({
+      status: i === 0 ? 'typed' : 'waiting',
+      caret: i === 0,
+    })));
+
+    if (chat.length > 0) {
+      hideCaret(0, chat[0].text.length);
+    }
+  }, [startChat, chat]);
 
   useEffect(() => {
+    if (!startChat) return; // ✅ Only run if chat is started
+
     const totalSlot = 3500;
     const typingPause = 500;
 
@@ -164,7 +179,7 @@ const Device = ({
     });
 
     return () => timers.forEach(clearTimeout);
-  }, [chat]);
+  }, [startChat, chat]); // ✅ Add startChat to dependencies
 
   return (
     <div className={`${styles.deviceWrapper} ${className} ${styles[deviceType]}`}>
@@ -192,7 +207,7 @@ const Device = ({
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            animate={startChat ? "visible" : "hidden"} // ✅ Animate based on startChat
           >
             {chat.map((msg, i) => (
               <div
@@ -226,7 +241,7 @@ const Device = ({
                       className={styles.typingLine}
                       variants={typingLineVariants}
                       initial="hidden"
-                      animate="visible"
+                      animate={startChat ? "visible" : "hidden"} // ✅ Animate based on startChat
                     >
                       {msg.text.split('').map((ch, idx) => (
                         <motion.span key={idx} variants={letterVariant}>
@@ -248,7 +263,7 @@ const Device = ({
               className={styles.typing}
               variants={bubbleVariants}
               initial="hidden"
-              animate="visible"
+              animate={startChat ? "visible" : "hidden"} // ✅ Animate based on startChat
             />
           </motion.div>
         </div>
@@ -264,10 +279,16 @@ export const AccountManagerStep = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { amount: 0.2, once: true });
   const controls = useAnimation();
+  const [chatStarted, setChatStarted] = useState(false); // ✅ New state
 
   useEffect(() => {
     if (inView) void controls.start('visible');
   }, [inView, controls]);
+
+  // ✅ Function to handle CTA button click
+  const handleCTAClick = () => {
+    setChatStarted(true);
+  };
 
   return (
     <section className={styles.stepContainer} ref={containerRef}>
@@ -284,7 +305,8 @@ export const AccountManagerStep = () => {
           See how the conversation flows seamlessly across all your devices –
           from mobile to desktop, your account manager is always available.
         </p>
-        <CTAButton>Speak to an Account Manager</CTAButton>
+        {/* ✅ Updated CTAButton with onClick handler */}
+        <CTAButton onClick={handleCTAClick}>Speak to an Account Manager</CTAButton>
       </div>
 
       {/* ----- OVERLAPPING DEVICES SECTION (Right side) ----- */}
@@ -296,6 +318,7 @@ export const AccountManagerStep = () => {
             frameSrc="/assets/desktop-1.svg"
             businessName="Balance Kitchen"
             deviceType="desktop"
+            startChat={chatStarted} // ✅ Pass the chat start state
           />
           <Device
             className={styles.tablet}
@@ -303,6 +326,7 @@ export const AccountManagerStep = () => {
             frameSrc="/assets/tablet-1.svg"
             businessName="Balance Kitchen"
             deviceType="tablet"
+            startChat={chatStarted} // ✅ Pass the chat start state
           />
           <Device
             className={styles.mobile}
@@ -310,6 +334,7 @@ export const AccountManagerStep = () => {
             frameSrc="/assets/mobile-1.svg"
             businessName="Balance Kitchen"
             deviceType="mobile"
+            startChat={chatStarted} // ✅ Pass the chat start state
           />
         </div>
       </div>
