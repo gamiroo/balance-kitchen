@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './AccountManagerStep.module.css';
 import { CTAButton } from 'components/CTAButton';
+import { Link } from 'lucide-react';
 
 /* -----------------------------------------------------------------
    1️⃣  Chat data
@@ -376,10 +377,10 @@ export const AccountManagerStep = () => {
           When you sign up, a dedicated Balance Kitchen Account Manager
           reaches out within 24 hours. They&apos;ll ask a few quick questions,
           suggest the perfect macro-balanced plan and help you set up
-          your first delivery.
+          your first delivery. <a href="#"> Learn more</a>
         </p>
         <div className={sectionVisible ? styles.buttonVisible : ''}>
-          <CTAButton onClick={() => setChatStarted(true)}>Speak to an Account Manager</CTAButton>
+          <CTAButton onClick={() => setChatStarted(true)}>Chat with an Account Manager</CTAButton>
         </div>
       </div>
 
