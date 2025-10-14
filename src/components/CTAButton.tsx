@@ -1,4 +1,3 @@
-// components/CTAButton.tsx
 import { motion } from 'framer-motion';
 import styles from './styles/CTAButton.module.css';
 
@@ -45,3 +44,4 @@ export const CTAButton = ({
     </motion.button>
   );
 };
+CTAButton.displayName = 'CTAButton';
