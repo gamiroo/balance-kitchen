@@ -1,12 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import {
-  motion,
-  Variants,
-  useAnimation,
-  useInView,
-} from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './AccountManagerStep.module.css';
 import { CTAButton } from 'components/CTAButton';
@@ -25,60 +19,8 @@ const mobileChat: Message[] = [
   { who: 'customer', text: 'Sure, go ahead.' },
 ];
 
-const tabletChat: Message[] = [
-  {
-    who: 'customer',
-    text: 'Hey – can you tell me about the macro options?',
-  },
-  {
-    who: 'manager',
-    text: 'Absolutely! We have 30 % protein, 40 % carbs, 30 % fibre.',
-  },
-  { who: 'customer', text: 'Sounds perfect. How do I get started?' },
-];
-
-const desktopChat: Message[] = [
-  { who: 'customer', text: 'Do you offer a personal‑chef service?' },
-  {
-    who: 'manager',
-    text: 'Yes – for premium packs we assign a chef for extra customisation.',
-  },
-  { who: 'customer', text: 'Awesome, I’ll add that to my order.' },
-];
-
 /* -----------------------------------------------------------------
-   2️⃣  Framer-Motion variants
-   ----------------------------------------------------------------- */
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.5, when: 'beforeChildren' },
-  },
-};
-
-const bubbleVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-};
-
-const letterVariant: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.05 } },
-};
-
-const typingLineVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.04,
-    },
-  },
-};
-
-/* -----------------------------------------------------------------
-   3️⃣  Typing indicator
+   2️⃣  Typing indicator
    ----------------------------------------------------------------- */
 const TypingIndicator = () => (
   <div className={styles.typingIndicator}>
@@ -89,20 +31,21 @@ const TypingIndicator = () => (
 );
 
 /* -----------------------------------------------------------------
-   4️⃣  Device component
+   3️⃣  Device component (with typing animation)
    ----------------------------------------------------------------- */
 type DeviceProps = {
   className: string;
   chat: Message[];
   frameSrc: string;
   businessName?: string;
-  deviceType: 'mobile' | 'tablet' | 'desktop';
   startChat: boolean;
+  isVisible: boolean;
 };
 
-type BubbleInfo = {
+type MessageState = {
   status: 'waiting' | 'typing' | 'typed';
-  caret: boolean;
+  typedText: string;
+  showCaret: boolean;
 };
 
 const Device = ({ 
@@ -110,79 +53,150 @@ const Device = ({
   chat, 
   frameSrc, 
   businessName = "Balance Kitchen",
-  deviceType,
-  startChat
+  startChat,
+  isVisible
 }: DeviceProps) => {
-  const [bubbles, setBubbles] = useState<BubbleInfo[]>(
+  const [messages, setMessages] = useState<MessageState[]>(
     chat.map(() => ({
       status: 'waiting',
-      caret: false,
+      typedText: '',
+      showCaret: false
     }))
   );
 
-  const hideCaret = (idx: number, length: number) => {
-    const duration = length * 50 + 300;
-    setTimeout(() => {
-      setBubbles((prev) => {
-        const next = [...prev];
-        next[idx] = { ...next[idx], caret: false };
-        return next;
-      });
-    }, duration);
-  };
-
-  // Reset and start chat when startChat changes to true
   useEffect(() => {
     if (!startChat) return;
-
-    // Reset all bubbles to initial state
-    setBubbles(chat.map((_, i) => ({
-      status: i === 0 ? 'typed' : 'waiting',
-      caret: i === 0,
-    })));
-
-    if (chat.length > 0) {
-      hideCaret(0, chat[0].text.length);
-    }
-  }, [startChat, chat]);
-
-  useEffect(() => {
-    if (!startChat) return;
-
-    const totalSlot = 3500;
-    const typingPause = 500;
 
     const timers: NodeJS.Timeout[] = [];
 
-    chat.forEach((_msg, i) => {
+    // Handle first message typing
+    const firstMessageTimer = setTimeout(() => {
+      setMessages(prev => {
+        const next = [...prev];
+        next[0] = { 
+          status: 'typed', 
+          typedText: '', 
+          showCaret: true 
+        };
+        return next;
+      });
+
+      // Type out the first message character by character
+      let charIndex = 0;
+      const typeNextChar = () => {
+        if (charIndex < chat[0].text.length) {
+          setMessages(prev => {
+            const next = [...prev];
+            next[0] = { 
+              ...next[0], 
+              typedText: chat[0].text.substring(0, charIndex + 1)
+            };
+            return next;
+          });
+          charIndex++;
+          setTimeout(typeNextChar, 50); // 50ms per character
+        } else {
+          // Hide caret when done
+          const hideCaretTimer = setTimeout(() => {
+            setMessages(prev => {
+              const next = [...prev];
+              next[0] = { ...next[0], showCaret: false };
+              return next;
+            });
+          }, 300);
+          timers.push(hideCaretTimer);
+        }
+      };
+      typeNextChar();
+    }, 500); // Start first message after 500ms
+    timers.push(firstMessageTimer);
+
+    // Handle subsequent messages
+    chat.forEach((msg, i) => {
       if (i === 0) return;
-      const start = i * totalSlot;
 
-      const toTyping = setTimeout(() => {
-        setBubbles((prev) => {
+      // Show typing indicator after delay
+      const typingTimer = setTimeout(() => {
+        setMessages(prev => {
           const next = [...prev];
-          next[i] = { status: 'typing', caret: false };
+          next[i] = { status: 'typing', typedText: '', showCaret: false };
           return next;
         });
-      }, start);
-      timers.push(toTyping);
+      }, i * 3000 + 500); // 3 seconds between each message sequence + 500ms offset
+      timers.push(typingTimer);
 
-      const toTyped = setTimeout(() => {
-        setBubbles((prev) => {
+      // Start typing the message
+      const typeMessageTimer = setTimeout(() => {
+        setMessages(prev => {
           const next = [...prev];
-          next[i] = { status: 'typed', caret: true };
+          next[i] = { 
+            status: 'typed', 
+            typedText: '', 
+            showCaret: true 
+          };
           return next;
         });
-        hideCaret(i, chat[i].text.length);
-      }, start + typingPause);
-      timers.push(toTyped);
+
+        // Type out the message character by character
+        let charIndex = 0;
+        const typeNextChar = () => {
+          if (charIndex < msg.text.length) {
+            setMessages(prev => {
+              const next = [...prev];
+              next[i] = { 
+                ...next[i], 
+                typedText: msg.text.substring(0, charIndex + 1)
+              };
+              return next;
+            });
+            charIndex++;
+            setTimeout(typeNextChar, 50); // 50ms per character
+          } else {
+            // Hide caret when done
+            const hideCaretTimer = setTimeout(() => {
+              setMessages(prev => {
+                const next = [...prev];
+                next[i] = { ...next[i], showCaret: false };
+                return next;
+              });
+            }, 300);
+            timers.push(hideCaretTimer);
+          }
+        };
+        typeNextChar();
+      }, i * 3000 + 1500); // 1 second after typing indicator + 500ms offset
+      timers.push(typeMessageTimer);
     });
 
     return () => timers.forEach(clearTimeout);
   }, [startChat, chat]);
 
+  // Simple SVG icons
+  const MicIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={styles.chatInputIcon}>
+      <path d="M8.25 4.5a3.75 3.75 0 1 1 7.5 0v8.25a3.75 3.75 0 1 1-7.5 0V4.5Z" />
+      <path d="M6 10.5a.75.75 0 0 1 .75.75v1.5a5.25 5.25 0 1 0 10.5 0v-1.5a.75.75 0 0 1 1.5 0v1.5a6.751 6.751 0 0 1-6 6.709v2.291h3a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1 0-1.5h3v-2.291a6.751 6.751 0 0 1-6-6.709v-1.5A.75.75 0 0 1 6 10.5Z" />
+    </svg>
+  );
+
+  const PaperclipIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={styles.chatInputIcon}>
+      <path fillRule="evenodd" d="M18.97 3.659a2.25 2.25 0 0 0-3.182 0l-10.94 10.94a3.75 3.75 0 1 0 5.304 5.303l7.693-7.693a.75.75 0 0 0-1.06-1.06l-7.693 7.693a2.25 2.25 0 1 1-3.182-3.182L15.859 3.66a2.25 2.25 0 0 1 3.182 0Zm-15.227 15.227a.75.75 0 0 0 1.06 0L18.97 5.71a.75.75 0 0 0-1.06-1.06L4.743 17.819a.75.75 0 0 0 0 1.06Z" clipRule="evenodd" />
+    </svg>
+  );
+
+  const SendIcon = () => (
+    <Image
+      src="/assets/icons/arrow-up.svg"
+      alt="Send message"
+      width={16}
+      height={16}
+      className={styles.chatSendIcon}
+    />
+  );
+
   return (
-    <div className={`${styles.deviceWrapper} ${className} ${styles[deviceType]}`}>
+    <div className={`${styles.deviceWrapper} ${className} ${isVisible ? styles.deviceVisible : ''}`}>
       <Image
         src={frameSrc}
         alt="Device frame"
@@ -204,68 +218,85 @@ const Device = ({
         </div>
 
         <div className={styles.chatWrapper}>
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={startChat ? "visible" : "hidden"}
-          >
-            {chat.map((msg, i) => (
-              <div
-                key={i}
-                className={`${styles.messageRow} ${
-                  msg.who === 'customer' ? styles.customerRow : styles.managerRow
-                }`}
-              >
-                <Image
-                  src={
-                    msg.who === 'customer'
-                      ? '/assets/customer-avatar.svg'
-                      : '/assets/manager-avatar.svg'
-                  }
-                  alt={msg.who}
-                  width={22}
-                  height={22}
-                  className={styles.avatar}
-                />
+          {chat.map((msg, i) => (
+            <div
+              key={i}
+              className={`${styles.messageRow} ${
+                msg.who === 'customer' ? styles.customerRow : styles.managerRow
+              }`}
+            >
+              {/* Avatar - only show when typing or typed */}
+              {messages[i].status !== 'waiting' ? (
+                <div>
+                  <Image
+                    src={
+                      msg.who === 'customer'
+                        ? '/assets/customer-avatar.svg'
+                        : '/assets/manager-avatar.svg'
+                    }
+                    alt={msg.who}
+                    width={22}
+                    height={22}
+                    className={styles.avatar}
+                  />
+                </div>
+              ) : (
+                <div style={{ width: 22, height: 22, visibility: 'hidden' }} />
+              )}
 
-                <motion.div
-                  className={`${styles.bubble} ${
-                    msg.who === 'customer'
-                      ? styles.bubbleCustomer
-                      : styles.bubbleManager
-                  }`}
-                  variants={bubbleVariants}
-                >
-                  {bubbles[i].status === 'typed' ? (
-                    <motion.span
-                      className={styles.typingLine}
-                      variants={typingLineVariants}
-                      initial="hidden"
-                      animate={startChat ? "visible" : "hidden"}
-                    >
-                      {msg.text.split('').map((ch, idx) => (
-                        <motion.span key={idx} variants={letterVariant}>
-                          {ch}
-                        </motion.span>
-                      ))}
-                      {bubbles[i].caret && (
+              <div>
+                {messages[i].status === 'typed' ? (
+                  // Show message with bubble and typing animation
+                  <div
+                    className={`${styles.bubble} ${
+                      msg.who === 'customer'
+                        ? styles.bubbleCustomer
+                        : styles.bubbleManager
+                    }`}
+                  >
+                    <span className={styles.typingLine}>
+                      {messages[i].typedText}
+                      {messages[i].showCaret && (
                         <span className={styles.typingCaret} />
                       )}
-                    </motion.span>
-                  ) : bubbles[i].status === 'typing' ? (
+                    </span>
+                  </div>
+                ) : messages[i].status === 'typing' ? (
+                  // Show typing indicator WITHOUT bubble
+                  <div>
                     <TypingIndicator />
-                  ) : null}
-                </motion.div>
+                  </div>
+                ) : (
+                  // Hide completely when waiting
+                  <div style={{ display: 'none' }} />
+                )}
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
 
-            <motion.div
-              className={styles.typing}
-              variants={bubbleVariants}
-              initial="hidden"
-              animate={startChat ? "visible" : "hidden"}
+        {/* Chat Input Box - Illustrative Only */}
+        <div className={styles.chatInputContainer}>
+          <div className={styles.chatInputWrapper}>
+            <input
+              type="text"
+              className={styles.chatInput}
+              placeholder="Type a message..."
+              value="" // Keep empty for illustration
+              readOnly
             />
-          </motion.div>
+          </div>
+          <div className={styles.chatIconsGroup}>
+            <button className={styles.iconButton} aria-label="Voice message">
+              <MicIcon />
+            </button>
+            <button className={styles.iconButton} aria-label="Attach file">
+              <PaperclipIcon />
+            </button>
+          </div>
+          <button className={styles.chatSendButton} aria-label="Send message">
+            <SendIcon />
+          </button>
         </div>
       </div>
     </div>
@@ -273,66 +304,128 @@ const Device = ({
 };
 
 /* -----------------------------------------------------------------
-   5️⃣  Main component
+   4️⃣  User Avatar Component with entrance animation
+   ----------------------------------------------------------------- */
+type UserAvatarProps = {
+  src: string;
+  alt: string;
+  className?: string;
+  isVisible: boolean;
+};
+
+const UserAvatar = ({ src, alt, className, isVisible }: UserAvatarProps) => (
+  <div 
+    className={`${styles.userAvatar} ${className} ${isVisible ? styles.avatarVisible : ''}`}
+  >
+    <Image
+      src={src}
+      alt={alt}
+      width={40}
+      height={40}
+      loading="lazy"
+      className={styles.userAvatarImage}
+    />
+  </div>
+);
+
+/* -----------------------------------------------------------------
+   5️⃣  Main component with entrance animations
    ----------------------------------------------------------------- */
 export const AccountManagerStep = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(containerRef, { amount: 0.2, once: true });
-  const controls = useAnimation();
   const [chatStarted, setChatStarted] = useState(false);
+  const [sectionVisible, setSectionVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Detect when section comes into viewport
   useEffect(() => {
-    if (inView) void controls.start('visible');
-  }, [inView, controls]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSectionVisible(true);
+          // Start chat after a small delay to allow entrance animations to complete
+          setTimeout(() => {
+            setChatStarted(true);
+          }, 800);
+        }
+      },
+      { threshold: 0.2 } // Trigger when 20% of section is visible
+    );
 
-  const handleCTAClick = () => {
-    setChatStarted(true);
-  };
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <section className={styles.stepContainer} ref={containerRef}>
+    <section 
+      className={`${styles.stepContainer} ${sectionVisible ? styles.sectionVisible : ''}`}
+      ref={sectionRef}
+    >
       {/* ----- TEXT CONTENT (Left side) ----- */}
-      <div className={styles.textContent}>
-        <h2 className={styles.stepTitle}>Step 1 – Your Account Manager</h2>
-        <p className={styles.stepCopy}>
+      <div className={`${styles.textContent} ${sectionVisible ? styles.textVisible : ''}`}>
+        <h2 className={`${styles.stepTitle} ${sectionVisible ? styles.titleVisible : ''}`}>
+          Step 1 – Your Account Manager
+        </h2>
+        <p className={`${styles.stepCopy} ${sectionVisible ? styles.copyVisible : ''}`}>
           When you sign up, a dedicated Balance Kitchen Account Manager
           reaches out within 24 hours. They&apos;ll ask a few quick questions,
           suggest the perfect macro-balanced plan and help you set up
           your first delivery.
         </p>
-        <p className={styles.stepCopy}>
-          See how the conversation flows seamlessly across all your devices –
-          from mobile to desktop, your account manager is always available.
-        </p>
-        <CTAButton onClick={handleCTAClick}>Speak to an Account Manager</CTAButton>
+        <div className={sectionVisible ? styles.buttonVisible : ''}>
+          <CTAButton onClick={() => setChatStarted(true)}>Speak to an Account Manager</CTAButton>
+        </div>
       </div>
 
-      {/* ----- OVERLAPPING DEVICES SECTION (Right side) ----- */}
-      <div className={styles.devicesSection}>
+      {/* ----- MOBILE DEVICE WITH USER AVATARS (Right side) ----- */}
+      <div className={`${styles.devicesSection} ${sectionVisible ? styles.devicesVisible : ''}`}>
         <div className={styles.devicesOverlapContainer}>
-          <Device
-            className={styles.desktop}
-            chat={desktopChat}
-            frameSrc="/assets/desktop-1.svg"
-            businessName="Balance Kitchen"
-            deviceType="desktop"
-            startChat={chatStarted}
+          {/* User Avatars with staggered entrance */}
+          <UserAvatar 
+            src="/images/message-users/user1.jpg" 
+            alt="User 1" 
+            className={styles.user1}
+            isVisible={sectionVisible}
           />
-          <Device
-            className={styles.tablet}
-            chat={tabletChat}
-            frameSrc="/assets/tablet-1.svg"
-            businessName="Balance Kitchen"
-            deviceType="tablet"
-            startChat={chatStarted}
+          <UserAvatar 
+            src="/images/message-users/user2.jpg" 
+            alt="User 2" 
+            className={styles.user2}
+            isVisible={sectionVisible}
           />
+          <UserAvatar 
+            src="/images/message-users/user3.jpg" 
+            alt="User 3" 
+            className={styles.user3}
+            isVisible={sectionVisible}
+          />
+          <UserAvatar 
+            src="/images/message-users/user4.jpg" 
+            alt="User 4" 
+            className={styles.user4}
+            isVisible={sectionVisible}
+          />
+          <UserAvatar 
+            src="/images/message-users/user5.jpg" 
+            alt="User 5" 
+            className={styles.user5}
+            isVisible={sectionVisible}
+          />
+
+          {/* Mobile Device */}
           <Device
             className={styles.mobile}
             chat={mobileChat}
             frameSrc="/assets/mobile-1.svg"
             businessName="Balance Kitchen"
-            deviceType="mobile"
             startChat={chatStarted}
+            isVisible={sectionVisible}
           />
         </div>
       </div>

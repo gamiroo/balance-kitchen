@@ -1,3 +1,5 @@
+/* AccountManagerStep.module.css - WITH CENTERED MOBILE AND SURROUNDING AVATARS */
+
 /* -----------------------------------------------------------------
    GLOBAL SETTINGS – FLEX LAYOUT CONTAINER
    ----------------------------------------------------------------- */
@@ -16,31 +18,40 @@
     ),
     linear-gradient(to bottom, #1b1d214c, #0206172c);
   backdrop-filter: blur(20px);
-  box-shadow: #ffe23c20 0px 20px 40px;
   border-radius: 1.25rem;
   color: #e5e7eb;
   display: flex;
   position: relative;
   overflow: hidden;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 3rem;
+  align-items: stretch;
+  gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  min-height: 600px;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
   
   /* DEVICE POSITIONING VARIABLES - ONE SOURCE OF TRUTH */
-  --desktop-left: 50%;
-  --desktop-top: 180px;
-  --tablet-left: 73%;
-  --tablet-bottom: 10px;
-  --mobile-left: 25%;
-  --mobile-bottom: 300px;
-  --device-width-desktop: 35rem;
-  --device-height-desktop: 22rem;
-  --device-width-tablet: 28rem;
-  --device-height-tablet: 16rem;
+  --mobile-left: 50%;
+  --mobile-bottom: 50%;
   --device-width-mobile: 12rem;
   --device-height-mobile: 20rem;
+  
+  /* USER AVATAR POSITIONS */
+  --user1-top: 10%;
+  --user1-left: 20%;
+  --user2-top: 25%;
+  --user2-right: 15%;
+  --user3-bottom: 20%;
+  --user3-left: 10%;
+  --user4-bottom: 20%;
+  --user4-right: 20%;
+  --user5-top: 40%;
+  --user5-left: 5%;
   
   /* ----- typographic defaults ----- */
   --bubble-font-size:        0.9rem;
@@ -55,11 +66,16 @@
   --bubble-color-customer:   #fff;
   --bubble-color-manager:    #e5e7eb;
   --header-height:           2rem;
-  --header-bg:               rgb(45, 39, 39);
+  --header-bg:               linear-gradient(to right, #d1890c, #f5bc2d);
   --header-border:           1px solid rgba(255,255,255,0.1);
-  --header-title-color:      #fbbf24;
+  --header-title-color:      #5d170a;
   --header-title-size:       0.8rem;
   --header-avatar-size:      20px;
+}
+
+.sectionVisible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* -----------------------------------------------------------------
@@ -69,6 +85,20 @@
   flex: 1;
   max-width: 500px;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.textVisible {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.2s;
 }
 
 .stepTitle {
@@ -77,12 +107,34 @@
   margin-bottom: 1.5rem;
   color: #fbbf24;
   line-height: 1.2;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.titleVisible {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
 }
 
 .stepCopy {
   font-size: 1.125rem;
   line-height: 1.7;
   margin-bottom: 2rem;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.copyVisible {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.4s;
 }
 
 /* -----------------------------------------------------------------
@@ -91,11 +143,22 @@
 .devicesSection {
   flex: 1;
   position: relative;
-  min-height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow: visible;
+  min-height: 500px;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.devicesVisible {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.2s;
 }
 
 /* -----------------------------------------------------------------
@@ -105,42 +168,104 @@
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 500px;
+  min-width: 500px;
   display: block;
-  overflow: hidden;
 }
 
 /* -----------------------------------------------------------------
-   DEVICE POSITIONING & ROTATION - CONSISTENT USING VARIABLES
+   USER AVATARS
    ----------------------------------------------------------------- */
-
-/* ---------- DESKTOP ---------- */
-.desktop {
+.userAvatar {
   position: absolute;
-  left: var(--desktop-left);
-  top: var(--desktop-top);
-  transform: translateX(-50%) rotate(0deg);
-  width: var(--device-width-desktop);
-  height: var(--device-height-desktop);
-  z-index: 1;
+  z-index: 3;
+  border-radius: 50%;
+  border: 2px solid #fbbf24;
+  background: #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: scale(0.5) translateY(30px);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---------- TABLET ---------- */
-.tablet {
-  position: absolute;
-  left: var(--tablet-left);
-  bottom: var(--tablet-bottom);
-  transform: translateX(-50%) rotate(25deg);
-  width: var(--device-width-tablet);
-  height: var(--device-height-tablet);
-  z-index: 2;
+.avatarVisible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
-/* ---------- MOBILE ---------- */
+.userAvatar:hover {
+  transform: scale(1.1) translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.userAvatarImage {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback avatar styling */
+.fallbackAvatar {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: #1e293b;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.fallbackInitial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.user1 {
+  top: var(--user1-top);
+  left: var(--user1-left);
+  transition-delay: 0.9s;
+}
+
+.user2 {
+  top: var(--user2-top);
+  right: var(--user2-right);
+  transition-delay: 0.3s;
+}
+
+.user3 {
+  bottom: var(--user3-bottom);
+  left: var(--user3-left);
+  transition-delay: 0.5s;
+}
+
+.user4 {
+  bottom: var(--user4-bottom);
+  right: var(--user4-right);
+  transition-delay: 0.7s;
+}
+
+.user5 {
+  top: var(--user5-top);
+  left: var(--user5-left);
+  transition-delay: 1.2s;
+}
+
+/* -----------------------------------------------------------------
+   MOBILE DEVICE
+   ----------------------------------------------------------------- */
 .mobile {
   position: absolute;
   left: var(--mobile-left);
-  bottom: var(--mobile-bottom);
-  transform: translateX(-50%) rotate(35deg);
+  top: var(--mobile-bottom);
+  transform: translate(-50%, -50%) rotate(5deg);
   width: var(--device-width-mobile);
   height: var(--device-height-mobile);
   z-index: 2;
@@ -154,6 +279,18 @@
   width: 100%;
   height: 100%;
   max-width: 100%;
+  min-height: inherit;
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.deviceVisible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) rotate(5deg);
+  transition-delay: 0.6s;
 }
 
 /* -----------------------------------------------------------------
@@ -171,43 +308,17 @@
    DEVICE-SPECIFIC CHAT OVERLAY POSITIONING
    ----------------------------------------------------------------- */
 .mobile .chatOverlay {
-  --bubble-font-size: 0.55rem;
+  --bubble-font-size: 0.65rem;
   --bubble-bg-customer: #1e40af;
   --bubble-bg-manager:  #3f3f46;
-  --bubble-line-height: 0.9;
+  --bubble-line-height: 1.2;
   --chat-overlay-top:    15%;
-  --chat-overlay-left:   42.5%;
-  --chat-overlay-right:  42.5%; 
+  --chat-overlay-left:   35%;
+  --chat-overlay-right:  35%; 
   --chat-overlay-height: 65%; 
   --header-height:       1.5rem;
-  --header-title-size:   0.55rem;
-  --header-avatar-size:  15px;
-}
-
-.tablet .chatOverlay {
-  --bubble-font-size: 0.48rem;
-  --bubble-bg-customer: #2563eb;
-  --bubble-bg-manager:  #4b5563;
-  --chat-overlay-top:    15%;  
-  --chat-overlay-left:   35%; 
-  --chat-overlay-right:  35%;  
-  --chat-overlay-height: 73%;  
-  --header-height:       1.8rem;
   --header-title-size:   0.65rem;
-  --header-avatar-size:  18px;
-}
-
-.desktop .chatOverlay {
-  --bubble-font-size: 0.55rem;
-  --bubble-bg-customer:#3b82f6;
-  --bubble-bg-manager:#6b7280;
-  --chat-overlay-top:    12%;   
-  --chat-overlay-left:   32%;  
-  --chat-overlay-right:  30%;   
-  --chat-overlay-height: 60%;  
-  --header-height:       2rem;
-  --header-title-size:   0.8rem;
-  --header-avatar-size:  20px;
+  --header-avatar-size:  15px;
 }
 
 /* -----------------------------------------------------------------
@@ -221,10 +332,14 @@
   height: var(--chat-overlay-height, auto);
   overflow: hidden;
   border-radius: 1rem;
-  background-color: #374151;
+  box-shadow: #e33d1067 0px 8px 24px;
+  background-color: #090a0a8d;
+  backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   padding: 0;
+  z-index: 10;
+  margin: 0 auto;
 }
 
 /* -----------------------------------------------------------------
@@ -233,8 +348,8 @@
 .chatHeader {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
   border-bottom: var(--header-border);
   background: var(--header-bg);
   border-radius: 1rem 1rem 0 0;
@@ -255,6 +370,9 @@
   font-weight: 600;
   color: var(--header-title-color);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* -----------------------------------------------------------------
@@ -263,11 +381,12 @@
 .chatWrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.5rem;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 0.75rem;
+  padding: 0.5rem;
+  z-index: 11;
   
   &::-webkit-scrollbar {
     display: none;
@@ -285,7 +404,8 @@
 .messageRow {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .customerRow {
@@ -299,11 +419,12 @@
 }
 
 .avatar {
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
   border-radius: 10%;
   object-fit: cover;
   flex-shrink: 0;
+  margin: 0 0.25rem;
 }
 
 /* -----------------------------------------------------------------
@@ -316,7 +437,10 @@
   line-height: var(--bubble-line-height);
   font-size: var(--bubble-font-size);
   letter-spacing: var(--bubble-letter-spacing);
-  margin: 0 0.5rem;
+  margin: 0 0.25rem;
+  z-index: 12;
+  align-self: flex-end;
+  word-break: break-word;
 }
 
 .bubbleCustomer { 
@@ -361,13 +485,17 @@
    ----------------------------------------------------------------- */
 .typingIndicator {
   display: flex;
-  gap: 0.3rem;
+  gap: 0.2rem;
   justify-content: flex-end;
+  padding: 0.4rem;
+  background: var(--bubble-bg-manager);
+  border-radius: var(--bubble-radius);
+  margin: 0 0.25rem;
 }
 
 .typingIndicator span {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   background: #fff;
   border-radius: 50%;
   opacity: 0.4;
@@ -383,13 +511,187 @@
 }
 
 /* -----------------------------------------------------------------
-   RESPONSIVE DESIGN - FIXED MOBILE VISIBILITY
+   Chat Input Box
+   ----------------------------------------------------------------- */
+.chatInputContainer {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #1e293b32;
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 1rem 1rem;
+  gap: 0.5rem;
+}
+
+.chatInputWrapper {
+  display: flex;
+  align-items: center;
+  background: #374151;
+  border-radius: 1.25rem;
+  padding: 0.4rem 0.75rem;
+  flex: 1;
+  max-width: 60%;
+}
+
+.chatInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #e5e7eb;
+  font-size: 0.65rem;
+  padding: 0.25rem 0;
+  outline: none;
+}
+
+.chatInput::placeholder {
+  color: #9ca3af;
+}
+
+.chatIconsGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.chatInputIcon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: default;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.chatSendButton {
+  background: #f59e0b;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.chatSendIcon {
+  width: 12px;
+  height: 12px;
+  color: #1e293b;
+}
+
+/* -----------------------------------------------------------------
+   RESPONSIVE DESIGN - LARGE DESKTOP
+   ----------------------------------------------------------------- */
+@media (min-width: 1400px) {
+  .stepContainer {
+    gap: 3rem;
+  }
+  
+  .mobile .chatOverlay {
+    --bubble-font-size: 0.75rem;
+    --header-title-size: 0.75rem;
+  }
+  
+  .chatHeader {
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .chatWrapper {
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .messageRow {
+    margin-bottom: 0.75rem;
+  }
+  
+  .avatar {
+    width: 17px;
+    height: 17px;
+    margin: 0 0.5rem;
+  }
+  
+  .bubble {
+    padding: 0.85rem 0.75rem;
+    margin: 0 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .typingIndicator {
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    gap: 0.3rem;
+  }
+  
+  .typingIndicator span {
+    width: 5px;
+    height: 5px;
+  }
+  
+  .chatInputContainer {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .chatInputWrapper {
+    padding: 0.5rem 1rem;
+  }
+  
+  .chatInput {
+    font-size: 0.75rem;
+    padding: 0.5rem 0;
+  }
+  
+  .chatIconsGroup {
+    gap: 0.5rem;
+  }
+  
+  .chatInputIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .iconButton {
+    padding: 0.25rem;
+  }
+  
+  .chatSendButton {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .chatSendIcon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* -----------------------------------------------------------------
+   RESPONSIVE DESIGN - TABLET AND BELOW (STACKED LAYOUT)
    ----------------------------------------------------------------- */
 @media (max-width: 1024px) {
   .stepContainer {
     flex-direction: column;
     gap: 2rem;
     text-align: center;
+    min-height: auto;
+    padding: 1.5rem 1rem;
   }
   
   .textContent {
@@ -397,64 +699,475 @@
     text-align: center;
   }
   
-  /* STACK DEVICES VERTICALLY - CENTERED AND VISIBLE */
-  .desktop,
-  .tablet,
-  .mobile {
-    position: relative;
-    left: 50% !important;
-    top: auto !important;
-    bottom: auto !important;
-    transform: translateX(-50%) rotate(0deg) !important;
-    margin: 2rem auto !important;
-    width: 90% !important;
-    max-width: 300px !important;
-    height: auto !important;
+  .stepTitle {
+    font-size: 2.25rem;
   }
   
-  .tablet { margin-top: 1rem !important; }
-  .mobile { margin-top: 1rem !important; }
+  .stepCopy {
+    font-size: 1.125rem;
+  }
   
-  /* Mobile device wrapper - responsive dimensions */
-  .desktop .deviceWrapper,
-  .tablet .deviceWrapper,
+  .devicesSection {
+    min-width: auto;
+    min-height: 400px;
+    width: 100%;
+  }
+  
+  .devicesOverlapContainer {
+    min-width: auto;
+    min-height: 400px;
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .mobile {
+    position: absolute;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) rotate(0deg) !important;
+    margin: 0 !important;
+    width: 90% !important;
+    max-width: 350px !important;
+    height: 250px !important;
+  }
+  
   .mobile .deviceWrapper {
     width: 100%;
-    height: 200px;
+    height: 100%;
+    min-height: 250px;
   }
   
-  /* Remove hover effects on mobile */
-  .deviceWrapper:hover {
-    filter: none;
-    z-index: 1;
+  .mobile .chatOverlay {
+    --bubble-font-size: 0.7rem;
+    --header-title-size: 0.7rem;
+    --chat-overlay-top: 12%;
+    --chat-overlay-left: 30%;
+    --chat-overlay-right: 30%;
+    --chat-overlay-height: 70%;
+  }
+  
+  .chatHeader {
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+  
+  .chatWrapper {
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+  
+  .messageRow {
+    margin-bottom: 0.6rem;
+  }
+  
+  /* Adjust avatar sizes for tablet */
+  .userAvatar {
+    width: 60px;
+    height: 60px;
+  }
+  
+  /* Adjust avatar positions for stacked layout - surrounding the centered mobile */
+  .user1 {
+    top: 5%;
+    left: 15%;
+  }
+  
+  .user2 {
+    top: 5%;
+    right: 15%;
+  }
+  
+  .user3 {
+    bottom: 5%;
+    left: 15%;
+  }
+  
+  .user4 {
+    bottom: 5%;
+    right: 15%;
+  }
+  
+  .user5 {
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
   }
 }
 
+/* -----------------------------------------------------------------
+   RESPONSIVE DESIGN - SMALL TABLET / LARGE MOBILE
+   ----------------------------------------------------------------- */
 @media (max-width: 768px) {
+  .stepContainer {
+    gap: 1.5rem;
+    padding: 1.5rem 0.75rem;
+    min-height: auto;
+  }
+  
   .stepTitle {
     font-size: 2rem;
+    margin-bottom: 1.25rem;
   }
   
   .stepCopy {
     font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
   
   .devicesSection {
-    min-height: 400px;
+    min-height: 350px;
   }
   
-  /* Even smaller devices */
-  .desktop,
-  .tablet,
+  .devicesOverlapContainer {
+    min-height: 350px;
+  }
+  
+  .mobile {
+    width: 95% !important;
+    max-width: 300px !important;
+    height: 220px !important;
+  }
+  
+  .mobile .deviceWrapper {
+    height: 100%;
+    min-height: 220px;
+  }
+  
+  .mobile .chatOverlay {
+    --bubble-font-size: 0.65rem;
+    --header-title-size: 0.65rem;
+    --chat-overlay-top: 10%;
+    --chat-overlay-left: 25%;
+    --chat-overlay-right: 25%;
+    --chat-overlay-height: 75%;
+  }
+  
+  .chatHeader {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .chatWrapper {
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .messageRow {
+    margin-bottom: 0.5rem;
+  }
+  
+  .bubble {
+    padding: 0.65rem 0.55rem;
+    font-size: 0.65rem;
+  }
+  
+  .chatInputContainer {
+    padding: 0.5rem;
+    gap: 0.4rem;
+  }
+  
+  .chatInputWrapper {
+    padding: 0.35rem 0.65rem;
+    max-width: 55%;
+  }
+  
+  .chatInput {
+    font-size: 0.6rem;
+  }
+  
+  .chatIconsGroup {
+    gap: 0.2rem;
+  }
+  
+  .chatInputIcon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .chatSendButton {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .chatSendIcon {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* Adjust avatar sizes for small tablet */
+  .userAvatar {
+    width: 50px;
+    height: 50px;
+  }
+  
+  /* Adjust avatar positions for small tablet */
+  .user1 {
+    top: 3%;
+    left: 10%;
+  }
+  
+  .user2 {
+    top: 3%;
+    right: 10%;
+  }
+  
+  .user3 {
+    bottom: 3%;
+    left: 10%;
+  }
+  
+  .user4 {
+    bottom: 3%;
+    right: 10%;
+  }
+  
+  .user5 {
+    top: 50%;
+    left: 3%;
+    transform: translateY(-50%);
+  }
+}
+
+/* -----------------------------------------------------------------
+   RESPONSIVE DESIGN - MOBILE
+   ----------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .stepContainer {
+    gap: 1.25rem;
+    padding: 1.25rem 0.5rem;
+  }
+  
+  .stepTitle {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .stepCopy {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+  
+  .devicesSection {
+    min-height: 300px;
+  }
+  
+  .devicesOverlapContainer {
+    min-height: 300px;
+  }
+  
   .mobile {
     width: 95% !important;
     max-width: 250px !important;
+    height: 200px !important;
   }
   
-  .desktop .deviceWrapper,
-  .tablet .deviceWrapper,
   .mobile .deviceWrapper {
-    height: 180px;
+    height: 100%;
+    min-height: 200px;
+  }
+  
+  .mobile .chatOverlay {
+    --bubble-font-size: 0.55rem;
+    --header-title-size: 0.55rem;
+    --chat-overlay-top: 8%;
+    --chat-overlay-left: 20%;
+    --chat-overlay-right: 20%;
+    --chat-overlay-height: 78%;
+  }
+  
+  .chatHeader {
+    gap: 0.4rem;
+    padding: 0.4rem;
+  }
+  
+  .chatHeaderTitle {
+    font-size: 0.55rem;
+  }
+  
+  .chatWrapper {
+    gap: 0.4rem;
+    padding: 0.4rem;
+  }
+  
+  .messageRow {
+    margin-bottom: 0.4rem;
+  }
+  
+  .avatar {
+    width: 12px;
+    height: 12px;
+    margin: 0 0.2rem;
+  }
+  
+  .bubble {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.55rem;
+    margin: 0 0.2rem;
+  }
+  
+  .typingIndicator {
+    padding: 0.3rem;
+    margin: 0 0.2rem;
+    gap: 0.15rem;
+  }
+  
+  .typingIndicator span {
+    width: 3px;
+    height: 3px;
+  }
+  
+  .chatInputContainer {
+    padding: 0.4rem;
+    gap: 0.3rem;
+  }
+  
+  .chatInputWrapper {
+    padding: 0.3rem 0.5rem;
+    max-width: 50%;
+  }
+  
+  .chatInput {
+    font-size: 0.55rem;
+    padding: 0.2rem 0;
+  }
+  
+  .chatIconsGroup {
+    gap: 0.15rem;
+  }
+  
+  .chatInputIcon {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .iconButton {
+    padding: 0.15rem;
+  }
+  
+  .chatSendButton {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .chatSendIcon {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* Adjust avatar sizes for mobile */
+  .userAvatar {
+    width: 60px;
+    height: 60px;
+  }
+  
+  /* Adjust avatar positions for mobile */
+  .user1 {
+    top: 2%;
+    left: 8%;
+  }
+  
+  .user2 {
+    top: 8%;
+    right: 8%;
+  }
+  
+  .user3 {
+    bottom: 2%;
+    left: 8%;
+  }
+  
+  .user4 {
+    bottom: 12%;
+    right: 8%;
+  }
+  
+  .user5 {
+    top: 50%;
+    left: 2%;
+    transform: translateY(-50%);
+  }
+}
+
+/* -----------------------------------------------------------------
+   RESPONSIVE DESIGN - SMALL MOBILE
+   ----------------------------------------------------------------- */
+@media (max-width: 360px) {
+  .stepContainer {
+    gap: 1rem;
+    padding: 1rem 0.25rem;
+  }
+  
+  .stepTitle {
+    font-size: 1.5rem;
+  }
+  
+  .stepCopy {
+    font-size: 0.9rem;
+  }
+  
+  .mobile {
+    max-width: 220px !important;
+    height: 180px !important;
+  }
+  
+  .mobile .deviceWrapper {
+    height: 100%;
+    min-height: 180px;
+  }
+  
+  .mobile .chatOverlay {
+    --bubble-font-size: 0.5rem;
+    --header-title-size: 0.5rem;
+    --chat-overlay-left: 15%;
+    --chat-overlay-right: 15%;
+  }
+  
+  .bubble {
+    font-size: 0.5rem;
+    padding: 0.4rem 0.3rem;
+  }
+  
+  .chatInputWrapper {
+    max-width: 45%;
+  }
+  
+  .chatInput {
+    font-size: 0.5rem;
+  }
+  
+  /* Adjust avatar sizes for small mobile */
+  .userAvatar {
+    width: 35px;
+    height: 35px;
+  }
+  
+  /* Adjust avatar positions for small mobile */
+  .user1 {
+    top: 1%;
+    left: 5%;
+  }
+  
+  .user2 {
+    top: 5%;
+    right: 5%;
+  }
+  
+  .user3 {
+    bottom: 1%;
+    left: 5%;
+  }
+  
+  .user4 {
+    bottom: 1%;
+    right: 5%;
+  }
+  
+  .user5 {
+    top: 50%;
+    left: 1%;
+    transform: translateY(-50%);
   }
 }
 
@@ -468,7 +1181,7 @@
   }
   100% {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(var(--final-rotation, 0deg));
+    transform: translate(-50%, -50%) scale(1) rotate(5deg);
   }
 }
 
@@ -477,18 +1190,6 @@
   opacity: 0;
 }
 
-/* Stagger the device entrance animations with final rotations */
-.desktop { 
-  animation-delay: 0.2s; 
-  --final-rotation: 0deg;
-}
-
-.tablet { 
-  animation-delay: 0.4s; 
-  --final-rotation: 5deg;
-}
-
 .mobile { 
   animation-delay: 0.6s; 
-  --final-rotation: -5deg;
 }

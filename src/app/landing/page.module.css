@@ -330,11 +330,11 @@
   }
   
   .sectionSpacer {
-    height: 2rem;
+    height: 3rem;
   }
   
   .sectionSpacerMd {
-    height: 3rem;
+    height: 6rem;
   }
   
   .missionSection {
@@ -683,10 +683,6 @@
   .ctaButton {
     background: #000000;
     color: #ffffff;
-  }
-  
-  .faqBackground {
-    display: none;
   }
   
   .loadingOverlay {

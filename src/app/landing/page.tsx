@@ -62,6 +62,7 @@ export default function MainPage() {
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       
       <AccountManagerStep />
+      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       
       {/* Mission Section */}
       <AboutSection />
