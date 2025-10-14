@@ -14,10 +14,10 @@ const nextConfig: NextConfig = {
       'localhost', // for local development
       'balance-kitchen-git-main-gamiroos-projects.vercel.app', // add your production domain
     ],
-  },
-  // Optional: configure image optimization
+    // Optional: configure image optimization
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
 };
 
 export default nextConfig;

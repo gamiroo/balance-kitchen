@@ -1,0 +1,494 @@
+/* -----------------------------------------------------------------
+   GLOBAL SETTINGS – FLEX LAYOUT CONTAINER
+   ----------------------------------------------------------------- */
+.stepContainer {
+  padding: 2rem 1rem;
+  background: 
+    radial-gradient(
+      circle at 12% 87%,
+      rgba(223, 189, 19, 0.1) 5%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 82% 20%,
+      rgba(223, 189, 19, 0.1) 10%,
+      transparent 30%
+    ),
+    linear-gradient(to bottom, #1b1d214c, #0206172c);
+  backdrop-filter: blur(20px);
+  box-shadow: #ffe23c20 0px 20px 40px;
+  border-radius: 1.25rem;
+  color: #e5e7eb;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  /* DEVICE POSITIONING VARIABLES - ONE SOURCE OF TRUTH */
+  --desktop-left: 50%;
+  --desktop-top: 180px;
+  --tablet-left: 73%;
+  --tablet-bottom: 10px;
+  --mobile-left: 25%;
+  --mobile-bottom: 300px;
+  --device-width-desktop: 35rem;
+  --device-height-desktop: 22rem;
+  --device-width-tablet: 28rem;
+  --device-height-tablet: 16rem;
+  --device-width-mobile: 12rem;
+  --device-height-mobile: 20rem;
+  
+  /* ----- typographic defaults ----- */
+  --bubble-font-size:        0.9rem;
+  --bubble-line-height:      1.4;
+  --bubble-letter-spacing:   0;
+  --bubble-padding-y:        0.75rem;
+  --bubble-padding-x:        0.65rem;
+  --bubble-radius:           0.8rem;
+  --bubble-max-width:        95%;
+  --bubble-bg-customer:      #2563eb;
+  --bubble-bg-manager:       #374151;
+  --bubble-color-customer:   #fff;
+  --bubble-color-manager:    #e5e7eb;
+  --header-height:           2rem;
+  --header-bg:               rgb(45, 39, 39);
+  --header-border:           1px solid rgba(255,255,255,0.1);
+  --header-title-color:      #fbbf24;
+  --header-title-size:       0.8rem;
+  --header-avatar-size:      20px;
+}
+
+/* -----------------------------------------------------------------
+   TEXT CONTENT SECTION (Left side)
+   ----------------------------------------------------------------- */
+.textContent {
+  flex: 1;
+  max-width: 500px;
+  text-align: left;
+}
+
+.stepTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #fbbf24;
+  line-height: 1.2;
+}
+
+.stepCopy {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* -----------------------------------------------------------------
+   DEVICES SECTION (Right side) - CONSISTENT LAYOUT
+   ----------------------------------------------------------------- */
+.devicesSection {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* -----------------------------------------------------------------
+   OVERLAPPING DEVICES CONTAINER
+   ----------------------------------------------------------------- */
+.devicesOverlapContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+}
+
+/* -----------------------------------------------------------------
+   DEVICE POSITIONING & ROTATION - CONSISTENT USING VARIABLES
+   ----------------------------------------------------------------- */
+
+/* ---------- DESKTOP ---------- */
+.desktop {
+  position: absolute;
+  left: var(--desktop-left);
+  top: var(--desktop-top);
+  transform: translateX(-50%) rotate(0deg);
+  width: var(--device-width-desktop);
+  height: var(--device-height-desktop);
+  z-index: 1;
+}
+
+/* ---------- TABLET ---------- */
+.tablet {
+  position: absolute;
+  left: var(--tablet-left);
+  bottom: var(--tablet-bottom);
+  transform: translateX(-50%) rotate(25deg);
+  width: var(--device-width-tablet);
+  height: var(--device-height-tablet);
+  z-index: 2;
+}
+
+/* ---------- MOBILE ---------- */
+.mobile {
+  position: absolute;
+  left: var(--mobile-left);
+  bottom: var(--mobile-bottom);
+  transform: translateX(-50%) rotate(35deg);
+  width: var(--device-width-mobile);
+  height: var(--device-height-mobile);
+  z-index: 2;
+}
+
+/* -----------------------------------------------------------------
+   Device-frame wrapper - FIXED IMAGE RENDERING
+   ----------------------------------------------------------------- */
+.deviceWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+}
+
+/* -----------------------------------------------------------------
+   Frame image - FIXED RENDERING
+   ----------------------------------------------------------------- */
+.frameImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+  object-fit: contain;
+}
+
+/* -----------------------------------------------------------------
+   DEVICE-SPECIFIC CHAT OVERLAY POSITIONING
+   ----------------------------------------------------------------- */
+.mobile .chatOverlay {
+  --bubble-font-size: 0.55rem;
+  --bubble-bg-customer: #1e40af;
+  --bubble-bg-manager:  #3f3f46;
+  --bubble-line-height: 0.9;
+  --chat-overlay-top:    15%;
+  --chat-overlay-left:   42.5%;
+  --chat-overlay-right:  42.5%; 
+  --chat-overlay-height: 65%; 
+  --header-height:       1.5rem;
+  --header-title-size:   0.55rem;
+  --header-avatar-size:  15px;
+}
+
+.tablet .chatOverlay {
+  --bubble-font-size: 0.48rem;
+  --bubble-bg-customer: #2563eb;
+  --bubble-bg-manager:  #4b5563;
+  --chat-overlay-top:    15%;  
+  --chat-overlay-left:   35%; 
+  --chat-overlay-right:  35%;  
+  --chat-overlay-height: 73%;  
+  --header-height:       1.8rem;
+  --header-title-size:   0.65rem;
+  --header-avatar-size:  18px;
+}
+
+.desktop .chatOverlay {
+  --bubble-font-size: 0.55rem;
+  --bubble-bg-customer:#3b82f6;
+  --bubble-bg-manager:#6b7280;
+  --chat-overlay-top:    12%;   
+  --chat-overlay-left:   32%;  
+  --chat-overlay-right:  30%;   
+  --chat-overlay-height: 60%;  
+  --header-height:       2rem;
+  --header-title-size:   0.8rem;
+  --header-avatar-size:  20px;
+}
+
+/* -----------------------------------------------------------------
+   Chat overlay – FIXED POSITIONING
+   ----------------------------------------------------------------- */
+.chatOverlay {
+  position: absolute;
+  top: var(--chat-overlay-top, 25%);
+  left: var(--chat-overlay-left, 20%);
+  right: var(--chat-overlay-right, 13%);
+  height: var(--chat-overlay-height, auto);
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: #374151;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* -----------------------------------------------------------------
+   Chat header
+   ----------------------------------------------------------------- */
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: var(--header-border);
+  background: var(--header-bg);
+  border-radius: 1rem 1rem 0 0;
+  min-height: var(--header-height);
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.chatHeaderAvatar {
+  width: var(--header-avatar-size);
+  height: var(--header-avatar-size);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chatHeaderTitle {
+  font-size: var(--header-title-size);
+  font-weight: 600;
+  color: var(--header-title-color);
+  margin: 0;
+}
+
+/* -----------------------------------------------------------------
+   Conversation wrapper
+   ----------------------------------------------------------------- */
+.chatWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.75rem;
+  
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* -----------------------------------------------------------------
+   Message row – avatar + bubble
+   ----------------------------------------------------------------- */
+.messageRow {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+}
+
+.customerRow {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.managerRow {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.avatar {
+  width: 17px;
+  height: 17px;
+  border-radius: 10%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* -----------------------------------------------------------------
+   Bubble – shared styling
+   ----------------------------------------------------------------- */
+.bubble {
+  max-width: var(--bubble-max-width);
+  padding: var(--bubble-padding-y) var(--bubble-padding-x);
+  border-radius: var(--bubble-radius);
+  line-height: var(--bubble-line-height);
+  font-size: var(--bubble-font-size);
+  letter-spacing: var(--bubble-letter-spacing);
+  margin: 0 0.5rem;
+}
+
+.bubbleCustomer { 
+  background: var(--bubble-bg-customer); 
+  color: var(--bubble-color-customer); 
+}
+
+.bubbleManager { 
+  background: var(--bubble-bg-manager); 
+  color: var(--bubble-color-manager); 
+}
+
+/* -----------------------------------------------------------------
+   Typed line
+   ----------------------------------------------------------------- */
+.typingLine {
+  display: inline-block;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* -----------------------------------------------------------------
+   Blinking caret
+   ----------------------------------------------------------------- */
+.typingCaret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  animation: caretBlink 0.4s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* -----------------------------------------------------------------
+   Typing indicator
+   ----------------------------------------------------------------- */
+.typingIndicator {
+  display: flex;
+  gap: 0.3rem;
+  justify-content: flex-end;
+}
+
+.typingIndicator span {
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: typingDot 0.4s infinite;
+}
+
+.typingIndicator span:nth-child(2) { animation-delay: 0.2s; }
+.typingIndicator span:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes typingDot {
+  0%, 80% { opacity: 0.4; }
+  40%    { opacity: 1; }
+}
+
+/* -----------------------------------------------------------------
+   RESPONSIVE DESIGN - FIXED MOBILE VISIBILITY
+   ----------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .stepContainer {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .textContent {
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  /* STACK DEVICES VERTICALLY - CENTERED AND VISIBLE */
+  .desktop,
+  .tablet,
+  .mobile {
+    position: relative;
+    left: 50% !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: translateX(-50%) rotate(0deg) !important;
+    margin: 2rem auto !important;
+    width: 90% !important;
+    max-width: 300px !important;
+    height: auto !important;
+  }
+  
+  .tablet { margin-top: 1rem !important; }
+  .mobile { margin-top: 1rem !important; }
+  
+  /* Mobile device wrapper - responsive dimensions */
+  .desktop .deviceWrapper,
+  .tablet .deviceWrapper,
+  .mobile .deviceWrapper {
+    width: 100%;
+    height: 200px;
+  }
+  
+  /* Remove hover effects on mobile */
+  .deviceWrapper:hover {
+    filter: none;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .stepTitle {
+    font-size: 2rem;
+  }
+  
+  .stepCopy {
+    font-size: 1rem;
+  }
+  
+  .devicesSection {
+    min-height: 400px;
+  }
+  
+  /* Even smaller devices */
+  .desktop,
+  .tablet,
+  .mobile {
+    width: 95% !important;
+    max-width: 250px !important;
+  }
+  
+  .desktop .deviceWrapper,
+  .tablet .deviceWrapper,
+  .mobile .deviceWrapper {
+    height: 180px;
+  }
+}
+
+/* -----------------------------------------------------------------
+   ANIMATION FOR DEVICE ENTRANCE
+   ----------------------------------------------------------------- */
+@keyframes deviceEntrance {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(var(--final-rotation, 0deg));
+  }
+}
+
+.deviceWrapper {
+  animation: deviceEntrance 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+/* Stagger the device entrance animations with final rotations */
+.desktop { 
+  animation-delay: 0.2s; 
+  --final-rotation: 0deg;
+}
+
+.tablet { 
+  animation-delay: 0.4s; 
+  --final-rotation: 5deg;
+}
+
+.mobile { 
+  animation-delay: 0.6s; 
+  --final-rotation: -5deg;
+}

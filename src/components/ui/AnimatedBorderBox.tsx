@@ -1,6 +1,5 @@
-// src/components/MovingBorder.tsx
 'use client';
-import { useEffect, useRef, useId } from 'react';
+import { useEffect, useRef } from 'react';
 
 type MovingBorderProps = {
   /** Wrapper width – px, %, "full", … */
@@ -33,6 +32,8 @@ type MovingBorderProps = {
   role?: string;
   /** Reduce motion for users who prefer that (disables animation) */
   reduceMotion?: boolean;
+  /** Static ID prefix to ensure SSR/CSR consistency */
+  idPrefix?: string;
 };
 
 export const MovingBorder = ({
@@ -50,12 +51,15 @@ export const MovingBorder = ({
   ariaLabel = 'Animated border container',
   ariaDescribedBy = '',
   role = 'region',
-  reduceMotion = false
+  reduceMotion = false,
+  idPrefix = 'moving-border' // Static prefix to ensure consistency
 
 }: MovingBorderProps) => {
   const rectRef = useRef<SVGRectElement>(null);
-  const gradientId = useId();
-  const filterId = useId();
+  
+  // Use static IDs instead of useId() to prevent hydration mismatch
+  const gradientId = `${idPrefix}-gradient`;
+  const filterId = `${idPrefix}-filter`;
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -89,23 +93,26 @@ export const MovingBorder = ({
     rect.style.strokeDasharray = `${dash} ${gap}`;
     rect.style.strokeDashoffset = '0';
 
+    // Use a more stable animation name
+    const animationName = `dashMove-${idPrefix}-${Math.round(perimeter)}`;
+    
     const styleTag = document.createElement('style');
     styleTag.textContent = `
-      @keyframes dashMove-${perimeter.toFixed(0)} {
+      @keyframes ${animationName} {
         0%   { stroke-dashoffset: 0; }
         100% { stroke-dashoffset: -${perimeter}; }
       }
     `;
     document.head.appendChild(styleTag);
 
-    rect.style.animation = `dashMove-${perimeter.toFixed(0)} ${duration}s linear infinite`;
+    rect.style.animation = `${animationName} ${duration}s linear infinite`;
 
     return () => {
       if (document.head.contains(styleTag)) {
         document.head.removeChild(styleTag);
       }
     };
-  }, [width, height, duration, radius, opacity, strokeWidth, filterId, reduceMotion]);
+  }, [width, height, duration, radius, opacity, strokeWidth, filterId, reduceMotion, idPrefix]);
 
   return (
     <div

@@ -16,6 +16,7 @@ import FAQAccordion from "../../components/FAQAccordion";
 import styles from './page.module.css';
 import Link from "next/link";
 import { faqs } from "../../data/faqData";
+import { AccountManagerStep } from "components/account-manager-step-1/AccountManagerStep";
 
 // Lazy load carousels (client-side only)
 const HowItWorksTrail = dynamic(() => import("../../components/how-it-works/HowItWorksTrail"), { ssr: false });
@@ -59,6 +60,8 @@ export default function MainPage() {
       <div className={`${styles.headerSpacer} ${styles.headerSpacerMd}`} />
       <Hero />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
+      
+      <AccountManagerStep />
       
       {/* Mission Section */}
       <AboutSection />

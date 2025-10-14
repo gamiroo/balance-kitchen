@@ -40,8 +40,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
             viewport={{ once: true }}
-            role="group" // Changed from "article" to "group"
-            aria-expanded={openIndex === index}
+            role="group"
             aria-label={`Question: ${faq.question}`}
           >
             <button
