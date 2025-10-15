@@ -4,10 +4,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { AboutSection } from "../../components/About";
+import { AboutSection } from "../../components/about-section/About";
 import { Header } from "../../components/Header";
 import { Hero } from "../../components/Hero";
-import MealPlansSection from "../../components/MealPlansSection";
+import { MealPlanSection } from "../../components/menu-plans-step-2/MealPlanSection";
 import DishGrid from "../../components/DishGrid";
 import { dishData } from "../../data/dishData";
 import type { Dish } from "../../components/DishCard";
@@ -60,18 +60,15 @@ export default function MainPage() {
       <div className={`${styles.headerSpacer} ${styles.headerSpacerMd}`} />
       <Hero />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
-      
-      <AccountManagerStep />
-      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
-      
-      {/* Mission Section */}
       <AboutSection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
-      
-      {/* Scroll Steps */}
+      <AccountManagerStep />
+      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
+      <MealPlanSection />
+      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       <HowItWorksTrail />
-
-      <MealPlansSection />
+      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
+      
       
       {/* FAQ Section */}
       <section className={styles.faqSection}>

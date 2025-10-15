@@ -1,0 +1,366 @@
+/* app/components/styles/MenuPlanSection.module.css */
+
+.menuPlanSection {
+  padding: 5rem 1.5rem;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.15), rgba(2, 6, 23, 1));
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.contentContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Animated Meal Packs - Left Side */
+.packsContainer {
+  flex: 1;
+  position: relative;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.packsWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.menuCard {
+  position: absolute;
+  width: 220px;
+  height: 300px;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.highlightedCard {
+  border: 2px solid #f59e0b;
+  box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #fbbf24;
+}
+
+.cardDescription {
+  color: #d1d5db;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.cardDetails {
+  margin-top: auto;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.detailLabel {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.detailValue {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.priceValue {
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.highlightBadge {
+  background-color: #f59e0b;
+  color: #0f172a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1rem;
+  align-self: center;
+}
+
+/* Text Content - Right Side */
+.textContent {
+  flex: 1;
+  max-width: 500px;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.sectionDescription {
+  color: #d1d5db;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.featuresList {
+  margin-bottom: 2.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.featureIcon {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.featureTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: white;
+}
+
+.featureDescription {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.ctaContainer {
+  margin-top: 2rem;
+}
+
+/* Positioning for each card */
+.packsWrapper :nth-child(1) {
+  top: 20%;
+  left: 10%;
+}
+
+.packsWrapper :nth-child(2) {
+  top: 15%;
+  left: 35%;
+}
+
+.packsWrapper :nth-child(3) {
+  top: 40%;
+  left: 20%;
+}
+
+.packsWrapper :nth-child(4) {
+  top: 35%;
+  left: 55%;
+}
+
+.packsWrapper :nth-child(5) {
+  top: 60%;
+  left: 35%;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .contentContainer {
+    gap: 2rem;
+  }
+  
+  .menuCard {
+    width: 180px;
+    height: 250px;
+  }
+  
+  .sectionTitle {
+    font-size: 2.25rem;
+  }
+  
+  .sectionDescription {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .menuPlanSection {
+    padding: 4rem 1.25rem;
+  }
+  
+  .contentContainer {
+    flex-direction: column;
+    gap: 3rem;
+    text-align: center;
+  }
+  
+  .textContent {
+    max-width: 100%;
+  }
+  
+  .sectionTitle {
+    font-size: 2rem;
+  }
+  
+  .featureItem {
+    text-align: left;
+  }
+  
+  .packsContainer {
+    height: 500px;
+    width: 100%;
+  }
+  
+  .menuCard {
+    width: 160px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menuPlanSection {
+    padding: 3rem 1rem;
+  }
+  
+  .packsContainer {
+    height: 400px;
+  }
+  
+  .menuCard {
+    width: 140px;
+    height: 200px;
+  }
+  
+  .cardTitle {
+    font-size: 1.125rem;
+  }
+  
+  .cardDescription {
+    font-size: 0.75rem;
+  }
+  
+  .detailLabel,
+  .detailValue {
+    font-size: 0.75rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+  
+  .sectionDescription {
+    font-size: 0.95rem;
+  }
+  
+  .featureTitle {
+    font-size: 1rem;
+  }
+  
+  .featureDescription {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .packsContainer {
+    height: 350px;
+  }
+  
+  .menuCard {
+    width: 120px;
+    height: 180px;
+  }
+  
+  .cardContent {
+    padding: 1rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+  
+  .featureItem {
+    margin-bottom: 1.25rem;
+  }
+  
+  .featureIcon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+}
+
+/* Animation Classes */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Focus Styles */
+.focusRing {
+  outline: 2px solid #fbbf24;
+  outline-offset: 2px;
+}
+
+.focusRing:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .menuCard {
+    transition: none;
+  }
+  
+  .menuCard:hover {
+    transform: none;
+  }
+  
+  .floating {
+    animation: none;
+  }
+}

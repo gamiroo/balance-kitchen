@@ -4,9 +4,9 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { CTAButton } from './CTAButton';
-import { MovingBorder } from './ui/AnimatedBorderBox';
-import styles from './styles/AboutSection.module.css';
+import { CTAButton } from '../CTAButton';
+import { MovingBorder } from '../ui/AnimatedBorderBox';
+import styles from './AboutSection.module.css';
 
 export const AboutSection = () => {
   const [inView, setInView] = useState(false);
@@ -53,16 +53,16 @@ export const AboutSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full py-10 md:py-20"
+      className={styles.section}
       role="region"
       aria-labelledby="about-heading"
       aria-describedby="about-description"
     >
       {/* Images positioned absolutely but within the scroll context */}
-      <div className="absolute inset-0 pointer-events-none overflow-visible">
+      <div className={styles.imageContainer}>
         {/* Left Image with Dark Overlay - Responsive positioning */}
         <motion.div
-          className="absolute w-2/3 h-[40vh] md:w-1/2 md:h-[85vh]"
+          className={`${styles.imageWrapper} ${styles.leftImage}`}
           style={{ 
             right: isMobile ? '20%' : '16%',
             top: isMobile ? '3%' : '15%',
@@ -84,21 +84,21 @@ export const AboutSection = () => {
             src="/images/about-left.png"
             alt=""
             fill
-            className="object-cover rounded-2xl shadow-2xl"
+            className={styles.image}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 25vw"
             priority={false}
             loading="lazy"
           />
           {/* Dark overlay to reduce glare */}
           <div 
-            className="absolute inset-0 bg-black rounded-2xl opacity-40"
+            className={styles.overlay}
             aria-hidden="true"
           />
         </motion.div>
 
         {/* Right Image with Dark Overlay - Responsive positioning */}
         <motion.div
-          className="absolute w-2/3 md:w-1/2 h-[40vh] md:h-[80vh]"
+          className={`${styles.imageWrapper} ${styles.rightImage}`}
           style={{ 
             right: isMobile ? '-20%' : '-18%',
             top: isMobile ? '72%' : '14%',
@@ -121,21 +121,21 @@ export const AboutSection = () => {
             src="/images/about-side-right.png"
             alt=""
             fill
-            className="object-cover rounded-2xl shadow-2xl"
+            className={styles.image}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 30vw, 25vw"
             priority={false}
             loading="lazy"
           />
           {/* Dark overlay to reduce glare */}
           <div 
-            className="absolute inset-0 bg-black rounded-2xl opacity-30"
+            className={styles.overlay}
             aria-hidden="true"
           />
         </motion.div>
       </div>
 
       {/* Content with Moving Border - above images with glass effect */}
-      <div className="flex justify-center items-center px-4 sm:px-6 md:px-8 w-full mx-auto max-w-7xl relative z-10">
+      <div className={styles.contentContainer}>
         <MovingBorder
           width="100%"
           height="100%"
@@ -144,7 +144,7 @@ export const AboutSection = () => {
           opacity={0.7}
           blur={isMobile ? 2 : 4}
           radius={isMobile ? 16 : 20}
-          className="relative mt-8 sm:mt-10 md:mt-12"
+          className={styles.movingBorder}
           gradientColors={['#ffc33e', '#cb2e12']}
           background="transparent"
           ariaLabel="About Balance Kitchen section"
@@ -152,13 +152,13 @@ export const AboutSection = () => {
           role="region"
         >
           {/* Centered content */}
-          <div className="flex flex-col w-full p-4 sm:p-6 md:p-8 items-center justify-center">
+          <div className={styles.contentWrapper}>
             {/* Centered text content */}
-            <div className="w-full max-w-2xl text-center" id="about-content">
+            <div className={styles.textContent} id="about-content">
               {/* Heading - centered */}
               <motion.h2 
                 id="about-heading"
-                className="text-3xl sm:text-4xl md:text-[38px] leading-[1.1] tracking-tight text-balance mb-6"
+                className={styles.heading}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
@@ -168,25 +168,25 @@ export const AboutSection = () => {
               
               {/* Animated Badges - centered */}
               <motion.div
-                className="flex flex-wrap justify-center gap-2 mb-6"
+                className={styles.badgeContainer}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.0 }}
               >
                 <span 
-                  className={`px-4 py-2 rounded-full font-mono text-xs sm:text-sm opacity-90 backdrop-blur-sm text-white ${styles.animatedBadge}`}
+                  className={`${styles.badge} ${styles.animatedBadge}`}
                   aria-label="Balanced Meals category"
                 >
                   Balanced Meals
                 </span>
                 <span 
-                  className={`px-4 py-2 rounded-full font-mono text-xs sm:text-sm opacity-90 backdrop-blur-sm text-white ${styles.animatedBadge}`}
+                  className={`${styles.badge} ${styles.animatedBadge}`}
                   aria-label="Crafted your way category"
                 >
                   crafted your way
                 </span>
                 <span 
-                  className={`px-4 py-2 rounded-full font-mono text-xs sm:text-sm opacity-90 backdrop-blur-sm text-white ${styles.animatedBadge}`}
+                  className={`${styles.badge} ${styles.animatedBadge}`}
                   aria-label="Nutritious category"
                 >
                   nutritious
@@ -196,16 +196,16 @@ export const AboutSection = () => {
               {/* Description - centered */}
               <motion.p 
                 id="about-description"
-                className="text-gray-300 rich-text text-base sm:text-lg mb-8 backdrop-blur-sm bg-black/50 p-4 sm:p-5 rounded-xl"
+                className={styles.description}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.2 }}
               >
-                Work quickly and efficiently with <strong className="text-white">Balance Kitchen</strong>. Get nutritious, chef‑crafted meals delivered straight to your doorstep—so you can focus on the things that matter. We offer rotating menu plans, a flexible 80‑meal savings account, and a dedicated account manager who tailors every dish to your taste and dietary goals. Use our mobile‑friendly interface or our Messenger bot to place an order in seconds.
+                Work quickly and efficiently with <strong className={styles.strong}>Balance Kitchen</strong>. Get nutritious, chef‑crafted meals delivered straight to your doorstep—so you can focus on the things that matter. We offer rotating menu plans, a flexible 80‑meal savings account, and a dedicated account manager who tailors every dish to your taste and dietary goals. Use our mobile‑friendly interface or our Messenger bot to place an order in seconds.
               </motion.p>
               
               <motion.p 
-                className="text-gray-300 rich-text text-base sm:text-lg mb-8 backdrop-blur-sm bg-black/50 p-4 sm:p-5 rounded-xl"
+                className={styles.description}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.4 }}
@@ -215,7 +215,7 @@ export const AboutSection = () => {
                   href="/waitlist"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-red-400 hover:underline ml-1 mr-1 inline-flex items-center focus:outline-none focus:ring-2 focus:ring-red-400 rounded"
+                  className={styles.link}
                   aria-label="Sign up for waitlist (opens in new tab)"
                 >
                   Sign up
@@ -226,7 +226,7 @@ export const AboutSection = () => {
 
               {/* CTA Button - centered */}
               <motion.div
-                className="flex justify-center"
+                className={styles.ctaContainer}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.6 }}
@@ -246,7 +246,7 @@ export const AboutSection = () => {
       {/* Skip link for keyboard users */}
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-white focus:text-black focus:px-4 focus:py-2 focus:rounded focus:z-50"
+        className={styles.skipLink}
         aria-label="Skip to main content"
       >
         Skip to main content
