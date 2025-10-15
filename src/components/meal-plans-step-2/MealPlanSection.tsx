@@ -1,10 +1,17 @@
-// app/components/MenuPlanSection.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import styles from './MealPlanSection.module.css';
 import { CTAButton } from '../ui/CTAButton/CTAButton';
+
+interface MealPack {
+  title: string;
+  description: string;
+  meals: number;
+  price: number;
+  isHighlighted?: boolean;
+}
 
 // MenuCard component for individual meal packs
 const MenuCard = ({ 
@@ -93,7 +100,7 @@ export const MealPlanSection = () => {
   }, []);
 
   // Sample meal pack data
-  const mealPacks = [
+  const mealPacks: MealPack[] = [
     {
       title: "Starter Pack",
       description: "Perfect for individuals trying our service",
@@ -138,11 +145,11 @@ export const MealPlanSection = () => {
       aria-label="Menu Plans Section"
     >
       <div className={styles.contentContainer}>
-        {/* Animated Meal Packs - Left Side */}
+        {/* Animated Meal Packs - Left on desktop, Bottom on mobile */}
         <motion.div 
           className={styles.packsContainer}
-          initial={{ opacity: 0, x: -50 }}
-          animate={sectionVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={sectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <div className={styles.packsWrapper}>
@@ -160,11 +167,11 @@ export const MealPlanSection = () => {
           </div>
         </motion.div>
 
-        {/* Text Content - Right Side */}
+        {/* Text Content - Right on desktop, Top on mobile */}
         <motion.div 
           className={styles.textContent}
-          initial={{ opacity: 0, x: 50 }}
-          animate={sectionVisible ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={sectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <h2 className={styles.sectionTitle}>

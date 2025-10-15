@@ -1,5 +1,3 @@
-/* app/components/styles/MenuPlanSection.module.css */
-
 .menuPlanSection {
   padding: 5rem 1.5rem;
   background: linear-gradient(to bottom, rgba(15, 23, 42, 0.15), rgba(2, 6, 23, 1));
@@ -225,17 +223,44 @@
 
 @media (max-width: 1024px) {
   .menuPlanSection {
-    padding: 4rem 1.25rem;
-  }
+      padding: 4rem 1.25rem;
+    }
   
   .contentContainer {
     flex-direction: column;
     gap: 3rem;
     text-align: center;
+    padding-bottom: 11rem;
   }
   
   .textContent {
-    max-width: 100%;
+    flex: 1;
+    max-width: 500px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    margin-top: 0;
+    position: relative;
+    z-index: 10;
+    order: -1;
+  }
+  
+  .packsContainer {
+    height: 650px;
+    width: 100%;
+    margin: 4rem -50px 100px 0;
+    flex: 1;
+    position: relative;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .menuCard {
+    width: 140px;
+    height: 200px;
   }
   
   .sectionTitle {
@@ -244,16 +269,32 @@
   
   .featureItem {
     text-align: left;
+    justify-content: center;
   }
-  
-  .packsContainer {
-    height: 500px;
-    width: 100%;
+
+  .packsWrapper :nth-child(1) {
+    top: 20%;
+    left: 10%;
   }
-  
-  .menuCard {
-    width: 160px;
-    height: 220px;
+
+  .packsWrapper :nth-child(2) {
+    top: -70px;
+    left: 150px;
+  }
+
+  .packsWrapper :nth-child(3) {
+    top: 60px;
+    left: 20%;
+  }
+
+  .packsWrapper :nth-child(4) {
+    top: 80px;
+    right: -55px;
+  }
+
+  .packsWrapper :nth-child(5) {
+    top: 60%;
+    left: 35%;
   }
 }
 
@@ -263,16 +304,16 @@
   }
   
   .packsContainer {
-    height: 400px;
+    height: 350px;
   }
   
   .menuCard {
-    width: 140px;
-    height: 200px;
+    width: 120px;
+    height: 180px;
   }
   
   .cardTitle {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
   
   .cardDescription {
@@ -281,7 +322,7 @@
   
   .detailLabel,
   .detailValue {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .sectionTitle {
@@ -299,16 +340,25 @@
   .featureDescription {
     font-size: 0.875rem;
   }
+  
+  .featureItem {
+    margin-bottom: 1.25rem;
+  }
+  
+  .textContent {
+    padding: 1.5rem;
+    margin-top: -40px;
+  }
 }
 
 @media (max-width: 480px) {
   .packsContainer {
-    height: 350px;
+    height: 300px;
   }
   
   .menuCard {
-    width: 120px;
-    height: 180px;
+    width: 100px;
+    height: 160px;
   }
   
   .cardContent {
@@ -319,14 +369,15 @@
     font-size: 1.5rem;
   }
   
-  .featureItem {
-    margin-bottom: 1.25rem;
-  }
-  
   .featureIcon {
     width: 28px;
     height: 28px;
     font-size: 0.875rem;
+  }
+  
+  .textContent {
+    padding: 1.25rem;
+    margin-top: -30px;
   }
 }
 

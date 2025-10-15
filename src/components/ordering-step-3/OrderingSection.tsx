@@ -46,9 +46,10 @@ const DishCard = ({
         <Image
           src={image}
           alt={title}
-          fill
+          width={200}
+          height={200}
           className={styles.cardImage}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 768px) 33vw, (max-width: 1200px) 25vw, 20vw"
         />
         <div className={styles.imageOverlay} />
       </div>
