@@ -82,8 +82,8 @@ export const DeliverySection = () => {
               <Image
                 src="/assets/delivery-van.png"
                 alt="Delivery van"
-                width={60}
-                height={40}
+                width={120}
+                height={100}
                 className={styles.truckImage}
               />
             </motion.div>

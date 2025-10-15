@@ -21,26 +21,26 @@
 
 .imageWrapper {
   position: absolute;
-  width: 60%; /* Reduced from 66.666% */
-  height: 30vh; /* Reduced from 40vh */
+  width: 60%;
+  height: 30vh;
 }
 
 @media (min-width: 768px) {
   .imageWrapper {
-    width: 40%; /* Reduced from 50% on desktop */
-    height: 50vh; /* Reduced from 85vh */
+    width: 40%;
+    height: 50vh;
   }
   
   .rightImage {
-    height: 45vh; /* Reduced from 80vh */
+    height: 45vh;
   }
 }
 
 /* Additional breakpoint for larger screens (17" laptops and above) */
 @media (min-width: 1200px) {
   .imageWrapper {
-    width: 35%; /* Even smaller for large screens */
-    height: 45vh; /* Even smaller height */
+    width: 35%;
+    height: 45vh;
   }
   
   .rightImage {
