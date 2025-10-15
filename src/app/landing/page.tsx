@@ -17,6 +17,7 @@ import { faqs } from "../../data/faqData";
 import { AccountManagerStep } from "components/account-manager-step-1/AccountManagerStep";
 import { MealPlanSection } from "../../components/meal-plans-step-2/MealPlanSection";
 import { OrderingSection } from "components/ordering-step-3/OrderingSection";
+import { DeliverySection } from "components/delivery-step-4/DeliverySection";
 
 // Categories for the main page (show only first 6 dishes of each)
 const categories = [
@@ -64,6 +65,8 @@ export default function MainPage() {
       <MealPlanSection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       <OrderingSection />
+      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
+      <DeliverySection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       
       {/* FAQ Section */}
