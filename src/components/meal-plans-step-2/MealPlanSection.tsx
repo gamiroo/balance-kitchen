@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import styles from './MealPlanSection.module.css';
-import { CTAButton } from '../CTAButton';
+import { CTAButton } from '../ui/CTAButton/CTAButton';
 
 // MenuCard component for individual meal packs
 const MenuCard = ({ 

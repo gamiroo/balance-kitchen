@@ -4,8 +4,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { CTAButton } from '../CTAButton';
-import { MovingBorder } from '../ui/AnimatedBorderBox';
+import { CTAButton } from '../ui/CTAButton/CTAButton';
+import { MovingBorder } from '../ui/animated-border/AnimatedBorderBox';
 import styles from './AboutSection.module.css';
 
 export const AboutSection = () => {
@@ -100,8 +100,8 @@ export const AboutSection = () => {
         <motion.div
           className={`${styles.imageWrapper} ${styles.rightImage}`}
           style={{ 
-            right: isMobile ? '-20%' : '-18%',
-            top: isMobile ? '72%' : '14%',
+            right: isMobile ? '-20%' : '2%',
+            top: isMobile ? '72%' : '44%',
             bottom: isMobile ? '5%' : 'auto',
             transform: isMobile 
               ? 'translateY(30%) translateX(30vw)' 
@@ -111,7 +111,7 @@ export const AboutSection = () => {
           initial={{ x: '100vw', rotate: 0, opacity: 0 }}
           animate={inView ? { 
             x: isMobile ? '30vw' : '50vw', 
-            rotate: isMobile ? -40 : 64, 
+            rotate: isMobile ? -40 : -64, 
             opacity: 1 
           } : { x: '100vw', rotate: 0, opacity: 0 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}

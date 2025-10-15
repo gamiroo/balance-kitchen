@@ -11,7 +11,7 @@ import {
   Nut,
 } from 'lucide-react';
 import Image from 'next/image';
-import UniversalCard from './UniversalCard';
+import UniversalCard from './ui/universal-card/UniversalCard';
 import styles from './styles/DishCard.module.css';
 
 export interface Dish {

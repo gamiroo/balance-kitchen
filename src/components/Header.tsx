@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CTAButton } from './CTAButton';
+import { CTAButton } from './ui/CTAButton/CTAButton';
 import { Menu, X, FileText } from 'lucide-react';      // <-- NEW import
 import styles from './styles/Header.module.css';
 

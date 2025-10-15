@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import styles from './styles/CTAButton.module.css';
+import styles from './CTAButton.module.css';
 
 interface CTAButtonProps {
   /** If you want the button to open a link directly. */

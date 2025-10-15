@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import DishCard from "../../components/DishCard";
 import { dishData } from "../../data/dishData";
 import type { Dish } from "../../components/DishCard";
-import { CTAButton } from "../../components/CTAButton";
+import { CTAButton } from "../../components/ui/CTAButton/CTAButton";
 import styles from './page.module.css';
 
 type DishCategory = 'Carnivore' | 'Balanced' | 'Vegetarian' | 'Keto';

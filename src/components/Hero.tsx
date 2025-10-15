@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion'
-import { CTAButton } from './CTAButton'
+import { CTAButton } from './ui/CTAButton/CTAButton'
 import { ChevronDown } from 'lucide-react'
 import styles from './styles/Hero.module.css'
 

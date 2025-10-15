@@ -3,11 +3,9 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
 import { AboutSection } from "../../components/about-section/About";
 import { Header } from "../../components/Header";
 import { Hero } from "../../components/Hero";
-import { MealPlanSection } from "../../components/menu-plans-step-2/MealPlanSection";
 import DishGrid from "../../components/DishGrid";
 import { dishData } from "../../data/dishData";
 import type { Dish } from "../../components/DishCard";
@@ -17,9 +15,8 @@ import styles from './page.module.css';
 import Link from "next/link";
 import { faqs } from "../../data/faqData";
 import { AccountManagerStep } from "components/account-manager-step-1/AccountManagerStep";
-
-// Lazy load carousels (client-side only)
-const HowItWorksTrail = dynamic(() => import("../../components/how-it-works/HowItWorksTrail"), { ssr: false });
+import { MealPlanSection } from "../../components/meal-plans-step-2/MealPlanSection";
+import { OrderingSection } from "components/ordering-step-3/OrderingSection";
 
 // Categories for the main page (show only first 6 dishes of each)
 const categories = [
@@ -66,9 +63,8 @@ export default function MainPage() {
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       <MealPlanSection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
-      <HowItWorksTrail />
+      <OrderingSection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
-      
       
       {/* FAQ Section */}
       <section className={styles.faqSection}>
@@ -89,52 +85,6 @@ export default function MainPage() {
           </motion.div>
 
           <FAQAccordion faqs={faqs} />
-        </div>
-      </section>
-
-      {/* Menu Section */}
-      <section className={styles.menuSection}>
-        <div className={styles.menuContent}>
-          <motion.div 
-            className={styles.menuHeader}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className={`${styles.menuTitle} ${styles.menuTitleMd}`}>
-              Our <span className={styles.menuTitleHighlight}>Menu</span>
-            </h2>
-            <p className={styles.menuDescription}>
-              Explore our carefully crafted dishes designed to meet your dietary needs and taste preferences.
-            </p>
-          </motion.div>
-
-          {/* Grids for each category */}
-          {categories.map((category, index) => {
-            const categoryDishes = dishData.filter(
-              (dish: Dish) => dish.category === category.name
-            );
-
-            if (categoryDishes.length === 0) return null;
-
-            return (
-              <motion.div
-                key={category.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <DishGrid
-                  dishes={categoryDishes}
-                  category={category.name}
-                  onViewMore={() => handleViewMore(category.name)}
-                  enableSwipe={true}
-                />
-              </motion.div>
-            );
-          })}
         </div>
       </section>
 

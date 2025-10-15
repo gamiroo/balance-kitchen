@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './AccountManagerStep.module.css';
-import { CTAButton } from 'components/CTAButton';
+import { CTAButton } from 'components/ui/CTAButton/CTAButton';
 import { Link } from 'lucide-react';
 
 /* -----------------------------------------------------------------

@@ -4,7 +4,7 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
-import styles from './styles/UniversalCard.module.css';
+import styles from './UniversalCard.module.css';
 
 export interface UniversalCardProps {
   /** Tailwind width class (e.g. 'w-[340px]') */
