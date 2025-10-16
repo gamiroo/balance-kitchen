@@ -18,6 +18,8 @@ import { AccountManagerStep } from "components/account-manager-step-1/AccountMan
 import { MealPlanSection } from "../../components/meal-plans-step-2/MealPlanSection";
 import { OrderingSection } from "components/ordering-step-3/OrderingSection";
 import { DeliverySection } from "components/delivery-step-4/DeliverySection";
+import { FeedbackSection } from "components/feedback-step-5/FeedbackSection";
+import { Footer } from "components/Footer";
 
 // Categories for the main page (show only first 6 dishes of each)
 const categories = [
@@ -68,6 +70,8 @@ export default function MainPage() {
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       <DeliverySection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
+      <FeedbackSection />
+      <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       
       {/* FAQ Section */}
       <section className={styles.faqSection}>
@@ -95,16 +99,7 @@ export default function MainPage() {
 
 
       <div className={styles.ctaSection}>
-        
-        <Link href="/order" passHref>
-          <button 
-            className={`${styles.ctaButton} ${styles.focusRing}`}
-            onClick={handleGetStarted}
-            aria-label="Get started with Balance Kitchen"
-          >
-            Ready to Get Started?
-          </button>
-        </Link>
+        <Footer />
       </div>
     </div>
   );

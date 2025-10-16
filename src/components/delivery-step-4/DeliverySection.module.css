@@ -6,6 +6,9 @@
   color: white;
   position: relative;
   overflow: hidden;
+  border-radius: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .contentContainer {
@@ -136,8 +139,10 @@
 }
 
 .featureIcon {
-  background-color: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
+  background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  color: white;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -148,6 +153,18 @@
   margin-right: 1rem;
   flex-shrink: 0;
   margin-top: 0.25rem;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .featureTitle {
