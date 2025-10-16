@@ -255,7 +255,8 @@
   .textContent {
     flex: 1;
     max-width: 500px;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(15, 23, 42, 0.419);
+    backdrop-filter: blur(25px);
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -288,7 +289,6 @@
   
   .featureItem {
     text-align: left;
-    justify-content: center;
   }
 
   .packsWrapper :nth-child(1) {
