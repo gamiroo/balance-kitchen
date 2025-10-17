@@ -1,0 +1,279 @@
+.cardWrapper {
+  width: 220px;
+  height: 300px;
+  position: relative;
+}
+
+.productCard {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, rgba(110, 99, 16, 0.812), rgba(68, 57, 21, 0.844));
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+}
+
+.highlighted {
+  box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.imageSection {
+  position: relative;
+  width: 100%;
+  height: 45%;
+  overflow: hidden;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 1;
+}
+
+/* Overlaid content on image */
+.imageContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 2;
+  text-align: left;
+}
+
+.titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.2rem;
+}
+
+.title {
+  font-size: 1rem; /* Reduced from 1.25rem */
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.badge {
+  background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
+  color: #ffc33e;
+  padding: 0.15rem 0.4rem; /* Reduced padding */
+  border-radius: 9999px;
+  font-size: 0.55rem; /* Reduced from 0.65rem */
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+.tag {
+  font-size: 0.7rem; /* Reduced from 0.8rem */
+  color: #a0aec0;
+  margin: 0.2rem 0; /* Reduced margin */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.description {
+  font-size: 0.75rem; /* Reduced from 0.875rem */
+  color: #e2e8f0;
+  line-height: 1.3; /* Reduced line height */
+  margin: 0.3rem 0 0 0; /* Reduced margin */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.detailsSection {
+  width: 100%;
+  height: 55%;
+  padding: 1rem; /* Reduced from 1.5rem */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pricing {
+  margin: 0.5rem 0; /* Reduced margin */
+}
+
+.price {
+  font-size: 1.1rem; /* Reduced from 1.25rem */
+  font-weight: 700;
+  color: #ffc33e;
+  margin: 0 0 0.2rem 0; /* Reduced margin */
+}
+
+.meals {
+  font-size: 0.8rem; /* Reduced from 0.875rem */
+  color: #cbd5e0;
+  margin: 0;
+}
+
+.bonus {
+  color: #48bb78;
+  margin-left: 0.4rem; /* Reduced margin */
+  font-weight: 600;
+}
+
+.actionSection {
+  margin-top: 0.4rem; /* Reduced margin */
+}
+
+.selectButton {
+  width: 100%;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.8rem; /* Reduced padding */
+  font-size: 0.85rem; /* Reduced font size */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.selectButton:hover {
+  background: #2563eb;
+}
+
+.lockedState {
+  text-align: center;
+  padding: 0.6rem; /* Reduced padding */
+}
+
+.lockIcon {
+  font-size: 1rem; /* Reduced from 1.25rem */
+  display: block;
+  margin-bottom: 0.2rem; /* Reduced margin */
+}
+
+.lockedText {
+  color: #a0aec0;
+  font-size: 0.8rem; /* Reduced from 0.875rem */
+  font-weight: 500;
+}
+
+.unlockCriteria {
+  color: #718096;
+  font-size: 0.65rem; /* Reduced from 0.75rem */
+  margin-top: 0.2rem; /* Reduced margin */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .cardWrapper {
+    width: 180px;
+    height: 250px;
+  }
+  
+  .title {
+    font-size: 0.9rem;
+  }
+  
+  .description {
+    font-size: 0.7rem;
+  }
+  
+  .detailsSection {
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .cardWrapper {
+    width: 140px;
+    height: 200px;
+  }
+  
+  .title {
+    font-size: 0.85rem;
+  }
+  
+  .description {
+    font-size: 0.65rem;
+  }
+  
+  .price {
+    font-size: 1rem;
+  }
+  
+  .meals {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardWrapper {
+    width: 120px;
+    height: 180px;
+  }
+  
+  .title {
+    font-size: 0.8rem;
+  }
+  
+  .badge {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.3rem;
+  }
+  
+  .description {
+    font-size: 0.6rem;
+  }
+  
+  .price {
+    font-size: 0.9rem;
+  }
+  
+  .meals {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardWrapper {
+    width: 100px;
+    height: 160px;
+  }
+  
+  .title {
+    font-size: 0.75rem;
+  }
+  
+  .description {
+    font-size: 0.55rem;
+  }
+  
+  .price {
+    font-size: 0.85rem;
+  }
+  
+  .selectButton {
+    padding: 0.4rem;
+    font-size: 0.7rem;
+  }
+}

@@ -1,77 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import styles from './MealPlanSection.module.css';
 import { CTAButton } from '../ui/CTAButton/CTAButton';
-
-interface MealPack {
-  title: string;
-  description: string;
-  meals: number;
-  price: number;
-  isHighlighted?: boolean;
-}
-
-// MenuCard component for individual meal packs
-const MenuCard = ({ 
-  title, 
-  description, 
-  meals, 
-  price, 
-  index,
-  isHighlighted = false
-}: { 
-  title: string; 
-  description: string; 
-  meals: number; 
-  price: number;
-  index: number;
-  isHighlighted?: boolean;
-}) => {
-  return (
-    <motion.div
-      className={`${styles.menuCard} ${isHighlighted ? styles.highlightedCard : ''}`}
-      initial={{ opacity: 0, y: 30, rotate: index * 2 - 5 }}
-      animate={{ 
-        opacity: 1, 
-        y: 0, 
-        rotate: 0,
-        x: index === 0 ? -20 : index === 1 ? -10 : index === 3 ? 10 : index === 4 ? 20 : 0,
-        z: index === 0 ? -10 : index === 1 ? -5 : index === 3 ? -5 : index === 4 ? -10 : 0
-      }}
-      transition={{ 
-        duration: 0.8, 
-        delay: 0.2 * index,
-        type: "spring",
-        stiffness: 100
-      }}
-      whileHover={{ 
-        y: -10, 
-        rotate: index % 2 === 0 ? 2 : -2,
-        transition: { duration: 0.3 }
-      }}
-    >
-      <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{title}</h3>
-        <p className={styles.cardDescription}>{description}</p>
-        <div className={styles.cardDetails}>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Meals:</span>
-            <span className={styles.detailValue}>{meals}</span>
-          </div>
-          <div className={styles.detailItem}>
-            <span className={styles.detailLabel}>Price:</span>
-            <span className={styles.priceValue}>${price.toFixed(2)}</span>
-          </div>
-        </div>
-        {isHighlighted && (
-          <div className={styles.highlightBadge}>BEST VALUE</div>
-        )}
-      </div>
-    </motion.div>
-  );
-};
+import { subscriptionPacks, bulkPacks, deliveryPacks, Pack } from './data/plansData';
+import ProductCard from './components/product-card/ProductCard';
 
 export const MealPlanSection = () => {
   const [sectionVisible, setSectionVisible] = useState(false);
@@ -99,43 +32,20 @@ export const MealPlanSection = () => {
     };
   }, []);
 
-  // Sample meal pack data
-  const mealPacks: MealPack[] = [
-    {
-      title: "Starter Pack",
-      description: "Perfect for individuals trying our service",
-      meals: 5,
-      price: 49.99,
-      isHighlighted: false
-    },
-    {
-      title: "Balanced Plan",
-      description: "Ideal for couples or small families",
-      meals: 10,
-      price: 89.99,
-      isHighlighted: true
-    },
-    {
-      title: "Family Feast",
-      description: "Great for larger families",
-      meals: 15,
-      price: 129.99,
-      isHighlighted: false
-    },
-    {
-      title: "Athlete's Choice",
-      description: "High-protein meals for fitness enthusiasts",
-      meals: 12,
-      price: 109.99,
-      isHighlighted: false
-    },
-    {
-      title: "Vegan Delight",
-      description: "Plant-based meals for vegans",
-      meals: 8,
-      price: 79.99,
-      isHighlighted: false
-    }
+  // Combine all packs from plansData
+  const allPacks: Pack[] = [
+    ...subscriptionPacks, 
+    ...bulkPacks, 
+    ...deliveryPacks
+  ].slice(0, 5); // Limit to 5 cards to match positioning
+
+  // Card positions
+  const cardPositions = [
+    { top: '20%', left: '10%' },
+    { top: '15%', left: '35%' },
+    { top: '40%', left: '20%' },
+    { top: '35%', left: '55%' },
+    { top: '60%', left: '35%' }
   ];
 
   return (
@@ -145,35 +55,29 @@ export const MealPlanSection = () => {
       aria-label="Menu Plans Section"
     >
       <div className={styles.contentContainer}>
-        {/* Animated Meal Packs - Left on desktop, Bottom on mobile */}
-        <motion.div 
-          className={styles.packsContainer}
-          initial={{ opacity: 0, y: 30 }}
-          animate={sectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
+        {/* Meal Packs - Left on desktop, Bottom on mobile */}
+        <div className={styles.packsContainer}>
           <div className={styles.packsWrapper}>
-            {mealPacks.map((pack, index) => (
-              <MenuCard
-                key={index}
-                title={pack.title}
-                description={pack.description}
-                meals={pack.meals}
-                price={pack.price}
-                index={index}
-                isHighlighted={pack.isHighlighted}
-              />
+            {allPacks.map((pack, index) => (
+              <div
+                key={`${pack.type}-${index}`}
+                className={styles.menuCard}
+                style={{
+                  position: 'absolute',
+                  top: cardPositions[index]?.top || '0%',
+                  left: cardPositions[index]?.left || '0%',
+                  width: '220px',
+                  height: '300px'
+                }}
+              >
+                <ProductCard pack={pack} />
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Text Content - Right on desktop, Top on mobile */}
-        <motion.div 
-          className={styles.textContent}
-          initial={{ opacity: 0, y: 30 }}
-          animate={sectionVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
+        <div className={styles.textContent}>
           <h2 className={styles.sectionTitle}>
             Step 2 – Choose Your Menu Plan
           </h2>
@@ -223,7 +127,7 @@ export const MealPlanSection = () => {
               View Menu Plans
             </CTAButton>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

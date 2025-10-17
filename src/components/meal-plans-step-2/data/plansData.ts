@@ -18,12 +18,12 @@ export interface Pack {
 /** ------------------------------------ */
 /**  SUBSCRIPTION (weekly) */
 export const subscriptionPacks: Pack[] = [
-  { title: 'Starter', meals: 5, basePrice: 29.99, unlocked: true, type: 'subscription', highlight: true, tag: 'Starter', description: 'Perfect for busy professionals' },
-  { title: 'Basic', meals: 10, basePrice: 49.99, unlocked: true, type: 'subscription', tag: 'Basic', description: 'Flexible 2‑week plan' },
-  { title: 'Family', meals: 25, basePrice: 119.99, unlocked: true, type: 'subscription', tag: 'Family', description: 'Family‑friendly plan' },
-  { title: 'Pro', meals: 40, basePrice: 169.99, unlocked: true, type: 'subscription', tag: 'Pro', description: 'Pro‑level nutrition' },
-  { title: 'Elite', meals: 60, basePrice: 239.99, unlocked: true, type: 'subscription', tag: 'Elite', description: 'Elite savings' },
-  { title: 'Champion', meals: 80, basePrice: 319.99, unlocked: true, type: 'subscription', tag: 'Champion', description: 'Ultimate health plan' },
+  { title: 'Starter', meals: 5, basePrice: 29.99, unlocked: true, type: 'subscription', highlight: true, tag: 'Starter', description: 'Perfect for busy professionals', imageSrc: '/images/starter-pack.jpg' },
+  { title: 'Basic', meals: 10, basePrice: 49.99, unlocked: true, type: 'subscription', tag: 'Basic', description: 'Flexible 2‑week plan', imageSrc: '/images/basic-pack.jpg' },
+  { title: 'Family', meals: 25, basePrice: 119.99, unlocked: true, type: 'subscription', tag: 'Family', description: 'Family‑friendly plan', imageSrc: '/images/family-pack.jpg' },
+  { title: 'Pro', meals: 40, basePrice: 169.99, unlocked: true, type: 'subscription', tag: 'Pro', description: 'Pro‑level nutrition', imageSrc: '/images/balanced-plan.jpg' },
+  { title: 'Elite', meals: 60, basePrice: 239.99, unlocked: true, type: 'subscription', tag: 'Elite', description: 'Elite savings', imageSrc: '/images/elite-pack.jpg' },
+  { title: 'Champion', meals: 80, basePrice: 319.99, unlocked: true, type: 'subscription', tag: 'Champion', description: 'Ultimate health plan', imageSrc: '/images/champion-pack.jpg' },
 ];
 
 /** ------------------------------------ */

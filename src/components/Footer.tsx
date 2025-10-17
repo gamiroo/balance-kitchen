@@ -16,7 +16,7 @@ export const Footer = () => (
         </a>
       </div>
       <div className={styles.formBadge}>
-        <span className={styles.badgeText}>Powered by</span>
+        <span className={styles.badgeText}>Designed & Built by</span>
         <Image
           src="/assets/gamiroo.svg"
           alt="Gamiroo logo"

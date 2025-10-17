@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-/* Animated Meal Packs - Left Side */
+/* Meal Packs - Left Side */
 .packsContainer {
   flex: 1;
   position: relative;
@@ -27,108 +27,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-bottom: 8rem;
 }
 
 .packsWrapper {
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-.menuCard {
-  position: absolute;
-  width: 220px;
-  height: 300px;
-  background: linear-gradient(145deg, #1e293b, #0f172a);
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-  backdrop-filter: blur(10px);
-  z-index: 1;
-}
-
-.highlightedCard {
-  border: 2px solid #f59e0b;
-  box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
-  transform: scale(1.05);
-  z-index: 2;
-}
-
-.cardContent {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.cardTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-  color: #fbbf24;
-}
-
-.cardDescription {
-  color: #d1d5db;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-}
-
-.cardDetails {
-  margin-top: auto;
-}
-
-.detailItem {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
-.detailLabel {
-  color: #9ca3af;
-  font-size: 0.875rem;
-}
-
-.detailValue {
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.priceValue {
-  color: #fbbf24;
-  font-weight: 700;
-  font-size: 1.125rem;
-}
-
-.highlightBadge {
-  background-color: #f59e0b;
-  color: #0f172a;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-align: center;
-  margin-top: 1rem;
-  align-self: center;
+  bottom: 70px
 }
 
 /* Text Content - Right Side */
 .textContent {
   flex: 1;
   max-width: 500px;
+  text-align: left;
 }
 
 .sectionTitle {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fbbf24;
   margin-bottom: 1.5rem;
   line-height: 1.2;
+  color: #fbbf24;
 }
 
 .sectionDescription {
@@ -146,6 +67,7 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: 1.5rem;
+  text-align: left;
 }
 
 .featureIcon {
@@ -194,61 +116,15 @@
   margin-top: 2rem;
 }
 
-/* Positioning for each card */
-.packsWrapper :nth-child(1) {
-  top: 20%;
-  left: 10%;
-}
-
-.packsWrapper :nth-child(2) {
-  top: 15%;
-  left: 35%;
-}
-
-.packsWrapper :nth-child(3) {
-  top: 40%;
-  left: 20%;
-}
-
-.packsWrapper :nth-child(4) {
-  top: 35%;
-  left: 55%;
-}
-
-.packsWrapper :nth-child(5) {
-  top: 60%;
-  left: 35%;
-}
-
 /* Responsive Design */
-@media (max-width: 1200px) {
-  .contentContainer {
-    gap: 2rem;
-  }
-  
-  .menuCard {
-    width: 180px;
-    height: 250px;
-  }
-  
-  .sectionTitle {
-    font-size: 2.25rem;
-  }
-  
-  .sectionDescription {
-    font-size: 1rem;
-  }
-}
-
 @media (max-width: 1024px) {
   .menuPlanSection {
-      padding: 4rem 1.25rem;
-    }
+    padding: 4rem 1.25rem;
+  }
   
   .contentContainer {
     flex-direction: column;
     gap: 3rem;
-    text-align: center;
     padding-bottom: 11rem;
   }
   
@@ -264,6 +140,7 @@
     position: relative;
     z-index: 10;
     order: -1;
+    text-align: left;
   }
   
   .packsContainer {
@@ -278,42 +155,31 @@
     justify-content: center;
   }
   
-  .menuCard {
-    width: 140px;
-    height: 200px;
-  }
-  
-  .sectionTitle {
-    font-size: 2rem;
-  }
-  
-  .featureItem {
-    text-align: left;
+  /* Mobile positioning */
+  .menuCard:nth-child(1) {
+    top: 20% !important;
+    left: 10% !important;
   }
 
-  .packsWrapper :nth-child(1) {
-    top: 20%;
-    left: 10%;
+  .menuCard:nth-child(2) {
+    top: -70px !important;
+    left: 150px !important;
   }
 
-  .packsWrapper :nth-child(2) {
-    top: -70px;
-    left: 150px;
+  .menuCard:nth-child(3) {
+    top: 60px !important;
+    left: 20% !important;
   }
 
-  .packsWrapper :nth-child(3) {
-    top: 60px;
-    left: 20%;
+  .menuCard:nth-child(4) {
+    top: 80px !important;
+    right: -55px !important;
+    left: auto !important;
   }
 
-  .packsWrapper :nth-child(4) {
-    top: 80px;
-    right: -55px;
-  }
-
-  .packsWrapper :nth-child(5) {
-    top: 60%;
-    left: 35%;
+  .menuCard:nth-child(5) {
+    top: 60% !important;
+    left: 35% !important;
   }
 }
 
@@ -326,38 +192,8 @@
     height: 350px;
   }
   
-  .menuCard {
-    width: 120px;
-    height: 180px;
-  }
-  
-  .cardTitle {
-    font-size: 1rem;
-  }
-  
-  .cardDescription {
-    font-size: 0.75rem;
-  }
-  
-  .detailLabel,
-  .detailValue {
-    font-size: 0.7rem;
-  }
-  
   .sectionTitle {
     font-size: 1.75rem;
-  }
-  
-  .sectionDescription {
-    font-size: 0.95rem;
-  }
-  
-  .featureTitle {
-    font-size: 1rem;
-  }
-  
-  .featureDescription {
-    font-size: 0.875rem;
   }
   
   .featureItem {
@@ -375,62 +211,12 @@
     height: 300px;
   }
   
-  .menuCard {
-    width: 100px;
-    height: 160px;
-  }
-  
-  .cardContent {
-    padding: 1rem;
-  }
-  
   .sectionTitle {
     font-size: 1.5rem;
-  }
-  
-  .featureIcon {
-    width: 28px;
-    height: 28px;
-    font-size: 0.875rem;
   }
   
   .textContent {
     padding: 1.25rem;
     margin-top: -30px;
-  }
-}
-
-/* Animation Classes */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.floating {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Focus Styles */
-.focusRing {
-  outline: 2px solid #fbbf24;
-  outline-offset: 2px;
-}
-
-.focusRing:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .menuCard {
-    transition: none;
-  }
-  
-  .menuCard:hover {
-    transform: none;
-  }
-  
-  .floating {
-    animation: none;
   }
 }

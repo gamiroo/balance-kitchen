@@ -29,6 +29,9 @@ body {
   overflow-x: hidden;
 }
 
+* {
+  box-sizing: border-box;
+}
 
 a {
   color: #2563eb; /* Replace with your primary color value */
@@ -39,7 +42,7 @@ h1, h2, h3, h4, h5, h6, .heading {
   font-family: 'League Spartan', sans-serif;
   font-weight: 800;
   line-height: 1.2;
-  color: #FFC33E; /* Darker shade for headings */
+  color: #FFC33E;
 }
 
 /* Additional blur utilities */
