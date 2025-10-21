@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { X } from 'lucide-react';
+import Image from 'next/image';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -55,7 +55,13 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             onClick={onClose}
             aria-label="Close modal"
           >
-            <X size={24} />
+            <Image
+              src="/assets/icons/logo-icon-svg.svg"
+              alt="Close"
+              width={32}
+              height={32}
+              className={styles.closeIcon}
+            />
           </button>
         </div>
         

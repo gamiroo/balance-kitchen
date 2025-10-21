@@ -140,6 +140,40 @@
   box-sizing: border-box !important;
 }
 
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.modalCloseButton:hover .closeIcon {
+  transform: scale(1.1);
+}
+
+/* Make sure the button maintains proper sizing */
+.modalCloseButton {
+  background: none;
+  border: 1px solid #ffc33e;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  width: 44px;
+  height: 44px;
+}
+
+.modalCloseButton:hover {
+  background-color: #ffc23e58;
+  backdrop-filter: blur(24px);
+  color: #1f2937;
+  transform: scale(1.05);
+}
+
 /* Responsive modal styles */
 @media (max-width: 1024px) {
   .modalOverlay {
