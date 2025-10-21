@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { AboutSection } from "../../components/about-section/About";
 import { Header } from "../../components/Header";
@@ -8,7 +8,6 @@ import { Hero } from "../../components/Hero";
 import TestimonialsSection from "../../components/TestimonialSection";
 import FAQAccordion from "../../components/FAQAccordion";
 import styles from './page.module.css';
-import Link from "next/link";
 import { faqs } from "../../data/faqData";
 import { AccountManagerStep } from "components/account-manager-step-1/AccountManagerStep";
 import { MealPlanSection } from "../../components/meal-plans-step-2/MealPlanSection";
@@ -17,13 +16,6 @@ import { DeliverySection } from "components/delivery-step-4/DeliverySection";
 import { FeedbackSection } from "components/feedback-step-5/FeedbackSection";
 import { Footer } from "components/Footer";
 import { Modal } from "../../components/modal/Modal";
-
-// Declare Jotform embed handler for TypeScript
-declare global {
-  interface Window {
-    jotformEmbedHandler?: (selector: string, baseUrl: string) => void;
-  }
-}
 
 // Categories for the main page (show only first 6 dishes of each)
 const categories = [
@@ -35,50 +27,101 @@ const categories = [
 
 export default function MainPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Add modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
- /* -------------------------------------------------
-   Jotform script loading - Direct embed method
-   ------------------------------------------------- */
-useEffect(() => {
-  if (isModalOpen) {
-    // Clear any existing form
-    const container = document.getElementById('jotform-form-container');
-    if (container) {
-      container.innerHTML = '';
-    }
-
-    // Load Jotform script dynamically
-    const loadJotformForm = () => {
+  /* -------------------------------------------------
+     Preload Jotform resources for better performance
+     ------------------------------------------------- */
+  useEffect(() => {
+    const preloadResources = () => {
       if (typeof window !== 'undefined') {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'https://form.jotform.com/jsform/251188224283053';
-        script.async = true;
-        
-        // Add the script to the container
-        if (container) {
-          container.appendChild(script);
-        }
+        // Preload Jotform script
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'script';
+        link.href = 'https://form.jotform.com/jsform/251188224283053';
+        document.head.appendChild(link);
       }
     };
 
-    // Small delay to ensure container exists
-    const timeoutId = setTimeout(loadJotformForm, 100);
-    return () => clearTimeout(timeoutId);
-  }
-}, [isModalOpen]);
+    preloadResources();
+  }, []);
 
+  /* -------------------------------------------------
+     Simple Jotform loading without spinner
+     ------------------------------------------------- */
+  const loadJotformForm = useCallback(() => {
+    if (!isModalOpen) return;
+
+    const container = document.getElementById('jotform-form-container');
+    
+    if (container) {
+      // Clear container first
+      container.innerHTML = '';
+
+      // Load Jotform form script
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://form.jotform.com/jsform/251188224283053';
+      script.async = true;
+      
+      script.onerror = () => {
+        container.innerHTML = `
+          <div style="
+            text-align: center;
+            padding: 40px;
+            color: #ef4444;
+          ">
+            <p>Failed to load form. Please try again.</p>
+            <button 
+              onclick="location.reload()"
+              style="
+                background: #3b82f6;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                cursor: pointer;
+                margin-top: 10px;
+                font-family: inherit;
+              "
+            >
+              Retry
+            </button>
+          </div>
+        `;
+      };
+
+      container.appendChild(script);
+    }
+  }, [isModalOpen]);
+
+  /* -------------------------------------------------
+     Load form when modal opens
+     ------------------------------------------------- */
+  useEffect(() => {
+    if (isModalOpen) {
+      // Load Jotform form with small delay
+      const timeoutId = setTimeout(() => {
+        loadJotformForm();
+      }, 100);
+      
+      return () => clearTimeout(timeoutId);
+    } else {
+      // Clean up when modal closes
+      const container = document.getElementById('jotform-form-container');
+      if (container) {
+        container.innerHTML = '';
+      }
+    }
+  }, [isModalOpen, loadJotformForm]);
 
   const handleViewMore = (category: string) => {
-    // Scroll to menu section or navigate to menu page
     console.log(`View more ${category} dishes`);
-    // You can add navigation logic here
   };
 
   const handleGetStarted = () => {
     setIsLoading(true);
-    // Simulate loading
     setTimeout(() => setIsLoading(false), 1000);
   };
 
@@ -103,7 +146,7 @@ useEffect(() => {
         </div>
       )}
       
-      <Header onOpenModal={openModal} /> {/* Pass the openModal function */}
+      <Header onOpenModal={openModal} />
       <div className={`${styles.headerSpacer} ${styles.headerSpacerMd}`} />
       <Hero />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
@@ -142,20 +185,28 @@ useEffect(() => {
         </div>
       </section>
 
-     <TestimonialsSection />
+      <TestimonialsSection />
 
       <div className={styles.ctaSection}>
         <Footer />
       </div>
 
-      {/* MODAL FOR JOTFORM - Clean embed */}
+      {/* MODAL FOR JOTFORM - Simple embed without spinner */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         title="Join Balance Kitchen"
       >
-        <div id="jotform-form-container" style={{ minHeight: '800px', padding: '20px' }}>
-          {/* Form will be loaded dynamically */}
+        <div 
+          id="jotform-form-container" 
+          style={{ 
+            minHeight: '600px',
+            width: '100%',
+            padding: '20px',
+            boxSizing: 'border-box'
+          }}
+        >
+          {/* Form will be loaded directly - no spinner */}
         </div>
       </Modal>
     </div>
