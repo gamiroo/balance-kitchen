@@ -1,14 +1,20 @@
-// src/app/components/Header.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CTAButton } from './ui/CTAButton/CTAButton';
-import { Menu, X, FileText } from 'lucide-react';      // <-- NEW import
+import { Menu, X, FileText } from 'lucide-react';
 import styles from './styles/Header.module.css';
 
-export const Header = () => {
+// Declare Jotform embed handler for TypeScript
+declare global {
+  interface Window {
+    jotformEmbedHandler?: (selector: string, baseUrl: string) => void;
+  }
+}
+
+export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -209,11 +215,10 @@ export const Header = () => {
           {/* CTA BUTTON (right side) */}
           <div>
             <CTAButton
-              href="#"
-              onClick={() => console.log('Sign up clicked')}
-              aria-label="Sign up for Balance Kitchen"
+              onClick={onOpenModal}
+              aria-label="Enquire for Balance Kitchen"
             >
-              Sign up now
+              Enquire now
             </CTAButton>
           </div>
         </div>
@@ -290,14 +295,13 @@ export const Header = () => {
           {/* BOTTOM – CTA */}
           <div className={styles.mobileMenuBottom}>
             <CTAButton
-              href="#"
               onClick={() => {
-                console.log('Sign up clicked');
+                onOpenModal();
                 closeMenu();
               }}
-              aria-label="Sign up for Balance Kitchen"
+              aria-label="Enquire for Balance Kitchen"
             >
-              Sign up now
+              Enquire now
             </CTAButton>
           </div>
         </div>

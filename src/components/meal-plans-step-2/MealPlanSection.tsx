@@ -37,7 +37,7 @@ export const MealPlanSection = () => {
     ...subscriptionPacks, 
     ...bulkPacks, 
     ...deliveryPacks
-  ].slice(0, 5); // Limit to 5 cards to match positioning
+  ].slice(0, 5);
 
   // Card positions
   const cardPositions = [

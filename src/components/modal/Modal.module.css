@@ -1,0 +1,299 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  
+  /* Add glowing orbs background */
+  background: 
+    radial-gradient(
+      circle at 15% 25%,
+      rgba(255, 195, 62, 0.15) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(203, 46, 18, 0.15) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 40% 80%,
+      rgba(169, 76, 240, 0.1) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 70% 20%,
+      rgba(138, 41, 211, 0.1) 0%,
+      transparent 30%
+    ),
+    rgba(0, 0, 0, 0.92);
+}
+
+.modalContent {
+  background: rgba(29, 28, 28, 0.288);
+  border-radius: 16px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  width: 100%;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  
+  /* Add subtle glow effect */
+  border: 1px solid rgba(255, 195, 62, 0.2);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  background: rgba(26, 25, 25, 0.232);
+  backdrop-filter: blur(24px);
+}
+
+.modalTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffc33e;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.modalCloseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+
+.modalCloseButton:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  transform: scale(1.05);
+}
+
+.modalBody {
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  background: rgba(26, 25, 25, 0.232);
+  backdrop-filter: blur(24px);
+  
+  /* Add subtle inner glow */
+  box-shadow: inset 0 0 20px rgba(231, 214, 179, 0.05);
+
+  scrollbar-width: thin;
+  scrollbar-color: #ffc33e rgba(34, 119, 237, 0.1);
+}
+
+.modalBody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalBody::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.1);
+  border-radius: 4px;
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+.modalBody::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.modalBody #jotform-form-container {
+  width: 100%;
+  min-height: 600px;
+}
+
+/* Ensure Jotform styles work properly */
+.modalBody #jotform-form-container * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Responsive modal styles */
+@media (max-width: 1024px) {
+  .modalOverlay {
+    padding: 0.75rem;
+    
+    /* Adjust orb positions for tablet */
+    background: 
+      radial-gradient(
+        circle at 10% 20%,
+        rgba(255, 195, 62, 0.12) 0%,
+        transparent 15%
+      ),
+      radial-gradient(
+        circle at 90% 80%,
+        rgba(203, 46, 18, 0.12) 0%,
+        transparent 15%
+      ),
+      radial-gradient(
+        circle at 35% 75%,
+        rgba(169, 76, 240, 0.08) 0%,
+        transparent 12%
+      ),
+      radial-gradient(
+        circle at 75% 15%,
+        rgba(138, 41, 211, 0.08) 0%,
+        transparent 12%
+      ),
+      rgba(0, 0, 0, 0.92);
+  }
+  
+  .modalContent {
+    margin: 0.75rem;
+    max-height: 95vh;
+  }
+  
+  .modalHeader {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 0.5rem;
+    
+    /* Adjust orb positions for mobile */
+    background: 
+      radial-gradient(
+        circle at 5% 15%,
+        rgba(255, 195, 62, 0.1) 0%,
+        transparent 12%
+      ),
+      radial-gradient(
+        circle at 95% 85%,
+        rgba(203, 46, 18, 0.1) 0%,
+        transparent 12%
+      ),
+      rgba(0, 0, 0, 0.92);
+  }
+  
+  .modalContent {
+    margin: 0.5rem;
+    max-height: 96vh;
+  }
+  
+  .modalHeader {
+    padding: 1rem 1.25rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.375rem;
+  }
+  
+  .modalBody #jotform-form-container {
+    min-height: 500px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: 0.25rem;
+    
+    /* Simplified orbs for small mobile */
+    background: 
+      radial-gradient(
+        circle at 0% 10%,
+        rgba(255, 195, 62, 0.08) 0%,
+        transparent 10%
+      ),
+      radial-gradient(
+        circle at 100% 90%,
+        rgba(203, 46, 18, 0.08) 0%,
+        transparent 10%
+      ),
+      rgba(0, 0, 0, 0.92);
+  }
+  
+  .modalContent {
+    margin: 0.25rem;
+    max-height: 98vh;
+  }
+  
+  .modalHeader {
+    padding: 0.875rem 1rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.25rem;
+  }
+  
+  .modalCloseButton {
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .modalBody #jotform-form-container {
+    min-height: 400px;
+    padding: 10px;
+  }
+}
+
+/* Animation for modal entrance */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modalContent {
+  animation: modalEnter 0.2s ease-out;
+}
+
+/* Focus management */
+.modalContent:focus {
+  outline: none;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .modalContent {
+    animation: none;
+  }
+  
+  .modalCloseButton:hover {
+    transform: none;
+  }
+}

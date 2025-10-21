@@ -34,7 +34,7 @@ body {
 }
 
 a {
-  color: #2563eb; /* Replace with your primary color value */
+  color: #ffc33e; /* Replace with your primary color value */
   text-decoration: none;
 }
 
@@ -48,4 +48,55 @@ h1, h2, h3, h4, h5, h6, .heading {
 /* Additional blur utilities */
 .blur-3xl {
   filter: blur(100px);
+}
+
+/* Global dark theme scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 rgba(31, 41, 55, 0.1);
+}
+
+/* Dark theme scrollbar for specific elements */
+.dark-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-track {
+  background: rgba(56, 113, 194, 0.1);
+  border-radius: 4px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+.dark-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.dark-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 rgba(31, 41, 55, 0.1);
 }

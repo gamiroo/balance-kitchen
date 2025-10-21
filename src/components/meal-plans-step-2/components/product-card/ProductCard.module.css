@@ -7,7 +7,7 @@
 .productCard {
   width: 100%;
   height: 100%;
-  background: linear-gradient(145deg, rgba(110, 99, 16, 0.812), rgba(68, 57, 21, 0.844));
+  background: linear-gradient(145deg, rgba(5, 33, 69, 0.812), rgba(4, 41, 65, 0.844));
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
@@ -18,7 +18,7 @@
 }
 
 .highlighted {
-  box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(13, 81, 159, 0.466);
   transform: scale(1.05);
   z-index: 2;
 }
@@ -58,7 +58,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 0.75rem; /* Reduced padding */
+  padding: 0.75rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -74,7 +74,7 @@
 }
 
 .title {
-  font-size: 1rem; /* Reduced from 1.25rem */
+  font-size: 1rem;
   font-weight: 700;
   color: white;
   margin: 0;
@@ -84,63 +84,63 @@
 .badge {
   background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
   color: #ffc33e;
-  padding: 0.15rem 0.4rem; /* Reduced padding */
+  padding: 0.15rem 0.4rem;
   border-radius: 9999px;
-  font-size: 0.55rem; /* Reduced from 0.65rem */
+  font-size: 0.55rem;
   font-weight: 700;
   white-space: nowrap;
   text-shadow: none;
 }
 
 .tag {
-  font-size: 0.7rem; /* Reduced from 0.8rem */
+  font-size: 0.7rem;
   color: #a0aec0;
-  margin: 0.2rem 0; /* Reduced margin */
+  margin: 0.2rem 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .description {
-  font-size: 0.75rem; /* Reduced from 0.875rem */
+  font-size: 0.75rem;
   color: #e2e8f0;
-  line-height: 1.3; /* Reduced line height */
-  margin: 0.3rem 0 0 0; /* Reduced margin */
+  line-height: 1.3;
+  margin: 0.3rem 0 0 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .detailsSection {
   width: 100%;
   height: 55%;
-  padding: 1rem; /* Reduced from 1.5rem */
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .pricing {
-  margin: 0.5rem 0; /* Reduced margin */
+  margin: 0.5rem 0;
 }
 
 .price {
-  font-size: 1.1rem; /* Reduced from 1.25rem */
+  font-size: 1.1rem;
   font-weight: 700;
   color: #ffc33e;
-  margin: 0 0 0.2rem 0; /* Reduced margin */
+  margin: 0 0 0.2rem 0;
 }
 
 .meals {
-  font-size: 0.8rem; /* Reduced from 0.875rem */
+  font-size: 0.8rem;
   color: #cbd5e0;
   margin: 0;
 }
 
 .bonus {
   color: #48bb78;
-  margin-left: 0.4rem; /* Reduced margin */
+  margin-left: 0.4rem;
   font-weight: 600;
 }
 
 .actionSection {
-  margin-top: 0.4rem; /* Reduced margin */
+  margin-top: 0.4rem;
 }
 
 .selectButton {
@@ -149,8 +149,8 @@
   color: white;
   border: none;
   border-radius: 0.5rem;
-  padding: 0.6rem 0.8rem; /* Reduced padding */
-  font-size: 0.85rem; /* Reduced font size */
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -162,25 +162,25 @@
 
 .lockedState {
   text-align: center;
-  padding: 0.6rem; /* Reduced padding */
+  padding: 0.6rem;
 }
 
 .lockIcon {
-  font-size: 1rem; /* Reduced from 1.25rem */
+  font-size: 1rem;
   display: block;
-  margin-bottom: 0.2rem; /* Reduced margin */
+  margin-bottom: 0.2rem;
 }
 
 .lockedText {
   color: #a0aec0;
-  font-size: 0.8rem; /* Reduced from 0.875rem */
+  font-size: 0.8rem;
   font-weight: 500;
 }
 
 .unlockCriteria {
   color: #718096;
-  font-size: 0.65rem; /* Reduced from 0.75rem */
-  margin-top: 0.2rem; /* Reduced margin */
+  font-size: 0.65rem;
+  margin-top: 0.2rem;
 }
 
 /* Responsive adjustments */
