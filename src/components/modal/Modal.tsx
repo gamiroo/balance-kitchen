@@ -12,7 +12,7 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
-  // Handle escape key press
+  // Handle escape key press and body scroll lock
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -24,11 +24,24 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
       document.addEventListener('keydown', handleEscape);
       // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
+      // Prevent iOS safari bounce scroll
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${window.scrollY}px`;
+      document.body.style.width = '100%';
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      
+      if (isOpen) {
+        // Restore body scroll
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.overflow = '';
+        document.body.style.width = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     };
   }, [isOpen, onClose]);
 
@@ -47,19 +60,25 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>
-          <h2 id="modal-title" className={styles.modalTitle}>
-            {title}
-          </h2>
+          <div className={styles.modalLogoWrapper}>
+            <Image
+              src="/assets/icons/logo.svg"
+              alt="Balance Kitchen"
+              width={160}
+              height={120}
+              className={styles.modalLogo}
+            />
+          </div>
           <button
             className={styles.modalCloseButton}
             onClick={onClose}
             aria-label="Close modal"
           >
             <Image
-              src="/assets/icons/logo-icon-svg.svg"
+              src="/assets/icons/logo-icon.png"
               alt="Close"
-              width={32}
-              height={32}
+              width={24}
+              height={24}
               className={styles.closeIcon}
             />
           </button>

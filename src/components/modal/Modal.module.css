@@ -13,7 +13,7 @@
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   
-  /* Add glowing orbs background */
+  /* Glowing orbs background */
   background: 
     radial-gradient(
       circle at 15% 25%,
@@ -51,9 +51,8 @@
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  
-  /* Add subtle glow effect */
   border: 1px solid rgba(255, 195, 62, 0.2);
+  animation: modalEnter 0.2s ease-out;
 }
 
 .modalHeader {
@@ -61,39 +60,55 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
   background: rgba(26, 25, 25, 0.232);
   backdrop-filter: blur(24px);
 }
 
-.modalTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #ffc33e;
-  margin: 0;
-  line-height: 1.2;
+.modalLogoWrapper {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex: 1;
+}
+
+.modalLogo {
+  width: auto;
+  height: 82px;
+  max-width: 220px;
+  object-fit: contain;
 }
 
 .modalCloseButton {
   background: none;
-  border: none;
+  border: 1px solid #ffc33e;
   cursor: pointer;
-  color: #6b7280;
   padding: 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: 50px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
+  width: 46px;
   height: 44px;
+  flex-shrink: 0;
 }
 
 .modalCloseButton:hover {
-  background-color: #f3f4f6;
-  color: #1f2937;
+  background-color: #ffc23e58;
+  backdrop-filter: blur(24px);
   transform: scale(1.05);
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease;
+}
+
+.modalCloseButton:hover .closeIcon {
+  transform: scale(1.1);
 }
 
 .modalBody {
@@ -103,12 +118,11 @@
   min-height: 0;
   background: rgba(26, 25, 25, 0.232);
   backdrop-filter: blur(24px);
-  
-  /* Add subtle inner glow */
   box-shadow: inset 0 0 20px rgba(231, 214, 179, 0.05);
-
+  
+  /* Dark theme scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: #ffc33e rgba(34, 119, 237, 0.1);
+  scrollbar-color: #4b5563 rgba(31, 41, 55, 0.1);
 }
 
 .modalBody::-webkit-scrollbar {
@@ -132,6 +146,8 @@
 .modalBody #jotform-form-container {
   width: 100%;
   min-height: 600px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* Ensure Jotform styles work properly */
@@ -140,46 +156,27 @@
   box-sizing: border-box !important;
 }
 
-.closeIcon {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.2s ease;
+/* Animation for modal entrance */
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.modalCloseButton:hover .closeIcon {
-  transform: scale(1.1);
-}
-
-/* Make sure the button maintains proper sizing */
-.modalCloseButton {
-  background: none;
-  border: 1px solid #ffc33e;
-  cursor: pointer;
-  color: #6b7280;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50px;
-  width: 44px;
-  height: 44px;
-}
-
-.modalCloseButton:hover {
-  background-color: #ffc23e58;
-  backdrop-filter: blur(24px);
-  color: #1f2937;
-  transform: scale(1.05);
+/* Focus management */
+.modalContent:focus {
+  outline: none;
 }
 
 /* Responsive modal styles */
 @media (max-width: 1024px) {
   .modalOverlay {
     padding: 0.75rem;
-    
-    /* Adjust orb positions for tablet */
     background: 
       radial-gradient(
         circle at 10% 20%,
@@ -213,16 +210,20 @@
     padding: 1.25rem 1.5rem;
   }
   
-  .modalTitle {
-    font-size: 1.5rem;
+  .modalLogo {
+    height: 28px;
+    max-width: 140px;
+  }
+  
+  .modalBody #jotform-form-container {
+    min-height: 500px;
+    padding: 15px;
   }
 }
 
 @media (max-width: 768px) {
   .modalOverlay {
     padding: 0.5rem;
-    
-    /* Adjust orb positions for mobile */
     background: 
       radial-gradient(
         circle at 5% 15%,
@@ -246,8 +247,15 @@
     padding: 1rem 1.25rem;
   }
   
-  .modalTitle {
-    font-size: 1.375rem;
+  .modalLogo {
+    height: 104px;
+    max-width: 160px;
+  }
+  
+  .modalCloseButton {
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
   }
   
   .modalBody #jotform-form-container {
@@ -259,8 +267,6 @@
 @media (max-width: 480px) {
   .modalOverlay {
     padding: 0.25rem;
-    
-    /* Simplified orbs for small mobile */
     background: 
       radial-gradient(
         circle at 0% 10%,
@@ -284,41 +290,26 @@
     padding: 0.875rem 1rem;
   }
   
-  .modalTitle {
-    font-size: 1.25rem;
+  .modalLogo {
+    height: 20px;
+    max-width: 100px;
   }
   
   .modalCloseButton {
-    padding: 0.5rem;
-    width: 36px;
-    height: 36px;
+    padding: 0.25rem;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .closeIcon {
+    width: 20px;
+    height: 20px;
   }
   
   .modalBody #jotform-form-container {
     min-height: 400px;
     padding: 10px;
   }
-}
-
-/* Animation for modal entrance */
-@keyframes modalEnter {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.modalContent {
-  animation: modalEnter 0.2s ease-out;
-}
-
-/* Focus management */
-.modalContent:focus {
-  outline: none;
 }
 
 /* Reduced motion support */
@@ -328,6 +319,10 @@
   }
   
   .modalCloseButton:hover {
+    transform: none;
+  }
+  
+  .modalCloseButton:hover .closeIcon {
     transform: none;
   }
 }
