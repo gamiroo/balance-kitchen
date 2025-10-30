@@ -36,10 +36,6 @@ const generateLogoHTML = (includeEmoji: boolean = false) => {
         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
       />
     </picture>
-    <div class="logo-fallback" style="${modalThemeStyles.logoFallback}; display: none;">
-      ${includeEmoji ? `<span style="${modalThemeStyles.logoEmoji}" aria-hidden="true">🥗</span>` : ''}
-      <span>Balance Kitchen</span>
-    </div>
   `;
 };
 
