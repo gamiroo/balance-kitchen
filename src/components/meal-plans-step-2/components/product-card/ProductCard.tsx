@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pack } from '../../data/plansData';
+import Image from 'next/image';
 import styles from './ProductCard.module.css';
 import { MovingBorder } from '../../../ui/animated-border/AnimatedBorderBox';
 import { CTAButton } from 'components/ui/CTAButton/CTAButton';
@@ -15,7 +16,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ pack }) => {
     basePrice,
     bonusDiscount,
     unlocked,
-    type,
     highlight,
     tag,
     description,
@@ -46,8 +46,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ pack }) => {
   return (
     <div className={styles.cardWrapper}>
       <MovingBorder
-        width="220px"
-        height="365px"
+        width="fit"
+        height="fit"
         strokeWidth={highlight ? 3 : 2}
         duration={highlight ? 15 : 28}
         opacity={highlight ? 1 : 0.8}
@@ -59,10 +59,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ pack }) => {
         <div className={`${styles.productCard} ${highlight ? styles.highlighted : ''}`}>
           {/* Top Section - Image with overlaid content */}
           <div className={styles.imageSection}>
-            <img
+            {/* Replace img with Next.js Image component */}
+            <Image
               src={imageUrl}
               alt={title}
+              width={200}
+              height={150}
               className={styles.cardImage}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
             />
             <div className={styles.imageOverlay}></div>
             
@@ -94,7 +99,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ pack }) => {
             <div className={styles.actionSection}>
               {unlocked ? (
                 <CTAButton>
-                  Select Plan
+                  Select Pack
                 </CTAButton>
               ) : (
                 <div className={styles.lockedState}>

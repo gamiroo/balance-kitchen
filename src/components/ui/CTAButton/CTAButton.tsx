@@ -1,19 +1,15 @@
+// src/app/components/ui/CTAButton/CTAButton.tsx
 import { motion } from 'framer-motion';
 import styles from './CTAButton.module.css';
 
 interface CTAButtonProps {
-  /** If you want the button to open a link directly. */
   href?: string;
-  /** Custom button text – default "Order Now". */
   children?: React.ReactNode;
-  /** Callback – called after the click (used by the table cells). */
   onClick?: () => void;
-  /** For accessibility - indicates if button is disabled */
   disabled?: boolean;
-  /** For accessibility - indicates loading state */
   loading?: boolean;
-  /** ARIA label for accessibility */
   'aria-label'?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const CTAButton = ({
@@ -23,14 +19,11 @@ export const CTAButton = ({
   disabled = false,
   loading = false,
   'aria-label': ariaLabel,
+  type = 'button',
 }: CTAButtonProps) => {
   const handleClick = () => {
     if (disabled || loading) return;
-    
-    // Call the onClick callback if provided
     onClick?.();
-    
-    // If href is provided, navigate to the link
     if (href) {
       window.open(href, '_blank', 'noopener,noreferrer');
     }
@@ -38,6 +31,7 @@ export const CTAButton = ({
 
   return (
     <motion.button
+      type={type}
       onClick={handleClick}
       whileHover={!disabled && !loading ? { scale: 1.03 } : {}}
       whileTap={!disabled && !loading ? { scale: 0.97 } : {}}

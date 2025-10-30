@@ -27,6 +27,36 @@
   height: 8rem;
 }
 
+/* How It Works Section */
+.howItWorksSection {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.howItWorksContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.howItWorksTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fbbf24;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.howItWorksSubtitle {
+  font-size: 1.25rem;
+  color: #d1d5db;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
 /* Mission Section */
 .missionSection {
   padding-top: 5rem;
@@ -337,6 +367,18 @@
     height: 6rem;
   }
   
+  .howItWorksSection {
+    padding: 1.5rem 1rem;
+  }
+  
+  .howItWorksTitle {
+    font-size: 1.75rem;
+  }
+  
+  .howItWorksSubtitle {
+    font-size: 1rem;
+  }
+  
   .missionSection {
     padding: 2rem 1rem;
   }
@@ -369,6 +411,14 @@
 }
 
 @media (min-width: 375px) {
+  .howItWorksTitle {
+    font-size: 2rem;
+  }
+  
+  .howItWorksSubtitle {
+    font-size: 1.125rem;
+  }
+  
   .missionTitle {
     font-size: 2rem;
   }
@@ -397,6 +447,18 @@
   
   .sectionSpacerMd {
     height: 4rem;
+  }
+  
+  .howItWorksSection {
+    padding: 1.5rem 1.25rem;
+  }
+  
+  .howItWorksTitle {
+    font-size: 2.25rem;
+  }
+  
+  .howItWorksSubtitle {
+    font-size: 1.125rem;
   }
   
   .missionSection {
@@ -447,6 +509,18 @@
     height: 6rem;
   }
   
+  .howItWorksSection {
+    padding: 2rem 1.5rem;
+  }
+  
+  .howItWorksTitle {
+    font-size: 2.5rem;
+  }
+  
+  .howItWorksSubtitle {
+    font-size: 1.25rem;
+  }
+  
   .missionSection {
     padding: 4rem 1.5rem;
   }
@@ -494,6 +568,18 @@
     height: 8rem;
   }
   
+  .howItWorksSection {
+    padding: 2rem 1.5rem;
+  }
+  
+  .howItWorksTitle {
+    font-size: 2.75rem;
+  }
+  
+  .howItWorksSubtitle {
+    font-size: 1.25rem;
+  }
+  
   .missionSection {
     padding: 5rem 1.5rem;
   }
@@ -526,6 +612,10 @@
 }
 
 @media (min-width: 1024px) {
+  .howItWorksTitle {
+    font-size: 3rem;
+  }
+  
   .missionTitle {
     font-size: 3rem;
   }
@@ -544,6 +634,10 @@
 }
 
 @media (min-width: 1280px) {
+  .howItWorksSection {
+    padding: 2rem 2rem;
+  }
+  
   .missionSection {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -573,6 +667,10 @@
 }
 
 @media (min-width: 1536px) {
+  .howItWorksSection {
+    padding: 2rem 2rem;
+  }
+  
   .missionSection {
     padding: 6rem 2rem;
   }
@@ -660,6 +758,10 @@
 @media print {
   .landingPage {
     background: none;
+    color: #000000;
+  }
+  
+  .howItWorksTitle {
     color: #000000;
   }
   

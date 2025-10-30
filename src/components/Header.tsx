@@ -136,8 +136,6 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
         </svg>
       ),
     },
-
-    /* ---------- NEW LEGAL LINK ---------- */
     {
       href: '/legal',
       label: 'Legal',

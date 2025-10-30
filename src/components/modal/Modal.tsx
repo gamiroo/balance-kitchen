@@ -1,7 +1,7 @@
+// src/app/components/modal/Modal.tsx
 'use client';
 
 import { useEffect } from 'react';
-import Image from 'next/image';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -12,7 +12,6 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
-  // Handle escape key press and body scroll lock
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -22,25 +21,21 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
-      // Prevent iOS safari bounce scroll
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${window.scrollY}px`;
-      document.body.style.width = '100%';
+      const scrollY = window.scrollY;
+      document.body.setAttribute('data-scroll-position', scrollY.toString());
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscape);
       
       if (isOpen) {
-        // Restore body scroll
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
         document.body.style.overflow = '';
-        document.body.style.width = '';
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        const scrollPosition = document.body.getAttribute('data-scroll-position');
+        if (scrollPosition) {
+          window.scrollTo(0, parseInt(scrollPosition, 10));
+        }
+        document.body.removeAttribute('data-scroll-position');
       }
     };
   }, [isOpen, onClose]);
@@ -48,7 +43,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className={styles.modalOverlay}
       onClick={onClose}
       role="dialog"
@@ -60,27 +55,15 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>
-          <div className={styles.modalLogoWrapper}>
-            <Image
-              src="/assets/icons/logo.svg"
-              alt="Balance Kitchen"
-              width={160}
-              height={120}
-              className={styles.modalLogo}
-            />
-          </div>
+          <h2 id="modal-title" className={styles.modalTitle}>
+            {title}
+          </h2>
           <button
             className={styles.modalCloseButton}
             onClick={onClose}
             aria-label="Close modal"
           >
-            <Image
-              src="/assets/icons/logo-icon.png"
-              alt="Close"
-              width={24}
-              height={24}
-              className={styles.closeIcon}
-            />
+            ×
           </button>
         </div>
         

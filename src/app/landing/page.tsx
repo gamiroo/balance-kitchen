@@ -16,14 +16,7 @@ import { DeliverySection } from "components/delivery-step-4/DeliverySection";
 import { FeedbackSection } from "components/feedback-step-5/FeedbackSection";
 import { Footer } from "components/Footer";
 import { Modal } from "../../components/modal/Modal";
-
-// Categories for the main page (show only first 6 dishes of each)
-const categories = [
-  { name: 'Carnivore', color: 'text-red-500' },
-  { name: 'Balanced', color: 'text-green-500' },
-  { name: 'Vegetarian', color: 'text-emerald-500' },
-  { name: 'Keto', color: 'text-purple-500' },
-];
+import { EnquiryForm } from "components/ui/forms/enquiry/EnquiryForm";
 
 export default function MainPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +58,13 @@ export default function MainPage() {
       script.src = 'https://form.jotform.com/jsform/251188224283053';
       script.async = true;
       
+      script.onload = () => {
+        // Form loaded successfully
+        setIsLoading(false);
+      };
+      
       script.onerror = () => {
+        setIsLoading(false);
         container.innerHTML = `
           <div style="
             text-align: center;
@@ -101,29 +100,27 @@ export default function MainPage() {
      ------------------------------------------------- */
   useEffect(() => {
     if (isModalOpen) {
+      // Set loading state
+      setIsLoading(true);
+      
       // Load Jotform form with small delay
       const timeoutId = setTimeout(() => {
         loadJotformForm();
       }, 100);
       
-      return () => clearTimeout(timeoutId);
+      return () => {
+        clearTimeout(timeoutId);
+        setIsLoading(false);
+      };
     } else {
       // Clean up when modal closes
       const container = document.getElementById('jotform-form-container');
       if (container) {
         container.innerHTML = '';
       }
+      setIsLoading(false);
     }
   }, [isModalOpen, loadJotformForm]);
-
-  const handleViewMore = (category: string) => {
-    console.log(`View more ${category} dishes`);
-  };
-
-  const handleGetStarted = () => {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000);
-  };
 
   // Modal handlers
   const openModal = () => {
@@ -152,6 +149,31 @@ export default function MainPage() {
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       <AboutSection />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
+      
+      {/* How It Works Title Section */}
+      <section className={styles.howItWorksSection}>
+        <div className={styles.howItWorksContent}>
+          <motion.h2 
+            className={styles.howItWorksTitle}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Getting Started With Balance Kitchen
+          </motion.h2>
+          <motion.p 
+            className={styles.howItWorksSubtitle}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Simple steps to get delicious, personalized meals delivered to your door
+          </motion.p>
+        </div>
+      </section>
+      
       <AccountManagerStep />
       <div className={`${styles.sectionSpacer} ${styles.sectionSpacerMd}`} />
       <MealPlanSection />
@@ -197,16 +219,11 @@ export default function MainPage() {
         onClose={closeModal}
         title="Join Balance Kitchen"
       >
-        <div 
-          id="jotform-form-container" 
-          style={{ 
-            minHeight: '600px',
-            width: '100%',
-            padding: '20px',
-            boxSizing: 'border-box'
-          }}
-        >
-          {/* Form will be loaded directly - no spinner */}
+        <div style={{ padding: '20px' }}>
+          <EnquiryForm 
+            onSubmitSuccess={closeModal}
+            onSubmitError={() => console.log('Form submission failed')}
+          />
         </div>
       </Modal>
     </div>

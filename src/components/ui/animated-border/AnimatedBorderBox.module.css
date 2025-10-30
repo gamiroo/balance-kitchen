@@ -25,7 +25,7 @@
     #FFC33E
   );
   opacity: 0.6;
-  filter: blur(18px);
+  filter: blur(24px);
   animation: rotate 16s linear infinite;  /* rotate forever */
   z-index: 0;
   clip-path: inset(0 round 20px);         /* keep it clipped to rounded corners */

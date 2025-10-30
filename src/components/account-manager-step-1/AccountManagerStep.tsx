@@ -14,8 +14,8 @@ type Message = {
 };
 
 const mobileChat: Message[] = [
-  { who: 'customer', text: 'Hi! I’m interested in a weekly plan.' },
-  { who: 'manager',  text: 'Great! I’ll ask a few quick questions.' },
+  { who: 'customer', text: 'Hi! I&apos;m interested in a weekly plan.' },
+  { who: 'manager',  text: 'Great! I&apos;ll ask a few quick questions.' },
   { who: 'customer', text: 'Sure, go ahead.' },
 ];
 
@@ -351,13 +351,16 @@ export const AccountManagerStep = () => {
       { threshold: 0.2 } // Trigger when 20% of section is visible
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    // Copy ref to variable to fix the warning
+    const currentSectionRef = sectionRef.current;
+    
+    if (currentSectionRef) {
+      observer.observe(currentSectionRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentSectionRef) {
+        observer.unobserve(currentSectionRef);
       }
     };
   }, []);
@@ -370,7 +373,7 @@ export const AccountManagerStep = () => {
       {/* ----- TEXT CONTENT (Left side) ----- */}
       <div className={`${styles.textContent} ${sectionVisible ? styles.textVisible : ''}`}>
         <h2 className={`${styles.stepTitle} ${sectionVisible ? styles.titleVisible : ''}`}>
-          Step 1 – Your Account Manager
+          Step 1 – Meet Your Account Manager
         </h2>
         <p className={`${styles.stepCopy} ${sectionVisible ? styles.copyVisible : ''}`}>
           When you sign up, a dedicated Balance Kitchen Account Manager

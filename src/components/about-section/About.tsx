@@ -1,4 +1,3 @@
-// src/app/components/AboutSection.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -6,11 +5,13 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { CTAButton } from '../ui/CTAButton/CTAButton';
 import { MovingBorder } from '../ui/animated-border/AnimatedBorderBox';
+import { Modal } from '../modal/Modal';
 import styles from './AboutSection.module.css';
 
 export const AboutSection = () => {
   const [inView, setInView] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile devices for responsive behavior
@@ -37,7 +38,8 @@ export const AboutSection = () => {
       }
     );
 
-    const currentSectionRef = sectionRef.current; // Copy ref to variable
+    // Copy ref to variable to fix the warning
+    const currentSectionRef = sectionRef.current;
     
     if (currentSectionRef) {
       observer.observe(currentSectionRef);
@@ -48,7 +50,15 @@ export const AboutSection = () => {
         observer.unobserve(currentSectionRef);
       }
     };
-  }, [sectionRef]); // Add sectionRef to dependency array
+  }, []); // Remove sectionRef from dependency array
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <section 
@@ -64,7 +74,7 @@ export const AboutSection = () => {
         <motion.div
           className={`${styles.imageWrapper} ${styles.leftImage}`}
           style={{ 
-            right: isMobile ? '20%' : '16%',
+            right: isMobile ? '20%' : '9%',
             top: isMobile ? '3%' : '15%',
             transform: isMobile 
               ? 'translateY(-30%) translateX(-30vw)' 
@@ -81,7 +91,7 @@ export const AboutSection = () => {
           aria-hidden="true"
         >
           <Image
-            src="/images/about-left.png"
+            src="/images/dishes/butter-chicken.png"
             alt=""
             fill
             className={styles.image}
@@ -100,7 +110,7 @@ export const AboutSection = () => {
         <motion.div
           className={`${styles.imageWrapper} ${styles.rightImage}`}
           style={{ 
-            right: isMobile ? '-20%' : '2%',
+            right: isMobile ? '-20%' : '15%',
             top: isMobile ? '72%' : '44%',
             bottom: isMobile ? '5%' : 'auto',
             transform: isMobile 
@@ -118,7 +128,7 @@ export const AboutSection = () => {
           aria-hidden="true"
         >
           <Image
-            src="/images/about-side-right.png"
+            src="/images/dishes/chicken-chimichurri.png"
             alt=""
             fill
             className={styles.image}
@@ -137,10 +147,10 @@ export const AboutSection = () => {
       {/* Content with Moving Border - above images with glass effect */}
       <div className={styles.contentContainer}>
         <MovingBorder
-          width="100%"
-          height="100%"
-          strokeWidth={isMobile ? 1.5 : 2}
-          duration={70}
+          width="fit"
+          height="fit"
+          strokeWidth={isMobile ? 2 : 4}
+          duration={50}
           opacity={0.7}
           blur={isMobile ? 2 : 4}
           radius={isMobile ? 16 : 20}
@@ -163,7 +173,7 @@ export const AboutSection = () => {
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
               >
-                Nourish your body with Balance Kitchen
+                About Balance Kitchen
               </motion.h2>
               
               {/* Animated Badges - centered */}
@@ -175,25 +185,25 @@ export const AboutSection = () => {
               >
                 <span 
                   className={`${styles.badge} ${styles.animatedBadge}`}
-                  aria-label="Balanced Meals category"
+                  aria-label="Family owned category"
                 >
-                  Balanced Meals
+                  Family Owned
                 </span>
                 <span 
                   className={`${styles.badge} ${styles.animatedBadge}`}
-                  aria-label="Crafted your way category"
+                  aria-label="Custom meals category"
                 >
-                  crafted your way
+                  Custom Meals
                 </span>
                 <span 
                   className={`${styles.badge} ${styles.animatedBadge}`}
-                  aria-label="Nutritious category"
+                  aria-label="Community focused category"
                 >
-                  nutritious
+                  Community Focused
                 </span>
               </motion.div>
 
-              {/* Description - centered */}
+              {/* Intro Description - centered */}
               <motion.p 
                 id="about-description"
                 className={styles.description}
@@ -201,47 +211,69 @@ export const AboutSection = () => {
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.2 }}
               >
-                Work quickly and efficiently with <strong className={styles.strong}>Balance Kitchen</strong>. Get nutritious, chef‑crafted meals delivered straight to your doorstep—so you can focus on the things that matter. We offer rotating menu plans, a flexible 80‑meal savings account, and a dedicated account manager who tailors every dish to your taste and dietary goals. Use our mobile‑friendly interface or our Messenger bot to place an order in seconds.
+                At Balance Kitchen, we&apos;re more than just a meal prep company, we&apos;re a family-owned business with a passion for great food and genuine care for our community. Balance Kitchen was born out of a simple observation: there were few meal prep services that truly catered to individual needs...
               </motion.p>
               
-              <motion.p 
-                className={styles.description}
+              {/* Read More Link - centered */}
+              <motion.div
+                className={styles.readMoreContainer}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: 1.4 }}
               >
-                New customers can sign up now for the waitlist and be the first to try our upcoming subscription service. 
-                <a
-                  href="/waitlist"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.link}
-                  aria-label="Sign up for waitlist (opens in new tab)"
+                <button
+                  onClick={openModal}
+                  className={styles.readMoreLink}
+                  aria-label="Read more about Balance Kitchen"
                 >
-                  Sign up
-                  <span className="sr-only">(opens in new tab)</span>
-                </a>
-                to get early access and exclusive launch offers.
-              </motion.p>
-
-              {/* CTA Button - centered */}
-              <motion.div
-                className={styles.ctaContainer}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 1.6 }}
-              >
-                <CTAButton 
-                  href="/waitlist"
-                  aria-label="Join the waitlist for Balance Kitchen"
-                >
-                  Speak to your Account Manager
-                </CTAButton>
+                  Learn More
+                </button>
               </motion.div>
             </div>
           </div>
         </MovingBorder>
       </div>
+
+      {/* Modal for full content */}
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        title="About Balance Kitchen"
+      >
+        <div className={styles.modalContentWrapper}>
+          <h2 className={styles.modalHeading}>About Balance Kitchen</h2>
+          
+          <div className={styles.modalBadges}>
+            <span className={styles.modalBadge}>Family Owned</span>
+            <span className={styles.modalBadge}>Custom Meals</span>
+            <span className={styles.modalBadge}>Community Focused</span>
+          </div>
+          
+          <div className={styles.modalTextContent}>
+            <p className={styles.modalDescription}>
+              At Balance Kitchen, we&apos;re more than just a meal prep company, we&apos;re a family-owned business with a passion for great food and genuine care for our community.
+            </p>
+            
+            <p className={styles.modalDescription}>
+              Balance Kitchen was born out of a simple observation: there were few meal prep services that truly catered to individual needs. Whether it&apos;s specific macros, calorie counts, dietary restrictions, or just a preference for cleaner eating, Balance Kitchen aims to support in the ways we can. What began as a small operation serving friends and family has now grown into a trusted name in custom meal prep.
+            </p>
+
+            <p className={styles.modalDescription}>
+              Today, Balance Kitchen is backed by a passionate and growing team, all working together to help more people find balance in their busy lives through personalised, delicious, ready-made meals.
+            </p>
+          </div>
+          
+          {/* CTA Button moved inside modal */}
+          <div className={styles.modalCtaContainer}>
+            <CTAButton 
+              href="/waitlist"
+              aria-label="Join the waitlist for Balance Kitchen"
+            >
+              How Do I Start?
+            </CTAButton>
+          </div>
+        </div>
+      </Modal>
 
       {/* Skip link for keyboard users */}
       <a 

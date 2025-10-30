@@ -51,7 +51,7 @@
 /* Extra large screens */
 @media (min-width: 1500px) {
   .imageWrapper {
-    width: 30%;
+    width: 25%;
     height: 40vh;
   }
   
@@ -210,7 +210,6 @@
 .description {
   color: #d1d5db;
   font-size: 1rem;
-  margin-bottom: 2rem;
   backdrop-filter: blur(4px);
   background-color: rgba(0, 0, 0, 0.3);
   padding: 1rem;
@@ -287,5 +286,115 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+/* Read More Link Styles */
+.readMoreContainer {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.readMoreLink {
+  background: none;
+  border: none;
+  color: #ffc33e;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+}
+
+.readMoreLink:hover,
+.readMoreLink:focus {
+  color: #ffdb88;
+  text-decoration: none;
+  outline: 2px solid #ffc33e;
+  outline-offset: 2px;
+}
+
+/* Modal Content Styles */
+.modalContentWrapper {
+  padding: 1rem;
+  padding-bottom: 3rem;
+}
+
+.modalHeading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.modalBadges {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.modalBadge {
+  background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  color: #ffc33e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modalTextContent {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.modalDescription {
+  color: #d1d5db;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.modalDescription:last-child {
+  margin-bottom: 0;
+}
+
+/* Modal CTA Button Container */
+.modalCtaContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+/* Responsive adjustments for modal content */
+@media (max-width: 768px) {
+  .modalHeading {
+    font-size: 1.75rem;
+  }
+  
+  .modalDescription {
+    font-size: 1rem;
+  }
+  
+  .modalBadges {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modalBadge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+  
+  .modalCtaContainer {
+    padding: 0 0.5rem;
   }
 }

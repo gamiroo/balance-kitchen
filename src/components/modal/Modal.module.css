@@ -4,25 +4,25 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.92);
+  background-color: rgba(0, 0, 0, 0.863);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(4px);
   
   /* Glowing orbs background */
   background: 
     radial-gradient(
-      circle at 15% 25%,
+      circle at 10% 20%,
       rgba(255, 195, 62, 0.15) 0%,
       transparent 20%
     ),
     radial-gradient(
-      circle at 85% 75%,
-      rgba(203, 46, 18, 0.15) 0%,
+      circle at 90% 80%,
+      rgba(203, 46, 18, 0.25) 0%,
       transparent 20%
     ),
     radial-gradient(
@@ -32,7 +32,7 @@
     ),
     radial-gradient(
       circle at 70% 20%,
-      rgba(138, 41, 211, 0.1) 0%,
+      rgba(41, 58, 211, 0.1) 0%,
       transparent 30%
     ),
     rgba(0, 0, 0, 0.92);
@@ -75,7 +75,7 @@
 
 .modalLogo {
   width: auto;
-  height: 82px;
+  height: 72px;
   max-width: 220px;
   object-fit: contain;
 }

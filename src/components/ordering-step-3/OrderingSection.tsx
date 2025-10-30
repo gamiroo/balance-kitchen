@@ -90,15 +90,15 @@ export const OrderingSection = () => {
 
   // Sample dish data
   const dishes = [
-    { title: "Grilled Salmon", image: "/images/dishes/salmon.jpg" },
-    { title: "Quinoa Bowl", image: "/images/dishes/quinoa.jpg" },
-    { title: "Beef Stir Fry", image: "/images/dishes/beef.jpg" },
-    { title: "Veggie Pasta", image: "/images/dishes/pasta.jpg" },
-    { title: "Chicken Caesar", image: "/images/dishes/chicken.jpg" },
-    { title: "Tofu Curry", image: "/images/dishes/tofu.jpg" },
-    { title: "Lamb Chops", image: "/images/dishes/lamb.jpg" },
-    { title: "Shrimp Tacos", image: "/images/dishes/shrimp.jpg" },
-    { title: "Mushroom Risotto", image: "/images/dishes/risotto.jpg" }
+    { title: "Butter Chicken", image: "/images/dishes/butter-chicken.png" },
+    { title: "Chicken Chimichurri", image: "/images/dishes/chicken-chimichurri.png" },
+    { title: "Lemon Barra", image: "/images/dishes/lemon-barra.png" },
+    { title: "Honey Soy Salmon", image: "/images/dishes/honeysoy-salmon.png" },
+    { title: "Mediterranean Beef Pasta", image: "/images/dishes/mediterranean-beef-pasta.png" },
+    { title: "Steak Pesto", image: "/images/dishes/steak-pesto.png" },
+    { title: "Sweet Chilli Pork Mince", image: "/images/dishes/sweetchilli-pork-mince.png" },
+    { title: "Teriyaki Chicken", image: "/images/dishes/teriyaki-chicken.png" },
+    { title: "Mushroom Risotto", image: "/images/dishes/ai/risotto.jpg" }
   ];
 
   return (
