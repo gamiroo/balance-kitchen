@@ -100,6 +100,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
       localStorage.removeItem('enquiryForm');
     }
 
+    // Focus first input
     const firstInput = document.getElementById('firstName');
     firstInput?.focus();
   }, []);
@@ -290,258 +291,279 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     }
   };
 
+  // If form is disabled/submitting, add overlay
+  const isDisabled = isSubmitting || submitStatus === 'success';
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={styles.form}
-      aria-describedby="form-description"
-      noValidate
-    >
-      <div id="form-description" className={styles.srOnly}>
-        Required fields are marked with an asterisk (*)
-      </div>
+    <div className={styles.formWrapper}>
+      <form
+        onSubmit={handleSubmit}
+        className={styles.form}
+        aria-describedby="form-description"
+        noValidate
+        style={{
+          opacity: isDisabled ? 0.6 : 1,
+          pointerEvents: isDisabled ? 'none' : 'auto',
+        }}
+      >
+        <div id="form-description" className={styles.srOnly}>
+          Required fields are marked with an asterisk (*)
+        </div>
 
-      <div className={styles.formGrid}>
-        <div className={styles.leftColumn}>
-          <div className={styles.subTitle}>Your details</div>
+        <div className={styles.formGrid}>
+          <div className={styles.leftColumn}>
+            <div className={styles.subTitle}>Your details</div>
 
-          <div className={styles.formRow}>
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label htmlFor="firstName" className={styles.label}>
+                  First Name *
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                  disabled={isDisabled}
+                  className={`${styles.input} ${errors.firstName ? styles.invalid : ''}`}
+                  placeholder="Jane"
+                  aria-invalid={!!errors.firstName}
+                  aria-describedby={errors.firstName ? 'firstName-error' : undefined}
+                  autoComplete="given-name"
+                />
+                {errors.firstName && (
+                  <span id="firstName-error" className={styles.errorText}>
+                    {errors.firstName}
+                  </span>
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="lastName" className={styles.label}>
+                  Last Name *
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                  disabled={isDisabled}
+                  className={`${styles.input} ${errors.lastName ? styles.invalid : ''}`}
+                  placeholder="Doe"
+                  aria-invalid={!!errors.lastName}
+                  aria-describedby={errors.lastName ? 'lastName-error' : undefined}
+                  autoComplete="family-name"
+                />
+                {errors.lastName && (
+                  <span id="lastName-error" className={styles.errorText}>
+                    {errors.lastName}
+                  </span>
+                )}
+              </div>
+            </div>
+
             <div className={styles.formGroup}>
-              <label htmlFor="firstName" className={styles.label}>
-                First Name *
+              <label htmlFor="preferredName" className={styles.label}>
+                Preferred Name <span className={styles.optionalLabel}>(optional)</span>
               </label>
               <input
                 type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
+                id="preferredName"
+                name="preferredName"
+                value={formData.preferredName}
                 onChange={handleChange}
-                required
-                className={`${styles.input} ${errors.firstName ? styles.invalid : ''}`}
-                placeholder="Jane"
-                aria-invalid={!!errors.firstName}
-                aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-                autoComplete="given-name"
-              />
-              {errors.firstName && (
-                <span id="firstName-error" className={styles.errorText}>
-                  {errors.firstName}
-                </span>
-              )}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="lastName" className={styles.label}>
-                Last Name *
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                className={`${styles.input} ${errors.lastName ? styles.invalid : ''}`}
-                placeholder="Doe"
-                aria-invalid={!!errors.lastName}
-                aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-                autoComplete="family-name"
-              />
-              {errors.lastName && (
-                <span id="lastName-error" className={styles.errorText}>
-                  {errors.lastName}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="preferredName" className={styles.label}>
-              Preferred Name <span className={styles.optionalLabel}>(optional)</span>
-            </label>
-            <input
-              type="text"
-              id="preferredName"
-              name="preferredName"
-              value={formData.preferredName}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder="Janey"
-              autoComplete="nickname"
-            />
-          </div>
-
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="email" className={styles.label}>
-                Email Address *
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className={`${styles.input} ${errors.email ? styles.invalid : ''}`}
-                placeholder="jane@example.com"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? 'email-error' : undefined}
-                autoComplete="email"
-              />
-              {errors.email && (
-                <span id="email-error" className={styles.errorText}>
-                  {errors.email}
-                </span>
-              )}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="phone" className={styles.label}>
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
+                disabled={isDisabled}
                 className={styles.input}
-                placeholder="+1 (555) 123-4567"
-                autoComplete="tel"
+                placeholder="Janey"
+                autoComplete="nickname"
               />
             </div>
-          </div>
-        </div>
 
-        <div className={styles.rightColumn}>
-          <div className={styles.subTitle}>Your enquiry</div>
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label htmlFor="email" className={styles.label}>
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  disabled={isDisabled}
+                  className={`${styles.input} ${errors.email ? styles.invalid : ''}`}
+                  placeholder="jane@example.com"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
+                  autoComplete="email"
+                />
+                {errors.email && (
+                  <span id="email-error" className={styles.errorText}>
+                    {errors.email}
+                  </span>
+                )}
+              </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="subject" className={styles.label}>
-              Subject
-            </label>
-            <select
-              id="subject"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              className={styles.input}
-            >
-              <option value="Website Enquiry">General Enquiry</option>
-              <option value="Meal Plan">Meal Plan Information</option>
-              <option value="Pricing">Pricing Question</option>
-              <option value="Delivery">Delivery Inquiry</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="howDidYouHear" className={styles.label}>
-              How Did You Hear About Us
-            </label>
-            <select
-              id="howDidYouHear"
-              name="howDidYouHear"
-              value={formData.howDidYouHear}
-              onChange={handleChange}
-              className={`${styles.input} ${errors.howDidYouHear ? styles.invalid : ''}`}
-              aria-invalid={!!errors.howDidYouHear}
-              aria-describedby={errors.howDidYouHear ? 'howDidYouHear-error' : undefined}
-            >
-              {HEAR_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-            {errors.howDidYouHear && (
-              <span id="howDidYouHear-error" className={styles.errorText}>
-                {errors.howDidYouHear}
-              </span>
-            )}
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="referrer" className={styles.label}>
-              Referrer
-            </label>
-            <input
-              type="text"
-              id="referrer"
-              name="referrer"
-              value={formData.referrer}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder="Who referred you?"
-            />
-            <div className={styles.helperText}>Send your referrer a thank you gift</div>
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="message" className={styles.label}>
-              Message *
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleMessageChange}
-              required
-              rows={6}
-              className={`${styles.textarea} ${errors.message ? styles.invalid : ''}`}
-              placeholder="Tell us how we can help you..."
-              aria-invalid={!!errors.message}
-              aria-describedby={
-                errors.message ? 'message-error' : undefined
-              }
-            />
-            <div className={styles.charCounter}>
-              {messageLength}/{MAX_MESSAGE_LENGTH} characters
+              <div className={styles.formGroup}>
+                <label htmlFor="phone" className={styles.label}>
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  disabled={isDisabled}
+                  className={styles.input}
+                  placeholder="+1 (555) 123-4567"
+                  autoComplete="tel"
+                />
+              </div>
             </div>
-            {errors.message && (
-              <span id="message-error" className={styles.errorText}>
-                {errors.message}
-              </span>
-            )}
           </div>
 
-          <div className={styles.rightActions}>
-            {submitStatus === 'success' && (
-              <div className={styles.successMessage} role="alert">
-                Thank you! Your enquiry has been sent successfully. We&apos;ll get back
-                to you soon.
-              </div>
-            )}
+          <div className={styles.rightColumn}>
+            <div className={styles.subTitle}>Your enquiry</div>
 
-            {submitStatus === 'error' && (
-              <div className={styles.errorMessage} role="alert">
-                <div style={{ marginBottom: '8px' }}>
-                  {serverError || 'Sorry, there was an error sending your enquiry. Please try again.'}
-                </div>
-                <div className={styles.errorHelp}>
-                  If the problem persists, please contact us directly at{' '}
-                  <a 
-                    href="mailto:hello@balancekitchen.com" 
-                    style={{ color: '#991b1b', fontWeight: 600 }}
-                  >
-                    hello@balancekitchen.com
-                  </a>
-                </div>
-              </div>
-            )}
+            <div className={styles.formGroup}>
+              <label htmlFor="subject" className={styles.label}>
+                Subject
+              </label>
+              <select
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                disabled={isDisabled}
+                className={styles.input}
+              >
+                <option value="Website Enquiry">General Enquiry</option>
+                <option value="Meal Plan">Meal Plan Information</option>
+                <option value="Pricing">Pricing Question</option>
+                <option value="Delivery">Delivery Inquiry</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-            <CTAButton
-              type="submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
-              aria-label="Send enquiry"
-            >
-              {isSubmitting ? 'Sending...' : 'Send Enquiry'}
-            </CTAButton>
+            <div className={styles.formGroup}>
+              <label htmlFor="howDidYouHear" className={styles.label}>
+                How Did You Hear About Us
+              </label>
+              <select
+                id="howDidYouHear"
+                name="howDidYouHear"
+                value={formData.howDidYouHear}
+                onChange={handleChange}
+                disabled={isDisabled}
+                className={`${styles.input} ${errors.howDidYouHear ? styles.invalid : ''}`}
+                aria-invalid={!!errors.howDidYouHear}
+                aria-describedby={errors.howDidYouHear ? 'howDidYouHear-error' : undefined}
+              >
+                {HEAR_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              {errors.howDidYouHear && (
+                <span id="howDidYouHear-error" className={styles.errorText}>
+                  {errors.howDidYouHear}
+                </span>
+              )}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="referrer" className={styles.label}>
+                Referrer
+              </label>
+              <input
+                type="text"
+                id="referrer"
+                name="referrer"
+                value={formData.referrer}
+                onChange={handleChange}
+                disabled={isDisabled}
+                className={styles.input}
+                placeholder="Who referred you?"
+              />
+              <div className={styles.helperText}>Send your referrer a thank you gift</div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="message" className={styles.label}>
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleMessageChange}
+                required
+                rows={6}
+                disabled={isDisabled}
+                className={`${styles.textarea} ${errors.message ? styles.invalid : ''}`}
+                placeholder="Tell us how we can help you..."
+                aria-invalid={!!errors.message}
+                aria-describedby={
+                  errors.message ? 'message-error' : undefined
+                }
+              />
+              <div className={styles.charCounter}>
+                {messageLength}/{MAX_MESSAGE_LENGTH} characters
+              </div>
+              {errors.message && (
+                <span id="message-error" className={styles.errorText}>
+                  {errors.message}
+                </span>
+              )}
+            </div>
+
+            <div className={styles.rightActions}>
+              {submitStatus === 'success' && (
+                <div className={styles.successMessage} role="alert">
+                  Thank you! Your enquiry has been sent successfully. We&apos;ll get back
+                  to you soon.
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className={styles.errorMessage} role="alert">
+                  <div style={{ marginBottom: '8px' }}>
+                    {serverError || 'Sorry, there was an error sending your enquiry. Please try again.'}
+                  </div>
+                  <div className={styles.errorHelp}>
+                    If the problem persists, please contact us directly at{' '}
+                    <a 
+                      href="mailto:hello@balancekitchen.com" 
+                      style={{ color: '#991b1b', fontWeight: 600 }}
+                    >
+                      hello@balancekitchen.com
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              <CTAButton
+                type="submit"
+                loading={isSubmitting}
+                disabled={isSubmitting}
+                aria-label="Send enquiry"
+              >
+                {isSubmitting ? 'Sending...' : 'Send Enquiry'}
+              </CTAButton>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
+
+
+// qygcpwegbvprywqr

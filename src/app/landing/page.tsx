@@ -19,7 +19,6 @@ import { Modal } from "../../components/modal/Modal";
 import { EnquiryForm } from "components/ui/forms/enquiry/EnquiryForm";
 
 export default function MainPage() {
-  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   /* -------------------------------------------------
@@ -58,13 +57,7 @@ export default function MainPage() {
       script.src = 'https://form.jotform.com/jsform/251188224283053';
       script.async = true;
       
-      script.onload = () => {
-        // Form loaded successfully
-        setIsLoading(false);
-      };
-      
       script.onerror = () => {
-        setIsLoading(false);
         container.innerHTML = `
           <div style="
             text-align: center;
@@ -100,25 +93,18 @@ export default function MainPage() {
      ------------------------------------------------- */
   useEffect(() => {
     if (isModalOpen) {
-      // Set loading state
-      setIsLoading(true);
-      
       // Load Jotform form with small delay
       const timeoutId = setTimeout(() => {
         loadJotformForm();
       }, 100);
       
-      return () => {
-        clearTimeout(timeoutId);
-        setIsLoading(false);
-      };
+      return () => clearTimeout(timeoutId);
     } else {
       // Clean up when modal closes
       const container = document.getElementById('jotform-form-container');
       if (container) {
         container.innerHTML = '';
       }
-      setIsLoading(false);
     }
   }, [isModalOpen, loadJotformForm]);
 
@@ -132,17 +118,7 @@ export default function MainPage() {
   };
 
   return (
-    <div 
-      className={`${styles.landingPage} ${isLoading ? styles.disabledState : ''}`}
-      aria-busy={isLoading}
-    >
-      {/* Loading Overlay */}
-      {isLoading && (
-        <div className={`${styles.loadingOverlay} ${styles.loadingOverlayActive}`}>
-          <div className={styles.loadingSpinner} aria-label="Loading content"></div>
-        </div>
-      )}
-      
+    <div className={styles.landingPage}>
       <Header onOpenModal={openModal} />
       <div className={`${styles.headerSpacer} ${styles.headerSpacerMd}`} />
       <Hero />
