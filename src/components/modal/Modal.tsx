@@ -65,9 +65,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             {/* Logo placeholder - replace with your actual logo component */}
             <div style={{ 
               width: '160px', 
-              height: '72px', 
-              background: 'rgba(255, 195, 62, 0.2)', 
-              borderRadius: '8px',
+              height: '72px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -75,7 +73,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
               fontWeight: 'bold',
               fontSize: '14px'
             }}>
-              Balance Kitchen
+              <img src="images/logo-bal-form.png" alt="balance kitchen logo" />
             </div>
           </div>
           <button
@@ -83,7 +81,7 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             onClick={onClose}
             aria-label="Close modal"
           >
-            ×
+            <img src="assets/icons/logo-icon-svg.svg" alt="balance kitchen logo icon" />
           </button>
         </div>
 
