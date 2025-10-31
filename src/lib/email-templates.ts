@@ -299,7 +299,7 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
       <tr>
         <td style="text-align: center; position: relative; z-index: 2;">
           <div style="${modalThemeStyles.brandContainer}">
-            <div>
+            <div style="background: red;">
              ${generateLogoHTML()}
             </div>
           </div>
