@@ -74,7 +74,7 @@ export const generateAdminEmailHTML = (data: EmailData, requestId: string, ip: s
       <tr>
         <td style="text-align: center; position: relative; z-index: 2;">
           <div style="${modalThemeStyles.brandContainer}">
-            <div>
+            <div style="align-items: center;">
               ${generateLogoHTML()}
             </div>
           </div>
@@ -299,7 +299,7 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
       <tr>
         <td style="text-align: center; position: relative; z-index: 2;">
           <div style="${modalThemeStyles.brandContainer}">
-            <div style="background: red;">
+            <div style="align-items: center;">
              ${generateLogoHTML()}
             </div>
           </div>
