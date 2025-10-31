@@ -77,6 +77,7 @@ export const modalThemeStyles: EmailThemeStyles = {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     gap: 16px;
     position: relative;
     z-index: 2;
