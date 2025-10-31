@@ -17,25 +17,17 @@ interface EmailThemeStyles {
 }
 
 export const assetConfig = {
-  logoUrl: process.env.NEXT_PUBLIC_SITE_URL 
+  logoUrl: process.env.NEXT_PUBLIC_SITE_URL
     ? `${process.env.NEXT_PUBLIC_SITE_URL}/images/logo-bal-form.png`
     : 'https://balance-kitchen.vercel.app/images/logo-bal-form.png',
   logoAlt: 'Balance Kitchen Logo - Fresh, Healthy, Delivered',
-  
-  // Fallback options for logo
-  logoFallbackOptions: [
-    // SVG logo (if you have one)
-    `${process.env.NEXT_PUBLIC_SITE_URL || 'https://balance-kitchen.vercel.app'}/balance-logo.svg`,
-    // PNG with different naming
-    `${process.env.NEXT_PUBLIC_SITE_URL || 'https://balance-kitchen.vercel.app'}/images/balance-kitchen-logo.png`,
-    // Alternative path
-    `${process.env.NEXT_PUBLIC_SITE_URL || 'https://balance-kitchen.vercel.app'}/assets/logo-bal-form.png`,
-  ]
+  logoFallback: process.env.NEXT_PUBLIC_SITE_URL
+    ? `${process.env.NEXT_PUBLIC_SITE_URL}/images/logo-bal-form.png`
+    : 'https://balance-kitchen.vercel.app/images/logo-bal-form.png'
 };
 
 export const modalThemeStyles: EmailThemeStyles = {
   ...themeColors,
-  
   baseBody: `
     margin: 0;
     padding: 0;

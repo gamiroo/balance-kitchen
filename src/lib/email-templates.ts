@@ -20,22 +20,17 @@ export interface EmailData {
   utmParts: string[];
 }
 
-const generateLogoHTML = (includeEmoji: boolean = false) => {
+const generateLogoHTML = () => {
   return `
-    <picture>
-      <source srcset="${assetConfig.logoUrl}" type="image/png">
-      <source srcset="${assetConfig.logoFallbackOptions[0]}" type="image/svg+xml">
-      <source srcset="${assetConfig.logoFallbackOptions[1]}" type="image/png">
-      <img 
-        src="${assetConfig.logoFallbackOptions[2]}" 
-        alt="${assetConfig.logoAlt}" 
-        class="logo-image"
-        style="${modalThemeStyles.logoImage}"
-        width="280"
-        height="100"
-        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-      />
-    </picture>
+    <img
+      src="${assetConfig.logoUrl}"
+      alt="${assetConfig.logoAlt}"
+      class="logo-image"
+      style="${modalThemeStyles.logoImage}"
+      width="280"
+      height="100"
+      onerror="this.onerror=null; this.src='${assetConfig.logoFallback}'"
+    />
   `;
 };
 
@@ -80,7 +75,7 @@ export const generateAdminEmailHTML = (data: EmailData, requestId: string, ip: s
         <td style="text-align: center; position: relative; z-index: 2;">
           <div style="${modalThemeStyles.brandContainer}">
             <div>
-              ${generateLogoHTML(true)}
+              ${generateLogoHTML()}
             </div>
           </div>
           <p style="${modalThemeStyles.subtitle}" aria-label="Email timestamp">
@@ -305,7 +300,7 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
         <td style="text-align: center; position: relative; z-index: 2;">
           <div style="${modalThemeStyles.brandContainer}">
             <div>
-             ${generateLogoHTML(true)}
+             ${generateLogoHTML()}
             </div>
           </div>
           <p style="${modalThemeStyles.subtitle}" aria-label="Company tagline">
