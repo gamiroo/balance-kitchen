@@ -97,6 +97,7 @@ export const modalThemeStyles: EmailThemeStyles = {
     max-height: 80px;
     object-fit: contain;
     display: block;
+    margin: 0 auto;
   `,
   
   title: `
