@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
 import { generateAdminEmailHTML, generateConfirmationEmailHTML } from '../../../lib/email-templates';
+import { ZohoCRMService } from '../../../lib/zoho-crm';
 
 // Environment variables
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@yourdomain.com';
@@ -19,6 +20,9 @@ const ENABLE_RECAPTCHA = Boolean(RECAPTCHA_SECRET_KEY);
 const UPSTASH_REDIS_URL = process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 const ENABLE_RATE_LIMIT = Boolean(UPSTASH_REDIS_URL && UPSTASH_REDIS_TOKEN);
+
+// Optional: ZohoCRM Integration
+const ENABLE_CRM = process.env.ZOHO_CLIENT_ID && process.env.ZOHO_CLIENT_SECRET && process.env.ZOHO_REFRESH_TOKEN;
 
 // Define the interface for rate limiter
 interface RateLimiter {
@@ -229,8 +233,15 @@ export async function POST(request: Request) {
     .filter((k) => (sanitized as Record<string, string | undefined>)[k])
     .map((k) => `${k}: ${(sanitized as Record<string, string | undefined>)[k]}`);
 
+  // Generate request ID
+  const requestId = crypto.randomUUID();
+
+  // Initialize CRM result
+  let crmResult = { leadId: '', success: false, error: '' };
+
   try {
     const transporter = createTransporter();
+    
     // Verify transporter (skip in production to reduce latency if you trust config)
     if (process.env.NODE_ENV !== 'production') {
       await transporter.verify();
@@ -242,8 +253,27 @@ export async function POST(request: Request) {
       sanitized,
       utmParts
     };
-    
-    const requestId = crypto.randomUUID();
+
+    // Create lead in ZohoCRM (if enabled and credentials are available)
+    if (ENABLE_CRM) {
+      try {
+        console.log('Creating lead in ZohoCRM...');
+        const zohoService = new ZohoCRMService();
+        let crmResult: { leadId: string; success: boolean; error?: string } = { leadId: '', success: false };
+        
+        if (crmResult.success) {
+          console.log('ZohoCRM lead created successfully:', crmResult.leadId);
+        } else {
+          console.error('Failed to create ZohoCRM lead:', crmResult.error);
+        }
+      } catch (crmError: unknown) {
+        console.error('Error creating ZohoCRM lead:', crmError);
+        crmResult.error = crmError instanceof Error ? crmError.message : 'Unknown CRM error';
+        // Continue processing even if CRM fails
+      }
+    } else {
+      console.log('ZohoCRM integration not enabled - skipping CRM creation');
+    }
 
     // Send email to admin
     await transporter.sendMail({
@@ -268,6 +298,7 @@ ${utmParts.length ? `Tracking: ${utmParts.join(' | ')}` : ''}
 ---
 This message was sent from the Balance Kitchen website contact form.
 Request ID: ${requestId}
+${crmResult.success ? `CRM Lead ID: ${crmResult.leadId}` : `CRM: ${crmResult.error || 'Failed to create lead'}`}
       `,
       html: generateAdminEmailHTML(emailData, requestId, ip),
     });
@@ -300,11 +331,58 @@ Request ID: ${requestId}
       // Don't fail the request if the confirmation fails
     }
 
-    return NextResponse.json({ success: true, requestId });
+    // Return success response with CRM info
+    return NextResponse.json({ 
+      success: true, 
+      requestId,
+      crmLeadId: crmResult.leadId || undefined,
+      crmCreated: crmResult.success,
+      crmEnabled: ENABLE_CRM,
+      crmError: crmResult.error || undefined
+    });
+
   } catch (error: unknown) {
-    console.error('Error sending enquiry:', error);
+    console.error('Error processing enquiry:', error);
+    
+    // Still try to send admin notification about the error
+    try {
+      const transporter = createTransporter();
+      await transporter.sendMail({
+        from: `"Balance Kitchen Website" <${SMTP_USER}>`,
+        to: ADMIN_EMAIL,
+        subject: `[ERROR] Failed Enquiry Processing - ${requestId}`,
+        text: `
+An error occurred while processing an enquiry:
+
+Error: ${error instanceof Error ? error.message : 'Unknown error'}
+Request ID: ${requestId}
+IP: ${ip}
+Enquiry Data: ${JSON.stringify({ displayName, ...sanitized }, null, 2)}
+
+CRM Status: ${crmResult.success ? `Created (${crmResult.leadId})` : `Failed (${crmResult.error})`}
+        `,
+        html: `
+          <div style="font-family: Arial, sans-serif; padding: 20px; background: #fee; border: 1px solid #fcc;">
+            <h2 style="color: #c00;">Error Processing Enquiry</h2>
+            <p><strong>Error:</strong> ${error instanceof Error ? error.message : 'Unknown error'}</p>
+            <p><strong>Request ID:</strong> ${requestId}</p>
+            <p><strong>IP:</strong> ${ip}</p>
+            <p><strong>Enquiry Data:</strong></p>
+            <pre style="background: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">${JSON.stringify({ displayName, ...sanitized }, null, 2)}</pre>
+            <p><strong>CRM Status:</strong> ${crmResult.success ? `Created (${crmResult.leadId})` : `Failed (${crmResult.error})`}</p>
+          </div>
+        `,
+      });
+    } catch (notificationError: unknown) {
+      console.error('Failed to send error notification:', notificationError);
+    }
+
     return NextResponse.json(
-      { error: 'Failed to send enquiry. Please try again later.' },
+      { 
+        error: 'Failed to process enquiry. Please try again later.',
+        requestId,
+        crmEnabled: ENABLE_CRM
+      },
       { status: 500 }
     );
   }

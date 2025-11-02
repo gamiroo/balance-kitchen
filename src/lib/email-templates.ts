@@ -316,7 +316,10 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
         
         <div class="section" style="${modalThemeStyles.section}; text-align: center;">
           <div style="width: 96px; height: 96px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 2rem; box-shadow: 0 16px 40px rgba(16, 185, 129, 0.4); ${modalThemeStyles.pulse}" aria-hidden="true">
-            <span style="color: #ffffff; font-size: 40px; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));">✅</span>
+            <svg width="128" height="128" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="rgba(16, 185, 129, 0)" />
+                <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
           
           <h2 style="margin: 0 0 16px 0; color: ${modalThemeStyles.textAccent}; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">
@@ -331,7 +334,7 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
         <div class="section" style="${modalThemeStyles.section}">
           <div class="summary-card" style="background: rgba(15, 23, 42, 0.6); border: 1px solid ${modalThemeStyles.borderPrimary}; border-radius: 16px; padding: 2rem; text-align: center;">
             <h3 style="margin: 0 0 24px 0; color: ${modalThemeStyles.textAccent}; font-size: 20px; font-weight: 700;">
-              <span aria-hidden="true">📝</span>
+
               <span>Your Message Summary</span>
             </h3>
             
@@ -372,21 +375,21 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
         <div class="section-last" style="${modalThemeStyles.sectionLast}">
           <div style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15)); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 16px; padding: 2rem;">
             <h3 style="margin: 0 0 24px 0; color: ${modalThemeStyles.textAccent}; font-size: 20px; font-weight: 700; text-align: center;">
-              <span aria-hidden="true">⏰</span>
+
               <span>What happens next?</span>
             </h3>
             
             <div style="display: grid; gap: 16px;">
               <div style="display: flex; align-items: center; gap: 12px; color: ${modalThemeStyles.textSecondary}; font-size: 16px;">
-                <span style="font-size: 20px; font-weight: bold;">1.</span>
+                <span style="font-size: 18px; font-weight: bold;">1.</span>
                 <span>Our team reviews your enquiry</span>
               </div>
               <div style="display: flex; align-items: center; gap: 12px; color: ${modalThemeStyles.textSecondary}; font-size: 16px;">
-                <span style="font-size: 20px; font-weight: bold;">2.</span>
+                <span style="font-size: 18px; font-weight: bold;">2.</span>
                 <span>We&apos;ll respond within 24 hours</span>
               </div>
               <div style="display: flex; align-items: center; gap: 12px; color: ${modalThemeStyles.textSecondary}; font-size: 16px;">
-                <span style="font-size: 20px; font-weight: bold;">3.</span>
+                <span style="font-size: 18px; font-weight: bold;">3.</span>
                 <span>Ready to help with your Balance Kitchen journey!</span>
               </div>
             </div>
