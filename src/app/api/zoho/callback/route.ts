@@ -1,6 +1,14 @@
 // src/app/api/zoho/callback/route.ts
 import { NextResponse } from 'next/server';
 
+interface ZohoTokenResponse {
+  access_token?: string;
+  refresh_token?: string;
+  expires_in?: number;
+  token_type?: string;
+  [key: string]: string | number | undefined;
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
@@ -91,9 +99,9 @@ export async function GET(request: Request) {
       throw new Error(`Token exchange failed: ${tokenResponse.status} - ${responseText}`);
     }
 
-    let tokenData;
+    let tokenData: ZohoTokenResponse;
     try {
-      tokenData = JSON.parse(responseText);
+      tokenData = JSON.parse(responseText) as ZohoTokenResponse;
     } catch (parseError) {
       throw new Error(`Invalid JSON response: ${responseText}`);
     }

@@ -2,23 +2,53 @@
    src/lib/zoho-crm.ts
    ------------------------------------------------------------- */
 
-export interface ZohoCRMLead {
+interface ZohoCRMLead {
   Lead_Name: string;      // Combined first + last name
   Email: string;          // Email address
   Phone?: string;         // Phone number
   Mobile?: string;        // Mobile number
   Lead_Source: string;    // How they found you
   Referrer?: string;      // Who referred them
+  [key: string]: string | number | boolean | undefined;     // Allow additional fields
 }
 
-export interface ZohoCRMResponse {
-  data: Array<{
-    details: {
-      id: string;
-    };
-    status: string;
-  }>;
+interface ZohoCRMResponseDataItem {
+  status: string;
+  details?: {
+    id: string;
+  };
+  id?: string;
+  record?: {
+    id: string;
+  };
+  message?: string;
+   [key: string]: string | number | object | undefined;
 }
+
+interface ZohoCRMResponse {
+  data?: ZohoCRMResponseDataItem[];
+  [key: string]: string | number | object | undefined;
+}
+
+interface ZohoTokenResponse {
+  access_token?: string;
+  refresh_token?: string;
+  expires_in?: number;
+  token_type?: string;
+  [key: string]: string | number | object | undefined;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const HEAR_OPTIONS = [
+  'Search Engine',
+  'Social Media',
+  'Friend / Family',
+  'Google Ads',
+  'Influencer / Blogger',
+  'Event / Conference',
+  'Online Forum / Community',
+  'Other',
+] as const;
 
 /* -----------------------------------------------------------------
    A small type that mirrors the payload we get from the API route.
@@ -38,17 +68,6 @@ export interface SanitizedEnquiry {
   utm_medium?: string | null;
   utm_campaign?: string | null;
 }
-
-const HEAR_OPTIONS = [
-  'Search Engine',
-  'Social Media',
-  'Friend / Family',
-  'Google Ads',
-  'Influencer / Blogger',
-  'Event / Conference',
-  'Online Forum / Community',
-  'Other',
-] as const;
 
 /* -----------------------------------------------------------------
    Service that handles OAuth refresh + Lead creation.
@@ -110,6 +129,7 @@ export class ZohoCRMService {
       refresh_token: this.refreshToken,
     });
 
+    console.log('Refreshing Zoho access token...');
     const response = await fetch(tokenEndpoint, {
       method: 'POST',
       headers: {
@@ -120,109 +140,117 @@ export class ZohoCRMService {
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('Token refresh failed:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorText: errorText
+      });
       throw new Error(`Failed to refresh Zoho access token: ${response.status} - ${errorText}`);
     }
 
-    const data = (await response.json()) as { access_token?: string };
+    const data = (await response.json()) as ZohoTokenResponse;
     this.accessToken = data.access_token;
 
     if (!this.accessToken) {
-      console.error('Zoho token response:', data);
-      throw new Error('Invalid access token response from Zoho – no access_token field');
+      console.error('Invalid token response:', data);
+      throw new Error('Invalid access token response from Zoho - no access_token field');
     }
 
+    console.log('Access token refreshed successfully');
     return this.accessToken;
   }
 
   private async createLeadInZoho(leadData: ZohoCRMLead): Promise<string> {
-  const accessToken = await this.getAccessToken();
-  const endpoint = `${this.apiDomain}/crm/v2/Leads`;
+    const accessToken = await this.getAccessToken();
+    const endpoint = `${this.apiDomain}/crm/v2/Leads`;
 
-  console.log('Creating lead with data:', JSON.stringify(leadData, null, 2));
-  
-  const payload = {
-    data: [leadData],
-  };
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      Authorization: `Zoho-oauthtoken ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const responseText = await response.text();
-  console.log('Zoho API Response:', {
-    status: response.status,
-    statusText: response.statusText,
-    body: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '') // Truncate long responses
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to create lead in Zoho: ${response.status} - ${responseText}`);
-  }
-
-  let result: any;
-  try {
-    result = JSON.parse(responseText);
-  } catch (parseError) {
-    throw new Error(`Failed to parse Zoho response: ${responseText.substring(0, 200)}`);
-  }
-
-  console.log('Parsed Zoho response structure:', {
-    hasData: !!result.data,
-    dataLength: result.data?.length,
-    firstDataItem: result.data?.[0] ? Object.keys(result.data[0]) : 'no data'
-  });
-
-  // Handle Zoho CRM API response format
-  if (result.data && Array.isArray(result.data) && result.data.length > 0) {
-    const firstResult = result.data[0];
+    console.log('Creating lead with data:', JSON.stringify(leadData, null, 2));
     
-    // Handle error responses
-    if (firstResult.status === 'error' || firstResult.status === 'failed') {
-      const errorMessage = firstResult.message || firstResult.details || JSON.stringify(firstResult);
-      console.error('Zoho API Error Details:', firstResult);
-      throw new Error(`Zoho API Error: ${errorMessage}`);
+    const payload = {
+      data: [leadData],
+    };
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Authorization: `Zoho-oauthtoken ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const responseText = await response.text();
+    console.log('Zoho API Response:', {
+      status: response.status,
+      statusText: response.statusText,
+      body: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '') // Truncate long responses
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create lead in Zoho: ${response.status} - ${responseText}`);
     }
-    
-    // Handle success responses - Zoho can return different success formats
-    if (firstResult.status === 'success') {
-      // Try different possible ID locations
-      const possibleIds = [
-        firstResult.details?.id,
-        firstResult.id,
-        firstResult.record?.id
-      ].filter(id => id);
+
+    let result: ZohoCRMResponse;
+    try {
+      result = JSON.parse(responseText) as ZohoCRMResponse;
+    } catch (parseError) {
+      throw new Error(`Failed to parse Zoho response: ${responseText.substring(0, 200)}`);
+    }
+
+    console.log('Parsed Zoho response structure:', {
+      hasData: !!result.data,
+      dataLength: result.data?.length,
+      firstDataItem: result.data?.[0] ? Object.keys(result.data[0]) : 'no data'
+    });
+
+    // Handle Zoho CRM API response format
+    if (result.data && Array.isArray(result.data) && result.data.length > 0) {
+      const firstResult = result.data[0];
       
-      if (possibleIds.length > 0) {
-        const leadId = possibleIds[0];
-        console.log('Successfully created lead with ID:', leadId);
-        return leadId;
+      // Handle error responses
+      if (firstResult.status === 'error' || firstResult.status === 'failed') {
+        const errorMessage = firstResult.message || firstResult.details || JSON.stringify(firstResult);
+        console.error('Zoho API Error Details:', firstResult);
+        throw new Error(`Zoho API Error: ${errorMessage}`);
       }
       
-      // If no ID found but status is success, it might be a bulk operation
-      console.log('Success response but no ID found:', firstResult);
-      throw new Error('Lead created successfully but no ID returned');
+      // Handle success responses - Zoho can return different success formats
+      if (firstResult.status === 'success') {
+        // Try different possible ID locations
+        const possibleIds = [
+          firstResult.details?.id,
+          firstResult.id,
+          firstResult.record?.id
+        ].filter((id): id is string => typeof id === 'string' && id.length > 0);
+        
+        if (possibleIds.length > 0) {
+          const leadId = possibleIds[0];
+          console.log('Successfully created lead with ID:', leadId);
+          return leadId;
+        }
+        
+        // If no ID found but status is success, it might be a bulk operation
+        console.log('Success response but no ID found:', firstResult);
+        throw new Error('Lead created successfully but no ID returned');
+      }
     }
-  }
 
-  // Log full response for debugging unexpected formats
-  console.error('Unexpected Zoho response format:', JSON.stringify(result, null, 2));
-  throw new Error(`Failed to create lead - unexpected response format. Response: ${JSON.stringify(result).substring(0, 500)}`);
-}
+    // Log full response for debugging unexpected formats
+    console.error('Unexpected Zoho response format:', JSON.stringify(result, null, 2));
+    throw new Error(`Failed to create lead - unexpected response format. Response: ${JSON.stringify(result).substring(0, 500)}`);
+  }
 
   /* -----------------------------------------------------------------
      Main entry point – called by the API route.
      ----------------------------------------------------------------- */
   async createEnquiryLead(
     displayName: string,
-    sanitized: SanitizedEnquiry,
-    requestId: string // kept for traceability – you can delete if not needed
+    sanitized: SanitizedEnquiry
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ): Promise<{ leadId: string; success: boolean; error?: string }> {
     try {
+      console.log('Creating Zoho CRM lead for:', displayName);
+      
       // Build Lead Name from first and last name
       const leadName = `${sanitized.firstName} ${sanitized.lastName}`.trim();
 
@@ -230,18 +258,17 @@ export class ZohoCRMService {
         Lead_Name: leadName,
         Email: sanitized.email,
         Phone: sanitized.phone || '',
-        Mobile: sanitized.phone || '', // If you have a separate mobile field, map it here
+        Mobile: sanitized.phone || '',
         Lead_Source: `Website - ${sanitized.howDidYouHear}`,
         Referrer: sanitized.referrer || '',
       };
 
-      // (Optional) If your CRM has custom fields for UTMs, add them here:
-      // leadData.UTM_Source__c = sanitized.utm_source || '';
-      // leadData.UTM_Medium__c = sanitized.utm_medium || '';
-      // leadData.UTM_Campaign__c = sanitized.utm_campaign || '';
+      console.log('Sending lead data to Zoho:', leadData);
 
       const leadId = await this.createLeadInZoho(leadData);
 
+      console.log('Successfully created Zoho lead:', leadId);
+      
       return {
         leadId,
         success: true,

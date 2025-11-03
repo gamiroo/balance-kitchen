@@ -274,7 +274,7 @@ export async function POST(request: Request) {
       try {
         console.log('Creating lead in ZohoCRM...');
         const zohoService = new ZohoCRMService();
-        crmResult = await zohoService.createEnquiryLead(displayName, sanitized, requestId);
+        crmResult = await zohoService.createEnquiryLead(displayName, sanitized);
         
         if (crmResult.success) {
           console.log('ZohoCRM lead created successfully:', crmResult.leadId);
