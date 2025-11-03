@@ -135,35 +135,84 @@ export class ZohoCRMService {
   }
 
   private async createLeadInZoho(leadData: ZohoCRMLead): Promise<string> {
-    const accessToken = await this.getAccessToken();
-    const endpoint = `${this.apiDomain}/crm/v2/Leads`;
+  const accessToken = await this.getAccessToken();
+  const endpoint = `${this.apiDomain}/crm/v2/Leads`;
 
-    const payload = {
-      data: [leadData],
-    };
+  console.log('Creating lead with data:', JSON.stringify(leadData, null, 2));
+  
+  const payload = {
+    data: [leadData],
+  };
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        Authorization: `Zoho-oauthtoken ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      Authorization: `Zoho-oauthtoken ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to create lead in Zoho: ${response.status} - ${errorText}`);
-    }
+  const responseText = await response.text();
+  console.log('Zoho API Response:', {
+    status: response.status,
+    statusText: response.statusText,
+    body: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '') // Truncate long responses
+  });
 
-    const result: ZohoCRMResponse = await response.json();
-
-    if (result.data && result.data.length > 0 && result.data[0].status === 'success') {
-      return result.data[0].details.id;
-    }
-
-    throw new Error('Failed to create lead – unexpected response format');
+  if (!response.ok) {
+    throw new Error(`Failed to create lead in Zoho: ${response.status} - ${responseText}`);
   }
+
+  let result: any;
+  try {
+    result = JSON.parse(responseText);
+  } catch (parseError) {
+    throw new Error(`Failed to parse Zoho response: ${responseText.substring(0, 200)}`);
+  }
+
+  console.log('Parsed Zoho response structure:', {
+    hasData: !!result.data,
+    dataLength: result.data?.length,
+    firstDataItem: result.data?.[0] ? Object.keys(result.data[0]) : 'no data'
+  });
+
+  // Handle Zoho CRM API response format
+  if (result.data && Array.isArray(result.data) && result.data.length > 0) {
+    const firstResult = result.data[0];
+    
+    // Handle error responses
+    if (firstResult.status === 'error' || firstResult.status === 'failed') {
+      const errorMessage = firstResult.message || firstResult.details || JSON.stringify(firstResult);
+      console.error('Zoho API Error Details:', firstResult);
+      throw new Error(`Zoho API Error: ${errorMessage}`);
+    }
+    
+    // Handle success responses - Zoho can return different success formats
+    if (firstResult.status === 'success') {
+      // Try different possible ID locations
+      const possibleIds = [
+        firstResult.details?.id,
+        firstResult.id,
+        firstResult.record?.id
+      ].filter(id => id);
+      
+      if (possibleIds.length > 0) {
+        const leadId = possibleIds[0];
+        console.log('Successfully created lead with ID:', leadId);
+        return leadId;
+      }
+      
+      // If no ID found but status is success, it might be a bulk operation
+      console.log('Success response but no ID found:', firstResult);
+      throw new Error('Lead created successfully but no ID returned');
+    }
+  }
+
+  // Log full response for debugging unexpected formats
+  console.error('Unexpected Zoho response format:', JSON.stringify(result, null, 2));
+  throw new Error(`Failed to create lead - unexpected response format. Response: ${JSON.stringify(result).substring(0, 500)}`);
+}
 
   /* -----------------------------------------------------------------
      Main entry point – called by the API route.
