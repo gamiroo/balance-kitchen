@@ -1,5 +1,8 @@
-// src/lib/zoho-crm.ts
-interface ZohoCRMLead {
+/* -------------------------------------------------------------
+   src/lib/zoho-crm.ts
+   ------------------------------------------------------------- */
+
+export interface ZohoCRMLead {
   Lead_Name: string;      // Combined first + last name
   Email: string;          // Email address
   Phone?: string;         // Phone number
@@ -8,7 +11,7 @@ interface ZohoCRMLead {
   Referrer?: string;      // Who referred them
 }
 
-interface ZohoCRMResponse {
+export interface ZohoCRMResponse {
   data: Array<{
     details: {
       id: string;
@@ -17,6 +20,39 @@ interface ZohoCRMResponse {
   }>;
 }
 
+/* -----------------------------------------------------------------
+   A small type that mirrors the payload we get from the API route.
+   This eliminates the `any` usage.
+   ----------------------------------------------------------------- */
+export interface SanitizedEnquiry {
+  firstName: string;
+  lastName: string;
+  preferredName?: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  howDidYouHear: (typeof HEAR_OPTIONS)[number]; // reuse the array from the route
+  referrer?: string;
+  message: string;
+  utm_source?: string | null;
+  utm_medium?: string | null;
+  utm_campaign?: string | null;
+}
+
+const HEAR_OPTIONS = [
+  'Search Engine',
+  'Social Media',
+  'Friend / Family',
+  'Google Ads',
+  'Influencer / Blogger',
+  'Event / Conference',
+  'Online Forum / Community',
+  'Other',
+] as const;
+
+/* -----------------------------------------------------------------
+   Service that handles OAuth refresh + Lead creation.
+   ----------------------------------------------------------------- */
 export class ZohoCRMService {
   private accessToken?: string;
   private refreshToken: string;
@@ -35,7 +71,7 @@ export class ZohoCRMService {
     }
 
     const tokenEndpoint = 'https://accounts.zoho.com/oauth/v2/token';
-    
+
     const params = new URLSearchParams({
       grant_type: 'refresh_token',
       client_id: this.clientId,
@@ -56,14 +92,14 @@ export class ZohoCRMService {
       throw new Error(`Failed to refresh Zoho access token: ${response.status} - ${errorText}`);
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as { access_token?: string };
     this.accessToken = data.access_token;
-    
-    if (!this.accessToken || typeof this.accessToken !== 'string') {
+
+    if (!this.accessToken) {
       console.error('Zoho token response:', data);
-      throw new Error('Invalid access token response from Zoho - no access_token field');
+      throw new Error('Invalid access token response from Zoho – no access_token field');
     }
-    
+
     return this.accessToken;
   }
 
@@ -78,7 +114,7 @@ export class ZohoCRMService {
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
-        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+        Authorization: `Zoho-oauthtoken ${accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
@@ -90,41 +126,48 @@ export class ZohoCRMService {
     }
 
     const result: ZohoCRMResponse = await response.json();
-    
+
     if (result.data && result.data.length > 0 && result.data[0].status === 'success') {
       return result.data[0].details.id;
     }
-    
-    throw new Error('Failed to create lead - unexpected response format');
+
+    throw new Error('Failed to create lead – unexpected response format');
   }
 
+  /* -----------------------------------------------------------------
+     Main entry point – called by the API route.
+     ----------------------------------------------------------------- */
   async createEnquiryLead(
-    displayName: string, 
-    sanitized: any, 
-    requestId: string
+    displayName: string,
+    sanitized: SanitizedEnquiry,
+    requestId: string // kept for traceability – you can delete if not needed
   ): Promise<{ leadId: string; success: boolean; error?: string }> {
     try {
       // Build Lead Name from first and last name
       const leadName = `${sanitized.firstName} ${sanitized.lastName}`.trim();
 
       const leadData: ZohoCRMLead = {
-        Lead_Name: leadName,                          
-        Email: sanitized.email,                       
-        Phone: sanitized.phone || '',                 
-        Mobile: sanitized.phone || '',                
-        Lead_Source: `Website - ${sanitized.howDidYouHear}`, 
-        Referrer: sanitized.referrer || '',          
+        Lead_Name: leadName,
+        Email: sanitized.email,
+        Phone: sanitized.phone || '',
+        Mobile: sanitized.phone || '', // If you have a separate mobile field, map it here
+        Lead_Source: `Website - ${sanitized.howDidYouHear}`,
+        Referrer: sanitized.referrer || '',
       };
 
+      // (Optional) If your CRM has custom fields for UTMs, add them here:
+      // leadData.UTM_Source__c = sanitized.utm_source || '';
+      // leadData.UTM_Medium__c = sanitized.utm_medium || '';
+      // leadData.UTM_Campaign__c = sanitized.utm_campaign || '';
+
       const leadId = await this.createLeadInZoho(leadData);
-      
+
       return {
         leadId,
         success: true,
       };
     } catch (error) {
       console.error('Error creating Zoho CRM lead:', error);
-      
       return {
         leadId: '',
         success: false,

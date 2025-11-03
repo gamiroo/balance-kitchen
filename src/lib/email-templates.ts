@@ -10,12 +10,12 @@ export interface EmailData {
     email: string;
     phone?: string;
     subject: string;
-    howDidYouHear: string;
+    howDidYouHear: 'Search Engine' | 'Social Media' | 'Friend / Family' | 'Google Ads' | 'Influencer / Blogger' | 'Event / Conference' | 'Online Forum / Community' | 'Other'; // Match HEAR_OPTIONS type
     referrer?: string;
     message: string;
-    utm_source?: string;
-    utm_medium?: string;
-    utm_campaign?: string;
+    utm_source?: string | null;
+    utm_medium?: string | null;
+    utm_campaign?: string | null;
   };
   utmParts: string[];
 }

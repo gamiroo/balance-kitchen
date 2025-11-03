@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
 import { generateAdminEmailHTML, generateConfirmationEmailHTML } from '../../../lib/email-templates';
-import { ZohoCRMService } from '../../../lib/zoho-crm';
+import { ZohoCRMService, SanitizedEnquiry } from '../../../lib/zoho-crm';
 
 // Environment variables
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@yourdomain.com';
@@ -208,16 +208,16 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
 
-  // Sanitize inputs
-  const sanitized = {
+   // Build sanitized data directly as SanitizedEnquiry
+  const sanitized: SanitizedEnquiry = {
     firstName: sanitize(data.firstName),
     lastName: sanitize(data.lastName),
-    preferredName: data.preferredName ? sanitize(data.preferredName) : '',
+    preferredName: data.preferredName ? sanitize(data.preferredName) : undefined,
     email: data.email.toLowerCase().trim(),
-    phone: sanitize(data.phone || ''),
-    subject: sanitize(data.subject),
+    phone: data.phone ? sanitize(data.phone) : undefined,
+    subject: sanitize(data.subject), // Always string due to validation
     howDidYouHear: data.howDidYouHear,
-    referrer: sanitize(data.referrer || ''),
+    referrer: data.referrer ? sanitize(data.referrer) : undefined,
     message: data.message.trim(),
     utm_source: data.utm_source ? sanitize(data.utm_source) : undefined,
     utm_medium: data.utm_medium ? sanitize(data.utm_medium) : undefined,
@@ -230,14 +230,18 @@ export async function POST(request: Request) {
 
   // UTM summary
   const utmParts = ['utm_source', 'utm_medium', 'utm_campaign']
-    .filter((k) => (sanitized as Record<string, string | undefined>)[k])
-    .map((k) => `${k}: ${(sanitized as Record<string, string | undefined>)[k]}`);
+    .filter((k) => sanitized[k as keyof SanitizedEnquiry])
+    .map((k) => `${k}: ${sanitized[k as keyof SanitizedEnquiry]}`);
 
   // Generate request ID
   const requestId = crypto.randomUUID();
 
-  // Initialize CRM result
-  let crmResult = { leadId: '', success: false, error: '' };
+  // Initialize CRM result with proper type
+  let crmResult: { leadId: string; success: boolean; error?: string } = { 
+    leadId: '', 
+    success: false 
+  };
+
 
   try {
     const transporter = createTransporter();
@@ -251,7 +255,8 @@ export async function POST(request: Request) {
     const emailData = {
       displayName,
       sanitized,
-      utmParts
+      utmParts,
+      subject: sanitized.subject || 'General Enquiry'
     };
 
     // Create lead in ZohoCRM (if enabled and credentials are available)
@@ -259,7 +264,7 @@ export async function POST(request: Request) {
       try {
         console.log('Creating lead in ZohoCRM...');
         const zohoService = new ZohoCRMService();
-        let crmResult: { leadId: string; success: boolean; error?: string } = { leadId: '', success: false };
+        crmResult = await zohoService.createEnquiryLead(displayName, sanitized, requestId);
         
         if (crmResult.success) {
           console.log('ZohoCRM lead created successfully:', crmResult.leadId);
