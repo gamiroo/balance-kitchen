@@ -14,7 +14,7 @@ export async function GET() {
   
   const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=${scope}&client_id=${clientId}&response_type=code&access_type=offline&redirect_uri=${redirectUri}&prompt=${prompt}`;
   
-  console.log('Zoho Auth URL:', authUrl); // For debugging
+  console.log('Zoho Auth URL:', authUrl);
   
   return NextResponse.redirect(authUrl);
 }
