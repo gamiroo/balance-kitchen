@@ -244,42 +244,44 @@ export class ZohoCRMService {
      Main entry point – called by the API route.
      ----------------------------------------------------------------- */
   async createEnquiryLead(
-    displayName: string,
-    sanitized: SanitizedEnquiry
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ): Promise<{ leadId: string; success: boolean; error?: string }> {
-    try {
-      console.log('Creating Zoho CRM lead for:', displayName);
-      
-      // Build Lead Name from first and last name
-      const leadName = `${sanitized.firstName} ${sanitized.lastName}`.trim();
+  displayName: string,
+  sanitized: SanitizedEnquiry
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+): Promise<{ leadId: string; success: boolean; error?: string }> {
+  try {
+    console.log('Creating Zoho CRM lead for:', displayName);
+    
+    // Build Lead Name from first and last name
+    const leadName = `${sanitized.firstName} ${sanitized.lastName}`.trim();
 
-      const leadData: ZohoCRMLead = {
-        Lead_Name: leadName,
-        Email: sanitized.email,
-        Phone: sanitized.phone || '',
-        Mobile: sanitized.phone || '',
-        Lead_Source: `Website - ${sanitized.howDidYouHear}`,
-        // Referrer: sanitized.referrer || '',
-      };
+    const leadData: ZohoCRMLead = {
+      Lead_Name: leadName,
+      First_Name: sanitized.firstName,
+      Last_Name: sanitized.lastName,
+      Email: sanitized.email,
+      Phone: sanitized.phone || '',
+      Mobile: sanitized.phone || '',
+      Lead_Source: `Website - ${sanitized.howDidYouHear}`,
+      // Remove Referrer field temporarily due to field type issue
+    };
 
-      console.log('Sending lead data to Zoho:', leadData);
+    console.log('Sending lead data to Zoho:', leadData);
 
-      const leadId = await this.createLeadInZoho(leadData);
+    const leadId = await this.createLeadInZoho(leadData);
 
-      console.log('Successfully created Zoho lead:', leadId);
-      
-      return {
-        leadId,
-        success: true,
-      };
-    } catch (error) {
-      console.error('Error creating Zoho CRM lead:', error);
-      return {
-        leadId: '',
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
-      };
-    }
+    console.log('Successfully created Zoho lead:', leadId);
+    
+    return {
+      leadId,
+      success: true,
+    };
+  } catch (error) {
+    console.error('Error creating Zoho CRM lead:', error);
+    return {
+      leadId: '',
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    };
   }
+}
 }
