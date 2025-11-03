@@ -38,6 +38,28 @@ export async function GET(request: Request) {
     });
   }
 
+  // Use the correct data center for token exchange
+  const dataCenter = process.env.ZOHO_DATA_CENTER || 'AU';
+  let tokenDomain = 'https://accounts.zoho.com.au';
+  
+  switch (dataCenter.toUpperCase()) {
+    case 'US':
+      tokenDomain = 'https://accounts.zoho.com';
+      break;
+    case 'AU':
+      tokenDomain = 'https://accounts.zoho.com.au';
+      break;
+    case 'EU':
+      tokenDomain = 'https://accounts.zoho.eu';
+      break;
+    case 'IN':
+      tokenDomain = 'https://accounts.zoho.in';
+      break;
+    case 'CN':
+      tokenDomain = 'https://accounts.zoho.com.cn';
+      break;
+  }
+
   try {
     const params = new URLSearchParams({
       code: code,
@@ -51,8 +73,9 @@ export async function GET(request: Request) {
     console.log('- code:', code ? `***${code.slice(-4)}` : 'MISSING');
     console.log('- client_id:', clientId ? `***${clientId.slice(-4)}` : 'MISSING');
     console.log('- redirect_uri:', 'https://balance-kitchen.vercel.app/api/zoho/callback');
+    console.log('- token endpoint:', `${tokenDomain}/oauth/v2/token`);
 
-    const tokenResponse = await fetch('https://accounts.zoho.com/oauth/v2/token', {
+    const tokenResponse = await fetch(`${tokenDomain}/oauth/v2/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -132,6 +155,7 @@ export async function GET(request: Request) {
             <li>Redirect URI not authorized</li>
             <li>Client not configured for offline access</li>
             <li>Authorization code expired or already used</li>
+            <li>Wrong data center endpoint</li>
           </ul>
           <p>Check server logs for more details.</p>
           <p style="margin-top: 20px;"><a href="/api/zoho/auth" style="color: #007bff;">Try again</a></p>

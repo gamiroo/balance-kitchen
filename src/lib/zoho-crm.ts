@@ -58,11 +58,42 @@ export class ZohoCRMService {
   private refreshToken: string;
   private clientId: string;
   private clientSecret: string;
+  private dataCenter: string;
+  private apiDomain: string;
 
   constructor() {
     this.clientId = process.env.ZOHO_CLIENT_ID!;
     this.clientSecret = process.env.ZOHO_CLIENT_SECRET!;
     this.refreshToken = process.env.ZOHO_REFRESH_TOKEN!;
+    
+    // Detect data center from environment or default to AU
+    const dataCenter = process.env.ZOHO_DATA_CENTER || 'AU';
+    
+    switch (dataCenter.toUpperCase()) {
+      case 'US':
+        this.dataCenter = 'https://accounts.zoho.com';
+        this.apiDomain = 'https://www.zohoapis.com';
+        break;
+      case 'AU':
+        this.dataCenter = 'https://accounts.zoho.com.au';
+        this.apiDomain = 'https://www.zohoapis.com.au';
+        break;
+      case 'EU':
+        this.dataCenter = 'https://accounts.zoho.eu';
+        this.apiDomain = 'https://www.zohoapis.eu';
+        break;
+      case 'IN':
+        this.dataCenter = 'https://accounts.zoho.in';
+        this.apiDomain = 'https://www.zohoapis.in';
+        break;
+      case 'CN':
+        this.dataCenter = 'https://accounts.zoho.com.cn';
+        this.apiDomain = 'https://www.zohoapis.com.cn';
+        break;
+      default:
+        this.dataCenter = 'https://accounts.zoho.com.au';
+        this.apiDomain = 'https://www.zohoapis.com.au';
+    }
   }
 
   private async getAccessToken(): Promise<string> {
@@ -70,7 +101,7 @@ export class ZohoCRMService {
       return this.accessToken;
     }
 
-    const tokenEndpoint = 'https://accounts.zoho.com/oauth/v2/token';
+    const tokenEndpoint = `${this.dataCenter}/oauth/v2/token`;
 
     const params = new URLSearchParams({
       grant_type: 'refresh_token',
@@ -105,7 +136,7 @@ export class ZohoCRMService {
 
   private async createLeadInZoho(leadData: ZohoCRMLead): Promise<string> {
     const accessToken = await this.getAccessToken();
-    const endpoint = 'https://www.zohoapis.com/crm/v2/Leads';
+    const endpoint = `${this.apiDomain}/crm/v2/Leads`;
 
     const payload = {
       data: [leadData],
