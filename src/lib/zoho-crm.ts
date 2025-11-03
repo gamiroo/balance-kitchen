@@ -260,7 +260,7 @@ export class ZohoCRMService {
         Phone: sanitized.phone || '',
         Mobile: sanitized.phone || '',
         Lead_Source: `Website - ${sanitized.howDidYouHear}`,
-        Referrer: sanitized.referrer || '',
+        // Referrer: sanitized.referrer || '',
       };
 
       console.log('Sending lead data to Zoho:', leadData);
