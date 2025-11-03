@@ -3,13 +3,13 @@
    ------------------------------------------------------------- */
 
 interface ZohoCRMLead {
-  Lead_Name: string;      // Combined first + last name
-  Email: string;          // Email address
-  Phone?: string;         // Phone number
-  Mobile?: string;        // Mobile number
-  Lead_Source: string;    // How they found you
-  Referrer?: string;      // Who referred them
-  [key: string]: string | number | boolean | undefined;     // Allow additional fields
+  Lead_Name: string;      
+  Email: string;          
+  Phone?: string;         
+  Mobile?: string;        
+  Lead_Source: string;    
+  Referrer?: string;      
+  [key: string]: string | number | boolean | undefined;
 }
 
 interface ZohoCRMResponseDataItem {
@@ -262,7 +262,7 @@ export class ZohoCRMService {
       Phone: sanitized.phone || '',
       Mobile: sanitized.phone || '',
       Lead_Source: `Website - ${sanitized.howDidYouHear}`,
-      // Remove Referrer field temporarily due to field type issue
+      Description: sanitized.message,
     };
 
     console.log('Sending lead data to Zoho:', leadData);
