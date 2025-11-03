@@ -12,6 +12,7 @@ const SMTP_PORT = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : 
 const SMTP_USER = process.env.SMTP_USER || 'your-admin@yourdomain.com';
 const SMTP_PASS = process.env.SMTP_PASS || 'your-app-password';
 
+
 // Optional: Recaptcha
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
 const ENABLE_RECAPTCHA = Boolean(RECAPTCHA_SECRET_KEY);
@@ -23,6 +24,15 @@ const ENABLE_RATE_LIMIT = Boolean(UPSTASH_REDIS_URL && UPSTASH_REDIS_TOKEN);
 
 // Optional: ZohoCRM Integration
 const ENABLE_CRM = process.env.ZOHO_CLIENT_ID && process.env.ZOHO_CLIENT_SECRET && process.env.ZOHO_REFRESH_TOKEN;
+
+// Add this right after the environment variable declarations
+console.log('=== ZOHO ENVIRONMENT VARIABLES ===');
+console.log('ZOHO_CLIENT_ID:', process.env.ZOHO_CLIENT_ID ? '✅ SET' : '❌ MISSING');
+console.log('ZOHO_CLIENT_SECRET:', process.env.ZOHO_CLIENT_SECRET ? '✅ SET' : '❌ MISSING');
+console.log('ZOHO_REFRESH_TOKEN:', process.env.ZOHO_REFRESH_TOKEN ? '✅ SET' : '❌ MISSING');
+console.log('ENABLE_CRM:', ENABLE_CRM ? '✅ ENABLED' : '❌ DISABLED');
+console.log('====================================');
+
 
 // Define the interface for rate limiter
 interface RateLimiter {
