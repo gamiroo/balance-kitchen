@@ -18,7 +18,7 @@
 
 .modalContent {
   background: 
-    linear-gradient(rgba(39, 35, 12, 0.13), rgba(39, 35, 12, 0.152)),
+    linear-gradient(rgba(37, 33, 8, 0.845), rgba(255, 239, 150, 0.385)),
     url('/images/hero-bg1.jpg') bottom/cover no-repeat;
   background-blend-mode: overlay;
   border-radius: 16px;
