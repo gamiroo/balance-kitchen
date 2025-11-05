@@ -3,56 +3,6 @@
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.514);
-}
-
-.foodImage {
-  position: absolute;
-  opacity: 0.15;
-  filter: blur(2px);
-  transform: rotate(-15deg);
-  border-radius: 12px;
-  mix-blend-mode: screen;
-}
-
-.foodImage:nth-child(1) {
-  top: 10%;
-  left: 5%;
-  width: 300px;
-  height: 250px;
-  transform: rotate(-10deg);
-}
-
-.foodImage:nth-child(2) {
-  top: 10%;
-  right: 8%;
-  width: 300px;
-  height: 250px;
-  transform: rotate(12deg);
-}
-
-.foodImage:nth-child(3) {
-  bottom: 30%;
-  left: 30%;
-  width: 300px;
-  height: 250px;
-  transform: rotate(8deg);
-}
-
-.foodImage:nth-child(4) {
-  bottom: 15%;
-  right: 12%;
-  width: 300px;
-  height: 250px;
-  transform: rotate(-8deg);
-}
-
-.foodImage:nth-child(5) {
-  top: 50%;
-  left: 0%;
-  width: 300px;
-  height: 250px;
-  transform: rotate(15deg);
 }
 
 .formWrapper {
@@ -67,8 +17,8 @@
   width: 100%;
   margin: 0 auto;
   padding: 30px;
-  background: #35320651;
-  backdrop-filter: blur(24px);
+  background: #211f02af;
+  backdrop-filter: blur(34px);
   border-radius: 20px;
   position: relative;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);

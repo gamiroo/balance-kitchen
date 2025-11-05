@@ -446,415 +446,377 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   };
 
   return (
-    <div className={styles.formWrapper}>
-      <div className={styles.modalBackground}>
-        <Image 
-          src="/images/dishes/butter-chicken.png" 
-          alt="" 
-          width={200} 
-          height={150} 
-          className={styles.foodImage}
-          unoptimized
-        />
-        <Image 
-          src="/images/dishes/chicken-chimichurri.png" 
-          alt="" 
-          width={180} 
-          height={180} 
-          className={styles.foodImage}
-          unoptimized
-        />
-        <Image 
-          src="/images/dishes/honeysoy-salmon.png" 
-          alt="" 
-          width={220} 
-          height={160} 
-          className={styles.foodImage}
-          unoptimized
-        />
-        <Image 
-          src="/images/dishes/lemon-barra.png" 
-          alt="" 
-          width={190} 
-          height={190} 
-          className={styles.foodImage}
-          unoptimized
-        />
-        <Image 
-          src="/images/dishes/steak-pesto.png" 
-          alt="" 
-          width={160} 
-          height={160} 
-          className={styles.foodImage}
-          unoptimized
-        />
-      </div>
-      <form
-        onSubmit={handleSubmit}
-        className={styles.form}
-        aria-describedby="form-description"
-        noValidate
-      >
-        <div id="form-description" className={styles.srOnly}>
-          Required fields are marked with an asterisk (*)
-        </div>
+    <>
+      <div className={styles.modalBackground}></div>
+      <div className={styles.formWrapper}>
+        <form
+          onSubmit={handleSubmit}
+          className={styles.form}
+          aria-describedby="form-description"
+          noValidate
+        >
+          <div id="form-description" className={styles.srOnly}>
+            Required fields are marked with an asterisk (*)
+          </div>
 
-        <ProgressIndicator />
+          <ProgressIndicator />
 
-        <div className={styles.formContent}>
-          {/* Step 1: Personal Details */}
-          {currentStep === 'personal' && (
-            <div className={styles.stepContent}>
-              <h2 className={styles.stepTitle}>Your Details</h2>
-              <p className={styles.stepSubtitle}>Let us know who you are</p>
-              
-              <div className={styles.formGrid}>
-                <div className={styles.formRow}>
+          <div className={styles.formContent}>
+            {/* Step 1: Personal Details */}
+            {currentStep === 'personal' && (
+              <div className={styles.stepContent}>
+                <h2 className={styles.stepTitle}>Your Details</h2>
+                <p className={styles.stepSubtitle}>Let us know who you are</p>
+                
+                <div className={styles.formGrid}>
+                  <div className={styles.formRow}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="firstName" className={styles.label}>
+                        First Name *
+                      </label>
+                      <AnimatedGradientBorder isActive={focusedInput === 'firstName'}>
+                        <input
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          required
+                          disabled={isDisabled}
+                          className={`${styles.input} ${errors.firstName ? styles.invalid : ''}`}
+                          placeholder="Jane"
+                          aria-invalid={!!errors.firstName}
+                          aria-describedby={errors.firstName ? 'firstName-error' : undefined}
+                          autoComplete="given-name"
+                          onFocus={() => handleFocus('firstName')}
+                          onBlur={() => handleBlur('firstName')}
+                        />
+                      </AnimatedGradientBorder>
+                      {errors.firstName && (
+                        <span id="firstName-error" className={styles.errorText}>
+                          {errors.firstName}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label htmlFor="lastName" className={styles.label}>
+                        Last Name *
+                      </label>
+                      <AnimatedGradientBorder isActive={focusedInput === 'lastName'}>
+                        <input
+                          type="text"
+                          id="lastName"
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          required
+                          disabled={isDisabled}
+                          className={`${styles.input} ${errors.lastName ? styles.invalid : ''}`}
+                          placeholder="Doe"
+                          aria-invalid={!!errors.lastName}
+                          aria-describedby={errors.lastName ? 'lastName-error' : undefined}
+                          autoComplete="family-name"
+                          onFocus={() => handleFocus('lastName')}
+                          onBlur={() => handleBlur('lastName')}
+                        />
+                      </AnimatedGradientBorder>
+                      {errors.lastName && (
+                        <span id="lastName-error" className={styles.errorText}>
+                          {errors.lastName}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
                   <div className={styles.formGroup}>
-                    <label htmlFor="firstName" className={styles.label}>
-                      First Name *
+                    <label htmlFor="preferredName" className={styles.label}>
+                      Preferred Name <span className={styles.optionalLabel}>(optional)</span>
                     </label>
-                    <AnimatedGradientBorder isActive={focusedInput === 'firstName'}>
+                    <AnimatedGradientBorder isActive={focusedInput === 'preferredName'}>
                       <input
                         type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        required
-                        disabled={isDisabled}
-                        className={`${styles.input} ${errors.firstName ? styles.invalid : ''}`}
-                        placeholder="Jane"
-                        aria-invalid={!!errors.firstName}
-                        aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-                        autoComplete="given-name"
-                        onFocus={() => handleFocus('firstName')}
-                        onBlur={() => handleBlur('firstName')}
-                      />
-                    </AnimatedGradientBorder>
-                    {errors.firstName && (
-                      <span id="firstName-error" className={styles.errorText}>
-                        {errors.firstName}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="lastName" className={styles.label}>
-                      Last Name *
-                    </label>
-                    <AnimatedGradientBorder isActive={focusedInput === 'lastName'}>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                        disabled={isDisabled}
-                        className={`${styles.input} ${errors.lastName ? styles.invalid : ''}`}
-                        placeholder="Doe"
-                        aria-invalid={!!errors.lastName}
-                        aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-                        autoComplete="family-name"
-                        onFocus={() => handleFocus('lastName')}
-                        onBlur={() => handleBlur('lastName')}
-                      />
-                    </AnimatedGradientBorder>
-                    {errors.lastName && (
-                      <span id="lastName-error" className={styles.errorText}>
-                        {errors.lastName}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="preferredName" className={styles.label}>
-                    Preferred Name <span className={styles.optionalLabel}>(optional)</span>
-                  </label>
-                  <AnimatedGradientBorder isActive={focusedInput === 'preferredName'}>
-                    <input
-                      type="text"
-                      id="preferredName"
-                      name="preferredName"
-                      value={formData.preferredName}
-                      onChange={handleChange}
-                      disabled={isDisabled}
-                      className={styles.input}
-                      placeholder="Janey"
-                      autoComplete="nickname"
-                      onFocus={() => handleFocus('preferredName')}
-                      onBlur={() => handleBlur('preferredName')}
-                    />
-                  </AnimatedGradientBorder>
-                </div>
-
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label htmlFor="email" className={styles.label}>
-                      Email Address *
-                    </label>
-                    <AnimatedGradientBorder isActive={focusedInput === 'email'}>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        disabled={isDisabled}
-                        className={`${styles.input} ${errors.email ? styles.invalid : ''}`}
-                        placeholder="jane@example.com"
-                        aria-invalid={!!errors.email}
-                        aria-describedby={errors.email ? 'email-error' : undefined}
-                        autoComplete="email"
-                        onFocus={() => handleFocus('email')}
-                        onBlur={() => handleBlur('email')}
-                      />
-                    </AnimatedGradientBorder>
-                    {errors.email && (
-                      <span id="email-error" className={styles.errorText}>
-                        {errors.email}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="phone" className={styles.label}>
-                      Phone Number <span className={styles.optionalLabel}>(optional)</span>
-                    </label>
-                    <AnimatedGradientBorder isActive={focusedInput === 'phone'}>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
+                        id="preferredName"
+                        name="preferredName"
+                        value={formData.preferredName}
                         onChange={handleChange}
                         disabled={isDisabled}
                         className={styles.input}
-                        placeholder="04XX XXX XXX"
-                        autoComplete="tel"
-                        onFocus={() => handleFocus('phone')}
-                        onBlur={() => handleBlur('phone')}
+                        placeholder="Janey"
+                        autoComplete="nickname"
+                        onFocus={() => handleFocus('preferredName')}
+                        onBlur={() => handleBlur('preferredName')}
                       />
                     </AnimatedGradientBorder>
                   </div>
-                </div>
-              </div>
 
-              <div className={styles.stepActions}>
-                <div></div>
-                <CTAButton
-                  type="button"
-                  onClick={handleNext}
-                  aria-label="Continue to next step"
-                >
-                  Continue
-                </CTAButton>
-              </div>
-            </div>
-          )}
+                  <div className={styles.formRow}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor="email" className={styles.label}>
+                        Email Address *
+                      </label>
+                      <AnimatedGradientBorder isActive={focusedInput === 'email'}>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          disabled={isDisabled}
+                          className={`${styles.input} ${errors.email ? styles.invalid : ''}`}
+                          placeholder="jane@example.com"
+                          aria-invalid={!!errors.email}
+                          aria-describedby={errors.email ? 'email-error' : undefined}
+                          autoComplete="email"
+                          onFocus={() => handleFocus('email')}
+                          onBlur={() => handleBlur('email')}
+                        />
+                      </AnimatedGradientBorder>
+                      {errors.email && (
+                        <span id="email-error" className={styles.errorText}>
+                          {errors.email}
+                        </span>
+                      )}
+                    </div>
 
-          {/* Step 2: Enquiry Details */}
-          {currentStep === 'enquiry' && (
-            <div className={styles.stepContent}>
-              <h2 className={styles.stepTitle}>Your Message</h2>
-              <p className={styles.stepSubtitle}>Tell us how we can help you</p>
-              
-              <div className={styles.formGrid}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="subject" className={styles.label}>
-                    Subject
-                  </label>
-                  <AnimatedGradientBorder isActive={focusedInput === 'subject'}>
-                    <select
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      disabled={isDisabled}
-                      className={styles.input}
-                      onFocus={() => handleFocus('subject')}
-                      onBlur={() => handleBlur('subject')}
-                    >
-                      <option value="Website Enquiry">General Enquiry</option>
-                      <option value="Meal Plan">Meal Plan Information</option>
-                      <option value="Pricing">Pricing Question</option>
-                      <option value="Delivery">Delivery Inquiry</option>
-                      <option value="Other" className={styles.option}>Other</option>
-                    </select>
-                  </AnimatedGradientBorder>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="howDidYouHear" className={styles.label}>
-                    How Did You Hear About Us *
-                  </label>
-                  <AnimatedGradientBorder isActive={focusedInput === 'howDidYouHear'}>
-                    <select
-                      id="howDidYouHear"
-                      name="howDidYouHear"
-                      value={formData.howDidYouHear}
-                      onChange={handleChange}
-                      disabled={isDisabled}
-                      className={`${styles.input} ${errors.howDidYouHear ? styles.invalid : ''}`}
-                      aria-invalid={!!errors.howDidYouHear}
-                      aria-describedby={errors.howDidYouHear ? 'howDidYouHear-error' : undefined}
-                      onFocus={() => handleFocus('howDidYouHear')}
-                      onBlur={() => handleBlur('howDidYouHear')}
-                    >
-                      {HEAR_OPTIONS.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  </AnimatedGradientBorder>
-                  {errors.howDidYouHear && (
-                    <span id="howDidYouHear-error" className={styles.errorText}>
-                      {errors.howDidYouHear}
-                    </span>
-                  )}
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="referrer" className={styles.label}>
-                    Referrer <span className={styles.optionalLabel}>(optional)</span>
-                  </label>
-                  <AnimatedGradientBorder isActive={focusedInput === 'referrer'}>
-                    <input
-                      type="text"
-                      id="referrer"
-                      name="referrer"
-                      value={formData.referrer}
-                      onChange={handleChange}
-                      disabled={isDisabled}
-                      className={styles.input}
-                      placeholder="Who referred you?"
-                      onFocus={() => handleFocus('referrer')}
-                      onBlur={() => handleBlur('referrer')}
-                    />
-                  </AnimatedGradientBorder>
-                  <div className={styles.helperText}>Send your referrer a thank you gift</div>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label htmlFor="message" className={styles.label}>
-                    Your Message *
-                  </label>
-                  <AnimatedGradientBorder isActive={focusedInput === 'message'}>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleMessageChange}
-                      required
-                      rows={6}
-                      disabled={isDisabled}
-                      className={`${styles.textarea} ${errors.message ? styles.invalid : ''}`}
-                      placeholder="Tell us how we can help you..."
-                      aria-invalid={!!errors.message}
-                      aria-describedby={errors.message ? 'message-error' : undefined}
-                      onFocus={() => handleFocus('message')}
-                      onBlur={() => handleBlur('message')}
-                    />
-                  </AnimatedGradientBorder>
-                  <div className={styles.charCounter}>
-                    {messageLength}/{MAX_MESSAGE_LENGTH} characters
+                    <div className={styles.formGroup}>
+                      <label htmlFor="phone" className={styles.label}>
+                        Phone Number <span className={styles.optionalLabel}>(optional)</span>
+                      </label>
+                      <AnimatedGradientBorder isActive={focusedInput === 'phone'}>
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          disabled={isDisabled}
+                          className={styles.input}
+                          placeholder="04XX XXX XXX"
+                          autoComplete="tel"
+                          onFocus={() => handleFocus('phone')}
+                          onBlur={() => handleBlur('phone')}
+                        />
+                      </AnimatedGradientBorder>
+                    </div>
                   </div>
-                  {errors.message && (
-                    <span id="message-error" className={styles.errorText}>
-                      {errors.message}
-                    </span>
-                  )}
+                </div>
+
+                <div className={styles.stepActions}>
+                  <div></div>
+                  <CTAButton
+                    type="button"
+                    onClick={handleNext}
+                    aria-label="Continue to next step"
+                  >
+                    Continue
+                  </CTAButton>
                 </div>
               </div>
+            )}
 
-              <div className={styles.stepActions}>
-                <CTAButton
-                  type="button"
-                  onClick={handleBack}
-                  aria-label="Go back to previous step"
-                >
-                  Back
-                </CTAButton>
-                <CTAButton
-                  type="button"
-                  onClick={handleNext}
-                  aria-label="Continue to review"
-                >
-                  Review
-                </CTAButton>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Review */}
-          {currentStep === 'review' && (
-            <div className={styles.stepContent}>
-              <h2 className={styles.stepTitle}>Review & Send</h2>
-              <p className={styles.stepSubtitle}>Please review your information before sending</p>
-              
-              <ReviewSection />
-
-              <div className={styles.stepActions}>
-                <CTAButton
-                  type="button"
-                  onClick={handleBack}
-                  aria-label="Go back to edit"
-                >
-                  Back to Edit
-                </CTAButton>
+            {/* Step 2: Enquiry Details */}
+            {currentStep === 'enquiry' && (
+              <div className={styles.stepContent}>
+                <h2 className={styles.stepTitle}>Your Message</h2>
+                <p className={styles.stepSubtitle}>Tell us how we can help you</p>
                 
-                <div className={styles.finalSubmit}>
-                  {showSuccessMessage && (
-                    <div className={styles.successMessage} role="alert">
-                      <div style={{ fontSize: '1.1em', fontWeight: 600, marginBottom: '8px' }}>
-                        🎉 Thank You for Your Enquiry!
-                      </div>
-                      <div>
-                        We&#39;ve received your message and will get back to you within 24 hours.
-                      </div>
-                      <div style={{ marginTop: '8px', fontSize: '0.9em', opacity: 0.9 }}>
-                        A confirmation email has been sent to {formData.email || 'your email'}.
-                      </div>
-                    </div>
-                  )}
+                <div className={styles.formGrid}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="subject" className={styles.label}>
+                      Subject
+                    </label>
+                    <AnimatedGradientBorder isActive={focusedInput === 'subject'}>
+                      <select
+                        id="subject"
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        disabled={isDisabled}
+                        className={styles.input}
+                        onFocus={() => handleFocus('subject')}
+                        onBlur={() => handleBlur('subject')}
+                      >
+                        <option value="Website Enquiry">General Enquiry</option>
+                        <option value="Meal Plan">Meal Plan Information</option>
+                        <option value="Pricing">Pricing Question</option>
+                        <option value="Delivery">Delivery Inquiry</option>
+                        <option value="Other" className={styles.option}>Other</option>
+                      </select>
+                    </AnimatedGradientBorder>
+                  </div>
 
-                  {submitStatus === 'error' && !showSuccessMessage && (
-                    <div className={styles.errorMessage} role="alert">
-                      <div style={{ marginBottom: '8px' }}>
-                        {serverError || 'Sorry, there was an error sending your enquiry. Please try again.'}
-                      </div>
-                      <div className={styles.errorHelp}>
-                        If the problem persists, please contact us directly at{' '}
-                        <a 
-                          href="mailto:hello@balancekitchen.com" 
-                          style={{ color: '#991b1b', fontWeight: 600 }}
-                        >
-                          hello@balancekitchen.com
-                        </a>
-                      </div>
-                    </div>
-                  )}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="howDidYouHear" className={styles.label}>
+                      How Did You Hear About Us *
+                    </label>
+                    <AnimatedGradientBorder isActive={focusedInput === 'howDidYouHear'}>
+                      <select
+                        id="howDidYouHear"
+                        name="howDidYouHear"
+                        value={formData.howDidYouHear}
+                        onChange={handleChange}
+                        disabled={isDisabled}
+                        className={`${styles.input} ${errors.howDidYouHear ? styles.invalid : ''}`}
+                        aria-invalid={!!errors.howDidYouHear}
+                        aria-describedby={errors.howDidYouHear ? 'howDidYouHear-error' : undefined}
+                        onFocus={() => handleFocus('howDidYouHear')}
+                        onBlur={() => handleBlur('howDidYouHear')}
+                      >
+                        {HEAR_OPTIONS.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    </AnimatedGradientBorder>
+                    {errors.howDidYouHear && (
+                      <span id="howDidYouHear-error" className={styles.errorText}>
+                        {errors.howDidYouHear}
+                      </span>
+                    )}
+                  </div>
 
-                  {!showSuccessMessage && (
-                    <CTAButton
-                      type="submit"
-                      loading={isSubmitting}
-                      disabled={isSubmitting}
-                      aria-label="Send enquiry"
-                    >
-                      {isSubmitting ? 'Sending...' : 'Send Enquiry'}
-                    </CTAButton>
-                  )}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="referrer" className={styles.label}>
+                      Referrer <span className={styles.optionalLabel}>(optional)</span>
+                    </label>
+                    <AnimatedGradientBorder isActive={focusedInput === 'referrer'}>
+                      <input
+                        type="text"
+                        id="referrer"
+                        name="referrer"
+                        value={formData.referrer}
+                        onChange={handleChange}
+                        disabled={isDisabled}
+                        className={styles.input}
+                        placeholder="Who referred you?"
+                        onFocus={() => handleFocus('referrer')}
+                        onBlur={() => handleBlur('referrer')}
+                      />
+                    </AnimatedGradientBorder>
+                    <div className={styles.helperText}>Send your referrer a thank you gift</div>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="message" className={styles.label}>
+                      Your Message *
+                    </label>
+                    <AnimatedGradientBorder isActive={focusedInput === 'message'}>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleMessageChange}
+                        required
+                        rows={6}
+                        disabled={isDisabled}
+                        className={`${styles.textarea} ${errors.message ? styles.invalid : ''}`}
+                        placeholder="Tell us how we can help you..."
+                        aria-invalid={!!errors.message}
+                        aria-describedby={errors.message ? 'message-error' : undefined}
+                        onFocus={() => handleFocus('message')}
+                        onBlur={() => handleBlur('message')}
+                      />
+                    </AnimatedGradientBorder>
+                    <div className={styles.charCounter}>
+                      {messageLength}/{MAX_MESSAGE_LENGTH} characters
+                    </div>
+                    {errors.message && (
+                      <span id="message-error" className={styles.errorText}>
+                        {errors.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.stepActions}>
+                  <CTAButton
+                    type="button"
+                    onClick={handleBack}
+                    aria-label="Go back to previous step"
+                  >
+                    Back
+                  </CTAButton>
+                  <CTAButton
+                    type="button"
+                    onClick={handleNext}
+                    aria-label="Continue to review"
+                  >
+                    Review
+                  </CTAButton>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-      </form>
-    </div>
+            )}
+
+            {/* Step 3: Review */}
+            {currentStep === 'review' && (
+              <div className={styles.stepContent}>
+                <h2 className={styles.stepTitle}>Review & Send</h2>
+                <p className={styles.stepSubtitle}>Please review your information before sending</p>
+                
+                <ReviewSection />
+
+                <div className={styles.stepActions}>
+                  <CTAButton
+                    type="button"
+                    onClick={handleBack}
+                    aria-label="Go back to edit"
+                  >
+                    Back to Edit
+                  </CTAButton>
+                  
+                  <div className={styles.finalSubmit}>
+                    {showSuccessMessage && (
+                      <div className={styles.successMessage} role="alert">
+                        <div style={{ fontSize: '1.1em', fontWeight: 600, marginBottom: '8px' }}>
+                          🎉 Thank You for Your Enquiry!
+                        </div>
+                        <div>
+                          We&#39;ve received your message and will get back to you within 24 hours.
+                        </div>
+                        <div style={{ marginTop: '8px', fontSize: '0.9em', opacity: 0.9 }}>
+                          A confirmation email has been sent to {formData.email || 'your email'}.
+                        </div>
+                      </div>
+                    )}
+
+                    {submitStatus === 'error' && !showSuccessMessage && (
+                      <div className={styles.errorMessage} role="alert">
+                        <div style={{ marginBottom: '8px' }}>
+                          {serverError || 'Sorry, there was an error sending your enquiry. Please try again.'}
+                        </div>
+                        <div className={styles.errorHelp}>
+                          If the problem persists, please contact us directly at{' '}
+                          <a 
+                            href="mailto:hello@balancekitchen.com" 
+                            style={{ color: '#991b1b', fontWeight: 600 }}
+                          >
+                            hello@balancekitchen.com
+                          </a>
+                        </div>
+                      </div>
+                    )}
+
+                    {!showSuccessMessage && (
+                      <CTAButton
+                        type="submit"
+                        loading={isSubmitting}
+                        disabled={isSubmitting}
+                        aria-label="Send enquiry"
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Enquiry'}
+                      </CTAButton>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </form>
+      </div>
+    </>
+    
   );
 };

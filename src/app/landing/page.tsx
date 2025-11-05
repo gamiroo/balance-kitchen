@@ -102,13 +102,12 @@ export default function MainPage() {
         <Footer />
       </div>
 
-      {/* MODAL FOR JOTFORM - Simple embed without spinner */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         title="Join Balance Kitchen"
       >
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '30px' }}>
           <EnquiryForm 
             onSubmitSuccess={closeModal}
             onSubmitError={() => console.log('Form submission failed')}
