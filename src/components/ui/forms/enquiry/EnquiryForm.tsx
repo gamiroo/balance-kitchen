@@ -3,10 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { CTAButton } from '../../CTAButton/CTAButton';
 import styles from './EnquiryForm.module.css';
+import { AnimatedGradientBorder } from '../../animated-border/AnimatedGradientBorder';
 
 interface EnquiryFormProps {
   onSubmitSuccess?: () => void;
   onSubmitError?: () => void;
+  isOpen?: boolean;
 }
 
 const HEAR_OPTIONS = [
@@ -35,12 +37,12 @@ type FormData = {
 };
 
 const MAX_MESSAGE_LENGTH = 500;
+const FORM_STORAGE_KEY = 'enquiryForm';
 
 function isValidHearOption(value: string): value is HearOption {
   return (HEAR_OPTIONS as readonly string[]).includes(value);
 }
 
-// Define proper types for gtag function
 interface GtagFunction {
   (command: string, eventName: string, parameters?: {
     event_category?: string;
@@ -56,6 +58,7 @@ interface WindowWithGtag extends Window {
 export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   onSubmitSuccess,
   onSubmitError,
+  isOpen = true,
 }) => {
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
@@ -76,10 +79,30 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   const [serverError, setServerError] = useState<string>('');
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [currentStep, setCurrentStep] = useState<'personal' | 'enquiry' | 'review'>('personal');
+  const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
   useEffect(() => {
+    if (isOpen) {
+      loadSavedFormData();
+    } else {
+      clearForm();
+    }
+
+    if (isOpen) {
+      const firstInput = document.getElementById('firstName');
+      firstInput?.focus();
+    }
+
+    return () => {
+      if (!isOpen) {
+        clearForm();
+      }
+    };
+  }, [isOpen]);
+
+  const loadSavedFormData = () => {
     try {
-      const savedData = localStorage.getItem('enquiryForm');
+      const savedData = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedData) {
         const parsed = JSON.parse(savedData) as Partial<FormData>;
         const merged: FormData = {
@@ -99,12 +122,34 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         setMessageLength(merged.message.length);
       }
     } catch {
-      localStorage.removeItem('enquiryForm');
+      localStorage.removeItem(FORM_STORAGE_KEY);
     }
+  };
 
-    const firstInput = document.getElementById('firstName');
-    firstInput?.focus();
-  }, []);
+  const clearForm = () => {
+    setFormData({
+      firstName: '',
+      lastName: '',
+      preferredName: '',
+      email: '',
+      phone: '',
+      subject: 'Website Enquiry',
+      howDidYouHear: HEAR_OPTIONS[0],
+      referrer: '',
+      message: '',
+    });
+    
+    setErrors({});
+    setIsSubmitting(false);
+    setSubmitStatus('idle');
+    setMessageLength(0);
+    setServerError('');
+    setShowSuccessMessage(false);
+    setCurrentStep('personal');
+    setFocusedInput(null);
+    
+    localStorage.removeItem(FORM_STORAGE_KEY);
+  };
 
   const validateForm = (data: FormData = formData, step?: 'personal' | 'enquiry') => {
     const newErrors: Record<string, string> = {};
@@ -160,8 +205,8 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     }
 
     try {
-      const newData = { ...formData, [name]: value } as FormData;
-      localStorage.setItem('enquiryForm', JSON.stringify(newData));
+      const newData = { ...formData, [name]: value };
+      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(newData));
     } catch {
       // ignore
     }
@@ -181,8 +226,8 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     }
 
     try {
-      const newData = { ...formData, message: value } as FormData;
-      localStorage.setItem('enquiryForm', JSON.stringify(newData));
+      const newData = { ...formData, message: value };
+      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(newData));
     } catch {
       // ignore
     }
@@ -196,16 +241,20 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   const handleNext = () => {
     if (currentStep === 'personal' && validateForm(formData, 'personal')) {
       setCurrentStep('enquiry');
+      setFocusedInput(null);
     } else if (currentStep === 'enquiry' && validateForm(formData, 'enquiry')) {
       setCurrentStep('review');
+      setFocusedInput(null);
     }
   };
 
   const handleBack = () => {
     if (currentStep === 'enquiry') {
       setCurrentStep('personal');
+      setFocusedInput(null);
     } else if (currentStep === 'review') {
       setCurrentStep('enquiry');
+      setFocusedInput(null);
     }
   };
 
@@ -220,6 +269,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     setSubmitStatus('idle');
     setServerError('');
     setShowSuccessMessage(false);
+    setFocusedInput(null);
 
     try {
       if (typeof window !== 'undefined') {
@@ -247,8 +297,6 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         utm_campaign: getUtmParam('utm_campaign'),
       };
 
-      console.log('Submitting enquiry:', payload);
-
       const response = await fetch('/api/enquiry', {
         method: 'POST',
         headers: {
@@ -260,19 +308,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
       if (response.ok) {
         setSubmitStatus('success');
         setShowSuccessMessage(true);
-        setFormData({
-          firstName: '',
-          lastName: '',
-          preferredName: '',
-          email: '',
-          phone: '',
-          subject: 'Website Enquiry',
-          howDidYouHear: HEAR_OPTIONS[0],
-          referrer: '',
-          message: '',
-        });
-        setMessageLength(0);
-        localStorage.removeItem('enquiryForm');
+        clearForm();
         onSubmitSuccess?.();
 
         if (typeof window !== 'undefined') {
@@ -288,11 +324,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         setTimeout(() => {
           setShowSuccessMessage(false);
           setSubmitStatus('idle');
-          setCurrentStep('personal');
         }, 10000);
       } else {
         const errorData: { error?: string; message?: string } = await response.json().catch(() => ({}));
-        console.error('Server responded with error:', errorData);
         
         setServerError(
           errorData.error || 
@@ -304,8 +338,6 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         onSubmitError?.();
       }
     } catch (error: unknown) {
-      console.error('Error submitting form:', error);
-      
       const errorMessage = error instanceof Error ? error.message : 'Failed to submit form. Please check your connection and try again.';
       setServerError(errorMessage);
       setSubmitStatus('error');
@@ -318,7 +350,6 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
 
   const isDisabled = isSubmitting || (submitStatus === 'success' && showSuccessMessage);
 
-  // Progress indicator component
   const ProgressIndicator = () => (
     <div className={styles.progressContainer}>
       <div className={styles.progressBar}>
@@ -346,7 +377,6 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     </div>
   );
 
-  // Review section
   const ReviewSection = () => (
     <div className={styles.reviewSection}>
       <h3 className={styles.reviewTitle}>Review Your Information</h3>
@@ -401,6 +431,14 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     </div>
   );
 
+  const handleFocus = (fieldName: string) => {
+    setFocusedInput(fieldName);
+  };
+
+  const handleBlur = (fieldName: string) => {
+    setFocusedInput(null);
+  };
+
   return (
     <div className={styles.formWrapper}>
       <form
@@ -428,20 +466,24 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                     <label htmlFor="firstName" className={styles.label}>
                       First Name *
                     </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      required
-                      disabled={isDisabled}
-                      className={`${styles.input} ${errors.firstName ? styles.invalid : ''}`}
-                      placeholder="Jane"
-                      aria-invalid={!!errors.firstName}
-                      aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-                      autoComplete="given-name"
-                    />
+                    <AnimatedGradientBorder isActive={focusedInput === 'firstName'}>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                        disabled={isDisabled}
+                        className={`${styles.input} ${errors.firstName ? styles.invalid : ''}`}
+                        placeholder="Jane"
+                        aria-invalid={!!errors.firstName}
+                        aria-describedby={errors.firstName ? 'firstName-error' : undefined}
+                        autoComplete="given-name"
+                        onFocus={() => handleFocus('firstName')}
+                        onBlur={() => handleBlur('firstName')}
+                      />
+                    </AnimatedGradientBorder>
                     {errors.firstName && (
                       <span id="firstName-error" className={styles.errorText}>
                         {errors.firstName}
@@ -453,20 +495,24 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                     <label htmlFor="lastName" className={styles.label}>
                       Last Name *
                     </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      required
-                      disabled={isDisabled}
-                      className={`${styles.input} ${errors.lastName ? styles.invalid : ''}`}
-                      placeholder="Doe"
-                      aria-invalid={!!errors.lastName}
-                      aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-                      autoComplete="family-name"
-                    />
+                    <AnimatedGradientBorder isActive={focusedInput === 'lastName'}>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                        disabled={isDisabled}
+                        className={`${styles.input} ${errors.lastName ? styles.invalid : ''}`}
+                        placeholder="Doe"
+                        aria-invalid={!!errors.lastName}
+                        aria-describedby={errors.lastName ? 'lastName-error' : undefined}
+                        autoComplete="family-name"
+                        onFocus={() => handleFocus('lastName')}
+                        onBlur={() => handleBlur('lastName')}
+                      />
+                    </AnimatedGradientBorder>
                     {errors.lastName && (
                       <span id="lastName-error" className={styles.errorText}>
                         {errors.lastName}
@@ -479,17 +525,21 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                   <label htmlFor="preferredName" className={styles.label}>
                     Preferred Name <span className={styles.optionalLabel}>(optional)</span>
                   </label>
-                  <input
-                    type="text"
-                    id="preferredName"
-                    name="preferredName"
-                    value={formData.preferredName}
-                    onChange={handleChange}
-                    disabled={isDisabled}
-                    className={styles.input}
-                    placeholder="Janey"
-                    autoComplete="nickname"
-                  />
+                  <AnimatedGradientBorder isActive={focusedInput === 'preferredName'}>
+                    <input
+                      type="text"
+                      id="preferredName"
+                      name="preferredName"
+                      value={formData.preferredName}
+                      onChange={handleChange}
+                      disabled={isDisabled}
+                      className={styles.input}
+                      placeholder="Janey"
+                      autoComplete="nickname"
+                      onFocus={() => handleFocus('preferredName')}
+                      onBlur={() => handleBlur('preferredName')}
+                    />
+                  </AnimatedGradientBorder>
                 </div>
 
                 <div className={styles.formRow}>
@@ -497,20 +547,24 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                     <label htmlFor="email" className={styles.label}>
                       Email Address *
                     </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      disabled={isDisabled}
-                      className={`${styles.input} ${errors.email ? styles.invalid : ''}`}
-                      placeholder="jane@example.com"
-                      aria-invalid={!!errors.email}
-                      aria-describedby={errors.email ? 'email-error' : undefined}
-                      autoComplete="email"
-                    />
+                    <AnimatedGradientBorder isActive={focusedInput === 'email'}>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        disabled={isDisabled}
+                        className={`${styles.input} ${errors.email ? styles.invalid : ''}`}
+                        placeholder="jane@example.com"
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'email-error' : undefined}
+                        autoComplete="email"
+                        onFocus={() => handleFocus('email')}
+                        onBlur={() => handleBlur('email')}
+                      />
+                    </AnimatedGradientBorder>
                     {errors.email && (
                       <span id="email-error" className={styles.errorText}>
                         {errors.email}
@@ -522,23 +576,27 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                     <label htmlFor="phone" className={styles.label}>
                       Phone Number <span className={styles.optionalLabel}>(optional)</span>
                     </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      disabled={isDisabled}
-                      className={styles.input}
-                      placeholder="+1 (555) 123-4567"
-                      autoComplete="tel"
-                    />
+                    <AnimatedGradientBorder isActive={focusedInput === 'phone'}>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        disabled={isDisabled}
+                        className={styles.input}
+                        placeholder="+1 (555) 123-4567"
+                        autoComplete="tel"
+                        onFocus={() => handleFocus('phone')}
+                        onBlur={() => handleBlur('phone')}
+                      />
+                    </AnimatedGradientBorder>
                   </div>
                 </div>
               </div>
 
               <div className={styles.stepActions}>
-                <div></div> {/* Spacer for alignment */}
+                <div></div>
                 <CTAButton
                   type="button"
                   onClick={handleNext}
@@ -561,42 +619,50 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                   <label htmlFor="subject" className={styles.label}>
                     Subject
                   </label>
-                  <select
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    disabled={isDisabled}
-                    className={styles.input}
-                  >
-                    <option value="Website Enquiry">General Enquiry</option>
-                    <option value="Meal Plan">Meal Plan Information</option>
-                    <option value="Pricing">Pricing Question</option>
-                    <option value="Delivery">Delivery Inquiry</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  <AnimatedGradientBorder isActive={focusedInput === 'subject'}>
+                    <select
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      disabled={isDisabled}
+                      className={styles.input}
+                      onFocus={() => handleFocus('subject')}
+                      onBlur={() => handleBlur('subject')}
+                    >
+                      <option value="Website Enquiry">General Enquiry</option>
+                      <option value="Meal Plan">Meal Plan Information</option>
+                      <option value="Pricing">Pricing Question</option>
+                      <option value="Delivery">Delivery Inquiry</option>
+                      <option value="Other" className={styles.option}>Other</option>
+                    </select>
+                  </AnimatedGradientBorder>
                 </div>
 
                 <div className={styles.formGroup}>
                   <label htmlFor="howDidYouHear" className={styles.label}>
                     How Did You Hear About Us *
                   </label>
-                  <select
-                    id="howDidYouHear"
-                    name="howDidYouHear"
-                    value={formData.howDidYouHear}
-                    onChange={handleChange}
-                    disabled={isDisabled}
-                    className={`${styles.input} ${errors.howDidYouHear ? styles.invalid : ''}`}
-                    aria-invalid={!!errors.howDidYouHear}
-                    aria-describedby={errors.howDidYouHear ? 'howDidYouHear-error' : undefined}
-                  >
-                    {HEAR_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
+                  <AnimatedGradientBorder isActive={focusedInput === 'howDidYouHear'}>
+                    <select
+                      id="howDidYouHear"
+                      name="howDidYouHear"
+                      value={formData.howDidYouHear}
+                      onChange={handleChange}
+                      disabled={isDisabled}
+                      className={`${styles.input} ${errors.howDidYouHear ? styles.invalid : ''}`}
+                      aria-invalid={!!errors.howDidYouHear}
+                      aria-describedby={errors.howDidYouHear ? 'howDidYouHear-error' : undefined}
+                      onFocus={() => handleFocus('howDidYouHear')}
+                      onBlur={() => handleBlur('howDidYouHear')}
+                    >
+                      {HEAR_OPTIONS.map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                  </AnimatedGradientBorder>
                   {errors.howDidYouHear && (
                     <span id="howDidYouHear-error" className={styles.errorText}>
                       {errors.howDidYouHear}
@@ -608,16 +674,20 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                   <label htmlFor="referrer" className={styles.label}>
                     Referrer <span className={styles.optionalLabel}>(optional)</span>
                   </label>
-                  <input
-                    type="text"
-                    id="referrer"
-                    name="referrer"
-                    value={formData.referrer}
-                    onChange={handleChange}
-                    disabled={isDisabled}
-                    className={styles.input}
-                    placeholder="Who referred you?"
-                  />
+                  <AnimatedGradientBorder isActive={focusedInput === 'referrer'}>
+                    <input
+                      type="text"
+                      id="referrer"
+                      name="referrer"
+                      value={formData.referrer}
+                      onChange={handleChange}
+                      disabled={isDisabled}
+                      className={styles.input}
+                      placeholder="Who referred you?"
+                      onFocus={() => handleFocus('referrer')}
+                      onBlur={() => handleBlur('referrer')}
+                    />
+                  </AnimatedGradientBorder>
                   <div className={styles.helperText}>Send your referrer a thank you gift</div>
                 </div>
 
@@ -625,19 +695,23 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                   <label htmlFor="message" className={styles.label}>
                     Your Message *
                   </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleMessageChange}
-                    required
-                    rows={6}
-                    disabled={isDisabled}
-                    className={`${styles.textarea} ${errors.message ? styles.invalid : ''}`}
-                    placeholder="Tell us how we can help you..."
-                    aria-invalid={!!errors.message}
-                    aria-describedby={errors.message ? 'message-error' : undefined}
-                  />
+                  <AnimatedGradientBorder isActive={focusedInput === 'message'}>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleMessageChange}
+                      required
+                      rows={6}
+                      disabled={isDisabled}
+                      className={`${styles.textarea} ${errors.message ? styles.invalid : ''}`}
+                      placeholder="Tell us how we can help you..."
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
+                      onFocus={() => handleFocus('message')}
+                      onBlur={() => handleBlur('message')}
+                    />
+                  </AnimatedGradientBorder>
                   <div className={styles.charCounter}>
                     {messageLength}/{MAX_MESSAGE_LENGTH} characters
                   </div>

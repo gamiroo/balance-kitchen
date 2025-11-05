@@ -147,81 +147,175 @@
   gap: 20px;
 }
 
+/* Input Container */
 .formGroup {
   display: flex;
   flex-direction: column;
 }
 
+/* Label Styling */
 .label {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffc33e;
-  margin-bottom: 8px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: #ffc33e;
+  border-radius: 50%;
 }
 
 .optionalLabel {
-  color: #9ca3af;
-  font-weight: 500;
-  margin-left: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  margin-left: 8px;
   font-size: 0.85rem;
 }
 
 .helperText {
-  color: #9ca3af;
-  font-size: 0.8rem;
-  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin-top: 8px;
+  font-weight: 400;
 }
 
+/* Input Styling */
 .input,
 .textarea {
   width: 100%;
-  padding: 14px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  padding: 16px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
   font-size: 1rem;
   font-family: inherit;
-  background-color: #ffffff3c;
+  background: rgba(255, 255, 255, 0.04);
   color: #ffffff;
-  backdrop-filter: blur(8px);
-  transition: all 0.2s ease;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  margin: 0;
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: #cbd5e1;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
 }
 
 .input:focus,
 .textarea:focus {
   outline: none;
-  border-color: #ffc33e;
-  box-shadow: 0 0 0 3px rgba(255, 195, 62, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
 }
 
+.input:hover:not(:focus):not(.invalid),
+.textarea:hover:not(:focus):not(.invalid) {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Invalid State */
 .input.invalid,
 .textarea.invalid {
   border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+  background: rgba(239, 68, 68, 0.05);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 0 0 4px rgba(239, 68, 68, 0.1);
 }
 
+.input.invalid:focus,
+.textarea.invalid:focus {
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 0 0 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Select Dropdown Styling */
+select.input {
+  appearance: none;
+  padding-right: 45px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffc33e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 15px center;
+  background-size: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.option {
+  background-color: #18d165;
+  color: #f0e7ff; 
+}
+
+select.input option {
+  background-color: #17131b;
+  color: #f0e7ff; 
+}
+
+select.input:hover {
+  background-color: rgba(40, 40, 55, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+select.input:focus {
+  background-color: rgba(45, 45, 60, 0.95);
+  border-color: rgba(255, 195, 62, 0.5);
+  outline: none;
+}
+
+select.input.invalid {
+  background-color: rgba(50, 30, 35, 0.8);
+  border-color: #ef4444;
+}
+
+/* Textarea Specific Styling */
 .textarea {
-  resize: vertical;
-  min-height: 140px;
+  resize: none;
+  min-height: 160px;
+  line-height: 1.6;
 }
 
+/* Character Counter */
 .charCounter {
-  font-size: 0.8rem;
-  color: #cbd5e1;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
   text-align: right;
-  margin-top: 6px;
+  margin-top: 8px;
+  font-weight: 500;
 }
 
+.charCounter.warning {
+  color: #f59e0b;
+}
+
+.charCounter.error {
+  color: #ef4444;
+}
+
+/* Error Text */
 .errorText {
   color: #ef4444;
   font-size: 0.85rem;
-  margin-top: 4px;
-  display: block;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.errorText::before {
+  content: '⚠';
+  font-size: 0.9rem;
 }
 
 /* Step Actions */
@@ -363,6 +457,25 @@
   .errorMessage {
     max-width: 100%;
   }
+  
+  .input,
+  .textarea {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+  
+  .label {
+    font-size: 0.9rem;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+  }
+  
+  select.input {
+    background-position: calc(100% - 16px) calc(1em + 2px),
+                         calc(100% - 12px) calc(1em + 2px);
+  }
 }
 
 @media (max-width: 480px) {
@@ -388,6 +501,7 @@
   .textarea {
     padding: 12px 14px;
     font-size: 0.95rem;
+    border-radius: 12px;
   }
   
   .reviewItem {
@@ -397,6 +511,16 @@
   
   .reviewLabel {
     min-width: auto;
+  }
+  
+  .label {
+    font-size: 0.85rem;
+  }
+  
+  select.input {
+    background-position: calc(100% - 14px) calc(1em + 2px),
+                         calc(100% - 11px) calc(1em + 2px);
+    background-size: 4px 4px, 4px 4px;
   }
 }
 

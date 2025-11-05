@@ -20,12 +20,6 @@ export async function GET(request: Request) {
   const clientId = process.env.ZOHO_CLIENT_ID;
   const clientSecret = process.env.ZOHO_CLIENT_SECRET;
 
-  // Debug: Show what credentials we're using
-  console.log('=== ZOHO CREDENTIALS DEBUG ===');
-  console.log('Client ID from env:', clientId ? `***${clientId.slice(-8)}` : 'MISSING');
-  console.log('Client Secret from env:', clientSecret ? `***${clientSecret.slice(-8)}` : 'MISSING');
-  console.log('Code from URL:', code ? `***${code.slice(-8)}` : 'MISSING');
-  console.log('==============================');
 
   if (!clientId || !clientSecret) {
     return new NextResponse(`
