@@ -5,15 +5,17 @@ interface AnimatedGradientBorderProps {
   children: ReactNode;
   className?: string;
   isActive?: boolean;
+  isInfinite?: boolean;
 }
 
 export const AnimatedGradientBorder = ({
   children,
   className = '',
   isActive = false,
+  isInfinite = false,
 }: AnimatedGradientBorderProps) => {
   return (
-    <div className={`${styles.box} ${className} ${isActive ? styles.active : ''}`}>
+    <div className={`${styles.box} ${className} ${isActive ? styles.active : ''} ${isInfinite ? styles.infinite : ''}`}>
       {children}
     </div>
   );

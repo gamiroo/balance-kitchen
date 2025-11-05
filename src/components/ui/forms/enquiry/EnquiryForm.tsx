@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { CTAButton } from '../../CTAButton/CTAButton';
 import styles from './EnquiryForm.module.css';
 import { AnimatedGradientBorder } from '../../animated-border/AnimatedGradientBorder';
@@ -378,10 +379,11 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   );
 
   const ReviewSection = () => (
-    <div className={styles.reviewSection}>
-      <h3 className={styles.reviewTitle}>Review Your Information</h3>
-      
-      <div className={styles.reviewGrid}>
+  <div className={styles.reviewSection}>
+    <h3 className={styles.reviewTitle}>Review Your Information</h3>
+    
+    <div className={styles.reviewGrid}>
+      <AnimatedGradientBorder isInfinite={true}>
         <div className={styles.reviewCard}>
           <h4>Your Details</h4>
           <div className={styles.reviewItem}>
@@ -405,7 +407,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             </div>
           )}
         </div>
+      </AnimatedGradientBorder>
 
+      <AnimatedGradientBorder isInfinite={true}>
         <div className={styles.reviewCard}>
           <h4>Your Enquiry</h4>
           <div className={styles.reviewItem}>
@@ -427,9 +431,11 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             <span className={styles.reviewMessage}>{formData.message}</span>
           </div>
         </div>
-      </div>
+      </AnimatedGradientBorder>
     </div>
-  );
+  </div>
+);
+
 
   const handleFocus = (fieldName: string) => {
     setFocusedInput(fieldName);
@@ -441,6 +447,48 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
 
   return (
     <div className={styles.formWrapper}>
+      <div className={styles.modalBackground}>
+        <Image 
+          src="/images/dishes/butter-chicken.png" 
+          alt="" 
+          width={200} 
+          height={150} 
+          className={styles.foodImage}
+          unoptimized
+        />
+        <Image 
+          src="/images/dishes/chicken-chimichurri.png" 
+          alt="" 
+          width={180} 
+          height={180} 
+          className={styles.foodImage}
+          unoptimized
+        />
+        <Image 
+          src="/images/dishes/honeysoy-salmon.png" 
+          alt="" 
+          width={220} 
+          height={160} 
+          className={styles.foodImage}
+          unoptimized
+        />
+        <Image 
+          src="/images/dishes/lemon-barra.png" 
+          alt="" 
+          width={190} 
+          height={190} 
+          className={styles.foodImage}
+          unoptimized
+        />
+        <Image 
+          src="/images/dishes/steak-pesto.png" 
+          alt="" 
+          width={160} 
+          height={160} 
+          className={styles.foodImage}
+          unoptimized
+        />
+      </div>
       <form
         onSubmit={handleSubmit}
         className={styles.form}
@@ -585,7 +633,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                         onChange={handleChange}
                         disabled={isDisabled}
                         className={styles.input}
-                        placeholder="+1 (555) 123-4567"
+                        placeholder="04XX XXX XXX"
                         autoComplete="tel"
                         onFocus={() => handleFocus('phone')}
                         onBlur={() => handleBlur('phone')}

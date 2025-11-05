@@ -18,7 +18,8 @@
   transition: background 0.3s ease;
 }
 
-.box.active::before {
+.box.active::before,
+.box.infinite::before {
   background: linear-gradient(
     var(--angle), 
     #ffc23e80, #ffc23e80, #ffc23e80, #ffc23e80,
@@ -29,9 +30,16 @@
     #f5b3259d,
     #ffc23e80, #ffc23e80, #ffc23e80, #ffc23e80
   );
-  animation: rotate 3s linear forwards;
   filter: brightness(1.3) saturate(2.8) contrast(1.2);
   box-shadow: 0 0 45px rgba(255, 255, 0, 0.3);
+}
+
+.box.active::before {
+  animation: rotate 4s linear forwards;
+}
+
+.box.infinite::before {
+  animation: rotate 13s linear infinite;
 }
 
 @keyframes rotate {
