@@ -2,20 +2,20 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { AboutSection } from "../../components/about-section/About";
-import { Header } from "../../components/Header";
-import { Hero } from "../../components/Hero";
-import TestimonialsSection from "../../components/TestimonialSection";
-import FAQAccordion from "../../components/FAQAccordion";
+import { AboutSection } from "../../components/frontend/about-section/About";
+import { Header } from "../../components/frontend/header/Header";
+import { Hero } from "../../components/frontend/hero/Hero";
+import TestimonialsSection from "../../components/frontend/testimonials/TestimonialSection";
+import FAQAccordion from "../../components/frontend/faq/FAQAccordion";
 import styles from './page.module.css';
 import { faqs } from "../../data/faqData";
-import { AccountManagerStep } from "components/account-manager-step-1/AccountManagerStep";
-import { MealPlanSection } from "../../components/meal-plans-step-2/MealPlanSection";
-import { OrderingSection } from "components/ordering-step-3/OrderingSection";
-import { DeliverySection } from "components/delivery-step-4/DeliverySection";
-import { FeedbackSection } from "components/feedback-step-5/FeedbackSection";
-import { Footer } from "components/Footer";
-import { Modal } from "../../components/modal/Modal";
+import { AccountManagerStep } from "components/frontend/account-manager-step-1/AccountManagerStep";
+import { MealPlanSection } from "../../components/frontend/meal-packs-step-2/MealPacksSection";
+import { OrderingSection } from "components/frontend/ordering-step-3/OrderingSection";
+import { DeliverySection } from "components/frontend/delivery-step-4/DeliverySection";
+import { FeedbackSection } from "components/frontend/feedback-step-5/FeedbackSection";
+import { Footer } from "components/frontend/footer/Footer";
+import { Modal } from "../../components/ui/modal/Modal";
 import { EnquiryForm } from "components/ui/forms/enquiry/EnquiryForm";
 
 export default function MainPage() {

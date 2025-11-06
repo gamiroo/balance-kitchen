@@ -403,7 +403,6 @@ export const generateConfirmationEmailHTML = (data: EmailData, requestId: string
         <span class="sr-only" style="${modalThemeStyles.srOnly}">Request ID: </span>
         <strong>Request ID:</strong> ${requestId}<br>
         <span class="sr-only" style="${modalThemeStyles.srOnly}">This is an automated confirmation. Please do not reply to this email. </span>
-        This is an automated confirmation. Please do not reply to this email.
       </p>
       <p style="${modalThemeStyles.footerText}; margin-top: 16px;">
         © ${new Date().getFullYear()} Balance Kitchen • Made with ❤️ for healthy living

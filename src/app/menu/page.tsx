@@ -3,9 +3,9 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import DishCard from "../../components/DishCard";
+import DishCard from "../../components/dish/DishCard";
 import { dishData } from "../../data/dishData";
-import type { Dish } from "../../components/DishCard";
+import type { Dish } from "../../components/dish/DishCard";
 import { CTAButton } from "../../components/ui/CTAButton/CTAButton";
 import styles from './page.module.css';
 

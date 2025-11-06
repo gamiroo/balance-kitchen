@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { CTAButton } from '../../CTAButton/CTAButton';
 import styles from './EnquiryForm.module.css';
 import { AnimatedGradientBorder } from '../../animated-border/AnimatedGradientBorder';

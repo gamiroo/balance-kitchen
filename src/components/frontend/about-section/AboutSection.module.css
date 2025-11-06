@@ -1,0 +1,410 @@
+/* src/app/components/AboutSection.module.css */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: 2.5rem 0;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 5rem 0;
+  }
+}
+
+.imageContainer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.imageWrapper {
+  position: absolute;
+  width: 60%;
+  height: 30vh;
+}
+
+@media (min-width: 768px) {
+  .imageWrapper {
+    width: 40%;
+    height: 50vh;
+  }
+  
+  .rightImage {
+    height: 45vh;
+  }
+}
+
+/* Additional breakpoint for larger screens (17" laptops and above) */
+@media (min-width: 1200px) {
+  .imageWrapper {
+    width: 35%;
+    height: 45vh;
+  }
+  
+  .rightImage {
+    height: 40vh;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1500px) {
+  .imageWrapper {
+    width: 25%;
+    height: 40vh;
+  }
+  
+  .rightImage {
+    height: 35vh;
+  }
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 768px) {
+  .image {
+    border-radius: 1.5rem;
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  background-color: #000;
+}
+
+@media (min-width: 768px) {
+  .overlay {
+    border-radius: 1.5rem;
+  }
+}
+
+.leftImage .overlay {
+  opacity: 0.4;
+}
+
+.rightImage .overlay {
+  opacity: 0.3;
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  width: 100%;
+  max-width: 90rem;
+  position: relative;
+  background: #00000038;
+  backdrop-filter: blur(24px);
+  border-radius: 16px;
+  z-index: 10;
+}
+
+@media (min-width: 640px) {
+  .contentContainer {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contentContainer {
+    padding: 0 2rem;
+  }
+}
+
+.gradientBorder {
+  position: relative;
+  display: flex;
+  border-radius: 16px;
+  width: 75%;
+  margin: 0 auto;
+}
+
+.movingBorder {
+  position: relative;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .movingBorder {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .movingBorder {
+    margin-top: 3rem;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .contentWrapper {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contentWrapper {
+    padding: 2rem;
+  }
+}
+
+.textContent {
+  width: 100%;
+  max-width: 42rem;
+  text-align: center;
+}
+
+.heading {
+  font-size: 1.875rem;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  text-wrap: balance;
+}
+
+@media (min-width: 640px) {
+  .heading {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 2.375rem;
+  }
+}
+
+.badgeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.75rem;
+  opacity: 0.9;
+  backdrop-filter: blur(4px);
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 640px) {
+  .badge {
+    font-size: 0.875rem;
+  }
+}
+
+.description {
+  color: #d1d5db;
+  font-size: 1rem;
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .description {
+    font-size: 1.125rem;
+    padding: 1.25rem;
+  }
+}
+
+.strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.link {
+  color: #f87171;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: underline;
+}
+
+.link:focus {
+  outline: 2px solid #f87171;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.ctaContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.skipLink {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #fff;
+  color: #000;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  z-index: 50;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.skipLink:focus {
+  clip: auto;
+  clip-path: none;
+  overflow: visible;
+  width: auto;
+  height: auto;
+}
+
+.animatedBadge {
+  background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Read More Link Styles */
+.readMoreContainer {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.readMoreLink {
+  background: none;
+  border: none;
+  color: #ffc33e;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+}
+
+.readMoreLink:hover,
+.readMoreLink:focus {
+  color: #ffdb88;
+  text-decoration: none;
+  outline: 2px solid #ffc33e;
+  outline-offset: 2px;
+}
+
+/* Modal Content Styles */
+.modalContentWrapper {
+  padding: 1rem;
+  padding-bottom: 3rem;
+}
+
+.modalHeading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.modalBadges {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.modalBadge {
+  background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  color: #ffc33e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.modalTextContent {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.modalDescription {
+  color: #d1d5db;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.modalDescription:last-child {
+  margin-bottom: 0;
+}
+
+/* Modal CTA Button Container */
+.modalCtaContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+/* Responsive adjustments for modal content */
+@media (max-width: 768px) {
+  .modalHeading {
+    font-size: 1.75rem;
+  }
+  
+  .modalDescription {
+    font-size: 1rem;
+  }
+  
+  .modalBadges {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modalBadge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+  
+  .modalCtaContainer {
+    padding: 0 0.5rem;
+  }
+}
