@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import UniversalCard from '../ui/universal-card/UniversalCard';
-import styles from './styles/DishCard.module.css';
+import styles from './DishCard.module.css';
 
 export interface Dish {
   id: string;

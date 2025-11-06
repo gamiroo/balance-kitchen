@@ -4,7 +4,7 @@
 import Link from "next/link";
 import DishCard, { type Dish } from "./DishCard";
 import { CTAButton } from "../ui/CTAButton/CTAButton";
-import styles from './styles/DishGrid.module.css';
+import styles from './DishGrid.module.css';
 import { useState } from 'react';
 
 interface DishGridProps {
