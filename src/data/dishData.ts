@@ -1,5 +1,5 @@
 // data/dishData.ts
-import type { Dish } from '../components/dish/DishCard';
+import type { Dish } from '../components/ui/dish/DishCard';
 
 export const dishData: Dish[] = [
   // CARNIVORE DISHES

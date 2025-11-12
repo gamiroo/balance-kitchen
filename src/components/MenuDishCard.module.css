@@ -1,0 +1,224 @@
+/* app/components/MenuDishCard.module.css */
+.mealCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mealCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.imageContainer {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}
+
+.dishImage {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mealCard:hover .dishImage {
+  transform: scale(1.05);
+}
+
+.imageGradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.likeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.likeButton:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.likeIconDefault {
+  color: #666;
+}
+
+.likeIconLiked {
+  color: #ff4757;
+  fill: #ff4757;
+}
+
+.content {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.categoryBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categoryCarnivore {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.categoryBalanced {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.categoryVegetarian {
+  background: #f3e5f5;
+  color: #6a1b9a;
+}
+
+.categoryKeto {
+  background: #fff8e1;
+  color: #ff8f00;
+}
+
+.description {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.allergens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.allergen {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #f5f5f5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+.allergenIcon {
+  color: #f44336;
+}
+
+.allergenText {
+  color: #666;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quantityBtn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.quantityBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantityBtn:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+.quantity {
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.mealLabel {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .mealCard {
+    height: auto;
+  }
+  
+  .imageContainer {
+    height: 180px;
+  }
+  
+  .title {
+    font-size: 1.1rem;
+  }
+}

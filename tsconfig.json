@@ -18,11 +18,12 @@
         "name": "next"
       }
     ],
+    "typeRoots": ["./types", "./node_modules/@types"],
     "paths": {
       "@/*": ["./src/*"]
     },
     "baseUrl": "./src",
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../balance-pantry/src/lib/types.ts", "../balance-pantry/src/lib/utils.ts"],
+  "include": ["next-env.d.ts", "src/tests/test-helpers.d.ts", "types/**/*.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../balance-pantry/src/lib/types.ts", "../balance-pantry/src/lib/utils.ts"],
   "exclude": ["node_modules"]
 }

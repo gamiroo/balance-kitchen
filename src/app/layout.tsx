@@ -1,6 +1,7 @@
 import './globals.css'      // Tailwind base+components+utilities
 import { League_Spartan, Inter } from 'next/font/google'
 import { ZohoSalesIQ } from '../components/zoho/ZohoSalesIQ'
+import { SessionWrapper } from 'components/SessionWrapper'
 
 const inter = Inter({ subsets: ['latin'] })
 const leagueSpartan = League_Spartan({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] })
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${leagueSpartan.className}`}>
-        {children}
+        <SessionWrapper>{children}</SessionWrapper>
         <ZohoSalesIQ enabled={true} />
       </body>
     </html>

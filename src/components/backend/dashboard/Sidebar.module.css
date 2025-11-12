@@ -1,0 +1,170 @@
+/* components/dashboard/Sidebar.module.css - add these new styles */
+.sidebar {
+  width: 280px;
+  background: #2c3e50;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+}
+
+.header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #3498db;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.userName {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.userEmail {
+  font-size: 0.85rem;
+  color: #bdc3c7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  color: #ecf0f1;
+  transition: all 0.2s ease;
+  gap: 0.75rem;
+}
+
+.link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.link.active {
+  background: #3498db;
+  color: white;
+  border-left: 4px solid #1abc9c;
+}
+
+.subLink {
+  padding-left: 3rem;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 0.9rem;
+}
+
+.subLink:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.sectionButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.75rem;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.sectionButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sectionButton.active {
+  background: #3498db;
+  color: white;
+  border-left: 4px solid #1abc9c;
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+
+.arrowExpanded {
+  transform: rotate(180deg);
+}
+
+.icon {
+  font-size: 1.25rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.footer {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signOutButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 0.75rem;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.signOutButton:hover {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .nav {
+    overflow-y: visible;
+  }
+}

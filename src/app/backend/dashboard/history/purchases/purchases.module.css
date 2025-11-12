@@ -1,0 +1,133 @@
+/* app/dashboard/history/purchases/purchases.module.css */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.emptyState h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.emptyState p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.linkButton {
+  display: inline-block;
+  background: #0070f3;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.linkButton:hover {
+  background: #0051cc;
+}
+
+.purchasesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.packCard {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.packHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.packHeader h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.purchaseDate {
+  color: #666;
+  margin: 0;
+}
+
+.packStatus {
+  text-align: right;
+}
+
+.activeStatus {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.inactiveStatus {
+  background: #ffebee;
+  color: #c62828;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.packDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.detailItem:last-child {
+  border-bottom: none;
+}
+
+.detailItem span:first-child {
+  color: #666;
+}
+
+.detailItem span:last-child {
+  color: #333;
+  font-weight: 500;
+}

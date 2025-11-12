@@ -1,0 +1,257 @@
+/* app/login/login.module.css - DARK THEME VERSION WITH ENHANCEMENTS */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: 
+    radial-gradient(
+      circle at 12% 87%,
+      rgba(223, 189, 19, 0.1) 5%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 82% 20%,
+      rgba(223, 189, 19, 0.1) 10%,
+      transparent 30%
+    ),
+    linear-gradient(to bottom, #1b1d21, #020617);
+}
+
+.loginCard {
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+}
+
+.loginCard:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.loginCard.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #fbbf24;
+  font-size: 2rem;
+  font-weight: 700;
+  position: relative;
+}
+
+.title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, #f59e0b, #fbbf24);
+  margin: 0.75rem auto;
+  border-radius: 2px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-weight: 500;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+.input {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: rgba(15, 23, 42, 0.6);
+  color: #e5e7eb;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.button {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: #1e293b;
+  border: none;
+  padding: 0.95rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.button:disabled {
+  background: #4b5563;
+  cursor: not-allowed;
+  box-shadow: none;
+  color: #9ca3af;
+}
+
+.button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #1e293b;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  color: #f87171;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(220, 38, 38, 0.15);
+  text-align: center;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.errorIcon {
+  font-size: 1.2rem;
+}
+
+.signupLink {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signupLink a {
+  color: #fbbf24;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.signupLink a:hover {
+  text-decoration: underline;
+  color: #f59e0b;
+}
+
+.forgotPassword {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.forgotPassword a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.forgotPassword a:hover {
+  color: #fbbf24;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.75rem;
+  }
+  
+  .loginCard {
+    padding: 2rem 1.5rem;
+    max-width: 95%;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .loginCard {
+    padding: 1.75rem 1.25rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .input {
+    padding: 0.75rem 0.9rem;
+    font-size: 0.95rem;
+  }
+  
+  .button {
+    padding: 0.85rem;
+    font-size: 0.95rem;
+  }
+}

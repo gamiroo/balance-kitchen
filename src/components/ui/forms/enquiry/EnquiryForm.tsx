@@ -1,9 +1,13 @@
+// components/enquiry/EnquiryForm.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CTAButton } from '../../CTAButton/CTAButton';
 import styles from './EnquiryForm.module.css';
 import { AnimatedGradientBorder } from '../../animated-border/AnimatedGradientBorder';
+import { captureErrorSafe } from '../../../../lib/utils/error-utils';
+import { logger } from '../../../../lib/logging/logger';
+import { AuditLogger } from '../../../../lib/logging/audit-logger';
 
 interface EnquiryFormProps {
   onSubmitSuccess?: () => void;
@@ -81,26 +85,8 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
   const [currentStep, setCurrentStep] = useState<'personal' | 'enquiry' | 'review'>('personal');
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isOpen) {
-      loadSavedFormData();
-    } else {
-      clearForm();
-    }
-
-    if (isOpen) {
-      const firstInput = document.getElementById('firstName');
-      firstInput?.focus();
-    }
-
-    return () => {
-      if (!isOpen) {
-        clearForm();
-      }
-    };
-  }, [isOpen]);
-
-  const loadSavedFormData = () => {
+  // Load saved form data
+  const loadSavedFormData = useCallback(() => {
     try {
       const savedData = localStorage.getItem(FORM_STORAGE_KEY);
       if (savedData) {
@@ -120,148 +106,305 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         };
         setFormData(merged);
         setMessageLength(merged.message.length);
+        logger.debug('Loaded saved form data');
       }
-    } catch {
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'load_saved_form_data',
+        component: 'EnquiryForm'
+      });
+      
+      logger.error('Failed to load saved form data', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      
       localStorage.removeItem(FORM_STORAGE_KEY);
     }
-  };
+  }, []);
 
-  const clearForm = () => {
-    setFormData({
-      firstName: '',
-      lastName: '',
-      preferredName: '',
-      email: '',
-      phone: '',
-      subject: 'Website Enquiry',
-      howDidYouHear: HEAR_OPTIONS[0],
-      referrer: '',
-      message: '',
-    });
-    
-    setErrors({});
-    setIsSubmitting(false);
-    setSubmitStatus('idle');
-    setMessageLength(0);
-    setServerError('');
-    setShowSuccessMessage(false);
-    setCurrentStep('personal');
-    setFocusedInput(null);
-    
-    localStorage.removeItem(FORM_STORAGE_KEY);
-  };
-
-  const validateForm = (data: FormData = formData, step?: 'personal' | 'enquiry') => {
-    const newErrors: Record<string, string> = {};
-
-    if (!step || step === 'personal') {
-      if (!data.firstName.trim()) {
-        newErrors.firstName = 'First name is required';
-      }
-
-      if (!data.lastName.trim()) {
-        newErrors.lastName = 'Last name is required';
-      }
-
-      if (!data.email.trim()) {
-        newErrors.email = 'Email is required';
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        newErrors.email = 'Invalid email format';
-      }
-    }
-
-    if (!step || step === 'enquiry') {
-      if (!data.message.trim()) {
-        newErrors.message = 'Message is required';
-      } else if (data.message.length > MAX_MESSAGE_LENGTH) {
-        newErrors.message = `Message must be ${MAX_MESSAGE_LENGTH} characters or less`;
-      }
-
-      if (!isValidHearOption(data.howDidYouHear)) {
-        newErrors.howDidYouHear = 'Please select a valid option';
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    if (errors[name]) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
+  // Clear form data
+  const clearForm = useCallback(() => {
+    try {
+      setFormData({
+        firstName: '',
+        lastName: '',
+        preferredName: '',
+        email: '',
+        phone: '',
+        subject: 'Website Enquiry',
+        howDidYouHear: HEAR_OPTIONS[0],
+        referrer: '',
+        message: '',
       });
-    }
-
-    if (serverError) {
+      
+      setErrors({});
+      setIsSubmitting(false);
+      setSubmitStatus('idle');
+      setMessageLength(0);
       setServerError('');
-    }
-
-    try {
-      const newData = { ...formData, [name]: value };
-      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(newData));
-    } catch {
-      // ignore
-    }
-  };
-
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    setFormData(prev => ({ ...prev, message: value }));
-    setMessageLength(value.length);
-
-    if (errors.message) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors.message;
-        return newErrors;
-      });
-    }
-
-    try {
-      const newData = { ...formData, message: value };
-      localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(newData));
-    } catch {
-      // ignore
-    }
-  };
-
-  const getUtmParam = (key: string): string | undefined => {
-    if (typeof window === 'undefined') return undefined;
-    return new URLSearchParams(window.location.search).get(key) || undefined;
-  };
-
-  const handleNext = () => {
-    if (currentStep === 'personal' && validateForm(formData, 'personal')) {
-      setCurrentStep('enquiry');
-      setFocusedInput(null);
-    } else if (currentStep === 'enquiry' && validateForm(formData, 'enquiry')) {
-      setCurrentStep('review');
-      setFocusedInput(null);
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep === 'enquiry') {
+      setShowSuccessMessage(false);
       setCurrentStep('personal');
       setFocusedInput(null);
-    } else if (currentStep === 'review') {
-      setCurrentStep('enquiry');
-      setFocusedInput(null);
+      
+      localStorage.removeItem(FORM_STORAGE_KEY);
+      logger.debug('Form cleared successfully');
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'clear_form',
+        component: 'EnquiryForm'
+      });
+      
+      logger.error('Failed to clear form', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
     }
-  };
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Load data on mount and clear on unmount
+  useEffect(() => {
+    if (isOpen) {
+      loadSavedFormData();
+    } else {
+      clearForm();
+    }
+
+    if (isOpen) {
+      const firstInput = document.getElementById('firstName');
+      firstInput?.focus();
+    }
+
+    return () => {
+      if (!isOpen) {
+        clearForm();
+      }
+    };
+  }, [isOpen, loadSavedFormData, clearForm]);
+
+  // Validate form data
+  const validateForm = useCallback((data: FormData = formData, step?: 'personal' | 'enquiry') => {
+    try {
+      const newErrors: Record<string, string> = {};
+
+      if (!step || step === 'personal') {
+        if (!data.firstName.trim()) {
+          newErrors.firstName = 'First name is required';
+        }
+
+        if (!data.lastName.trim()) {
+          newErrors.lastName = 'Last name is required';
+        }
+
+        if (!data.email.trim()) {
+          newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+          newErrors.email = 'Invalid email format';
+        }
+      }
+
+      if (!step || step === 'enquiry') {
+        if (!data.message.trim()) {
+          newErrors.message = 'Message is required';
+        } else if (data.message.length > MAX_MESSAGE_LENGTH) {
+          newErrors.message = `Message must be ${MAX_MESSAGE_LENGTH} characters or less`;
+        }
+
+        if (!isValidHearOption(data.howDidYouHear)) {
+          newErrors.howDidYouHear = 'Please select a valid option';
+        }
+      }
+
+      setErrors(newErrors);
+      logger.debug('Form validation completed', { 
+        errorCount: Object.keys(newErrors).length,
+        step 
+      });
+      
+      return Object.keys(newErrors).length === 0;
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'validate_form',
+        component: 'EnquiryForm',
+        step
+      });
+      
+      logger.error('Form validation failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        step
+      });
+      
+      return false;
+    }
+  }, [formData]);
+
+  // Handle input changes
+  const handleChange = useCallback((
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    try {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+
+      // Clear error for this field
+      if (errors[name]) {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors[name];
+          return newErrors;
+        });
+      }
+
+      // Clear server error
+      if (serverError) {
+        setServerError('');
+      }
+
+      // Save to localStorage
+      try {
+        const newData = { ...formData, [name]: value };
+        localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(newData));
+      } catch (storageError: unknown) {
+        // Ignore storage errors but log them
+        logger.warn('Failed to save form data to localStorage', {
+          error: storageError instanceof Error ? storageError.message : 'Unknown storage error'
+        });
+      }
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'handle_input_change',
+        component: 'EnquiryForm',
+        fieldName: e.target.name
+      });
+      
+      logger.error('Input change handler failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        fieldName: e.target.name
+      });
+    }
+  }, [errors, formData, serverError]);
+
+  // Handle message changes with character count
+  const handleMessageChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    try {
+      const { value } = e.target;
+      setFormData(prev => ({ ...prev, message: value }));
+      setMessageLength(value.length);
+
+      // Clear message error
+      if (errors.message) {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors.message;
+          return newErrors;
+        });
+      }
+
+      // Save to localStorage
+      try {
+        const newData = { ...formData, message: value };
+        localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(newData));
+      } catch (storageError: unknown) {
+        logger.warn('Failed to save message to localStorage', {
+          error: storageError instanceof Error ? storageError.message : 'Unknown storage error'
+        });
+      }
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'handle_message_change',
+        component: 'EnquiryForm'
+      });
+      
+      logger.error('Message change handler failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
+    }
+  }, [errors, formData]);
+
+  // Get UTM parameters
+  const getUtmParam = useCallback((key: string): string | undefined => {
+    if (typeof window === 'undefined') return undefined;
+    try {
+      return new URLSearchParams(window.location.search).get(key) || undefined;
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'get_utm_param',
+        component: 'EnquiryForm',
+        key
+      });
+      
+      logger.warn('Failed to parse UTM parameter', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        key
+      });
+      
+      return undefined;
+    }
+  }, []);
+
+  // Handle next step
+  const handleNext = useCallback(() => {
+    try {
+      if (currentStep === 'personal' && validateForm(formData, 'personal')) {
+        setCurrentStep('enquiry');
+        setFocusedInput(null);
+        logger.debug('Moving to enquiry step');
+      } else if (currentStep === 'enquiry' && validateForm(formData, 'enquiry')) {
+        setCurrentStep('review');
+        setFocusedInput(null);
+        logger.debug('Moving to review step');
+      }
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'handle_next_step',
+        component: 'EnquiryForm',
+        currentStep
+      });
+      
+      logger.error('Failed to handle next step', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        currentStep
+      });
+    }
+  }, [currentStep, formData, validateForm]);
+
+  // Handle back step
+  const handleBack = useCallback(() => {
+    try {
+      if (currentStep === 'enquiry') {
+        setCurrentStep('personal');
+        setFocusedInput(null);
+        logger.debug('Moving back to personal step');
+      } else if (currentStep === 'review') {
+        setCurrentStep('enquiry');
+        setFocusedInput(null);
+        logger.debug('Moving back to enquiry step');
+      }
+    } catch (error: unknown) {
+      captureErrorSafe(error, {
+        action: 'handle_back_step',
+        component: 'EnquiryForm',
+        currentStep
+      });
+      
+      logger.error('Failed to handle back step', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        currentStep
+      });
+    }
+  }, [currentStep]);
+
+  // Handle form submission
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) {
+      logger.warn('Form submission blocked due to validation errors');
       return;
     }
 
@@ -272,6 +415,11 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     setFocusedInput(null);
 
     try {
+      logger.info('Enquiry form submission started', {
+        email: formData.email ? `${formData.email.substring(0, 3)}***@${formData.email.split('@')[1]}` : 'MISSING'
+      });
+
+      // Track form start event
       if (typeof window !== 'undefined') {
         const windowWithGtag = window as WindowWithGtag;
         if (windowWithGtag.gtag) {
@@ -279,9 +427,11 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
             event_category: 'engagement',
             event_label: 'Enquiry Form',
           });
+          logger.debug('Form start event tracked');
         }
       }
 
+      // Prepare payload
       const payload = {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
@@ -297,6 +447,12 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         utm_campaign: getUtmParam('utm_campaign'),
       };
 
+      logger.debug('Sending enquiry form data', {
+        hasMessage: !!payload.message,
+        messageLength: payload.message.length,
+        subject: payload.subject
+      });
+
       const response = await fetch('/api/enquiry', {
         method: 'POST',
         headers: {
@@ -310,7 +466,9 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         setShowSuccessMessage(true);
         clearForm();
         onSubmitSuccess?.();
+        logger.info('Enquiry form submitted successfully');
 
+        // Track successful submission
         if (typeof window !== 'undefined') {
           const windowWithGtag = window as WindowWithGtag;
           if (windowWithGtag.gtag) {
@@ -318,24 +476,54 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
               event_category: 'engagement',
               event_label: 'Enquiry Form',
             });
+            logger.debug('Form submit event tracked');
           }
         }
 
+        AuditLogger.logUserAction(
+          'unknown', // No user ID available for public form
+          'ENQUIRY_SUBMITTED',
+          'enquiries',
+          { 
+            email: payload.email ? `${payload.email.substring(0, 3)}***@${payload.email.split('@')[1]}` : 'MISSING',
+            subject: payload.subject
+          }
+        );
+
+        // Auto-hide success message
         setTimeout(() => {
           setShowSuccessMessage(false);
           setSubmitStatus('idle');
+          logger.debug('Success message auto-hidden');
         }, 10000);
       } else {
         const errorData: { error?: string; message?: string } = await response.json().catch(() => ({}));
         
-        setServerError(
-          errorData.error || 
+        const errorMessage = errorData.error || 
           errorData.message || 
-          `Server error: ${response.status}`
-        );
+          `Server error: ${response.status}`;
+        
+        setServerError(errorMessage);
         setSubmitStatus('error');
         setShowSuccessMessage(false);
         onSubmitError?.();
+        
+        logger.warn('Enquiry form submission failed', {
+          status: response.status,
+          errorMessage
+        });
+
+        AuditLogger.logFailedAction(
+          undefined,
+          'ENQUIRY_SUBMISSION',
+          'enquiries',
+          'SUBMISSION_FAILED',
+          { 
+            email: payload.email ? `${payload.email.substring(0, 3)}***@${payload.email.split('@')[1]}` : 'MISSING',
+            status: response.status,
+            error: errorMessage
+          }
+        );
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to submit form. Please check your connection and try again.';
@@ -343,13 +531,37 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
       setSubmitStatus('error');
       setShowSuccessMessage(false);
       onSubmitError?.();
+      
+      captureErrorSafe(error, {
+        action: 'form_submission',
+        component: 'EnquiryForm',
+        email: formData.email ? `${formData.email.substring(0, 3)}***@${formData.email.split('@')[1]}` : 'MISSING'
+      });
+      
+      logger.error('Enquiry form submission failed with network error', {
+        error: errorMessage,
+        stack: error instanceof Error ? error.stack : undefined,
+        email: formData.email ? `${formData.email.substring(0, 3)}***@${formData.email.split('@')[1]}` : 'MISSING'
+      });
+
+      AuditLogger.logFailedAction(
+        undefined,
+        'ENQUIRY_SUBMISSION',
+        'enquiries',
+        'NETWORK_ERROR',
+        { 
+          email: formData.email ? `${formData.email.substring(0, 3)}***@${formData.email.split('@')[1]}` : 'MISSING',
+          error: errorMessage
+        }
+      );
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData, getUtmParam, clearForm, onSubmitSuccess, onSubmitError, validateForm]);
 
   const isDisabled = isSubmitting || (submitStatus === 'success' && showSuccessMessage);
 
+  // Progress indicator component
   const ProgressIndicator = () => (
     <div className={styles.progressContainer}>
       <div className={styles.progressBar}>
@@ -377,71 +589,72 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     </div>
   );
 
+  // Review section component
   const ReviewSection = () => (
-  <div className={styles.reviewSection}>
-    <h3 className={styles.reviewTitle}>Review Your Information</h3>
-    
-    <div className={styles.reviewGrid}>
-      <AnimatedGradientBorder isInfinite={true}>
-        <div className={styles.reviewCard}>
-          <h4>Your Details</h4>
-          <div className={styles.reviewItem}>
-            <span className={styles.reviewLabel}>Name:</span>
-            <span>{formData.firstName} {formData.lastName}</span>
-          </div>
-          {formData.preferredName && (
+    <div className={styles.reviewSection}>
+      <h3 className={styles.reviewTitle}>Review Your Information</h3>
+      
+      <div className={styles.reviewGrid}>
+        <AnimatedGradientBorder isInfinite={true}>
+          <div className={styles.reviewCard}>
+            <h4>Your Details</h4>
             <div className={styles.reviewItem}>
-              <span className={styles.reviewLabel}>Preferred Name:</span>
-              <span>{formData.preferredName}</span>
+              <span className={styles.reviewLabel}>Name:</span>
+              <span>{formData.firstName} {formData.lastName}</span>
             </div>
-          )}
-          <div className={styles.reviewItem}>
-            <span className={styles.reviewLabel}>Email:</span>
-            <span>{formData.email}</span>
-          </div>
-          {formData.phone && (
+            {formData.preferredName && (
+              <div className={styles.reviewItem}>
+                <span className={styles.reviewLabel}>Preferred Name:</span>
+                <span>{formData.preferredName}</span>
+              </div>
+            )}
             <div className={styles.reviewItem}>
-              <span className={styles.reviewLabel}>Phone:</span>
-              <span>{formData.phone}</span>
+              <span className={styles.reviewLabel}>Email:</span>
+              <span>{formData.email}</span>
             </div>
-          )}
-        </div>
-      </AnimatedGradientBorder>
+            {formData.phone && (
+              <div className={styles.reviewItem}>
+                <span className={styles.reviewLabel}>Phone:</span>
+                <span>{formData.phone}</span>
+              </div>
+            )}
+          </div>
+        </AnimatedGradientBorder>
 
-      <AnimatedGradientBorder isInfinite={true}>
-        <div className={styles.reviewCard}>
-          <h4>Your Enquiry</h4>
-          <div className={styles.reviewItem}>
-            <span className={styles.reviewLabel}>Subject:</span>
-            <span>{formData.subject}</span>
-          </div>
-          <div className={styles.reviewItem}>
-            <span className={styles.reviewLabel}>How you found us:</span>
-            <span>{formData.howDidYouHear}</span>
-          </div>
-          {formData.referrer && (
+        <AnimatedGradientBorder isInfinite={true}>
+          <div className={styles.reviewCard}>
+            <h4>Your Enquiry</h4>
             <div className={styles.reviewItem}>
-              <span className={styles.reviewLabel}>Referrer:</span>
-              <span>{formData.referrer}</span>
+              <span className={styles.reviewLabel}>Subject:</span>
+              <span>{formData.subject}</span>
             </div>
-          )}
-          <div className={styles.reviewItem}>
-            <span className={styles.reviewLabel}>Message:</span>
-            <span className={styles.reviewMessage}>{formData.message}</span>
+            <div className={styles.reviewItem}>
+              <span className={styles.reviewLabel}>How you found us:</span>
+              <span>{formData.howDidYouHear}</span>
+            </div>
+            {formData.referrer && (
+              <div className={styles.reviewItem}>
+                <span className={styles.reviewLabel}>Referrer:</span>
+                <span>{formData.referrer}</span>
+              </div>
+            )}
+            <div className={styles.reviewItem}>
+              <span className={styles.reviewLabel}>Message:</span>
+              <span className={styles.reviewMessage}>{formData.message}</span>
+            </div>
           </div>
-        </div>
-      </AnimatedGradientBorder>
+        </AnimatedGradientBorder>
+      </div>
     </div>
-  </div>
-);
+  );
 
-
+  // Handle focus events
   const handleFocus = (fieldName: string) => {
     setFocusedInput(fieldName);
   };
 
   const handleBlur = (fieldName: string) => {
-    setFocusedInput(null);
+    setFocusedInput(fieldName === focusedInput ? null : focusedInput);
   };
 
   return (
@@ -492,7 +705,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                         />
                       </AnimatedGradientBorder>
                       {errors.firstName && (
-                        <span id="firstName-error" className={styles.errorText}>
+                        <span id="firstName-error" className={styles.errorText} role="alert">
                           {errors.firstName}
                         </span>
                       )}
@@ -521,7 +734,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                         />
                       </AnimatedGradientBorder>
                       {errors.lastName && (
-                        <span id="lastName-error" className={styles.errorText}>
+                        <span id="lastName-error" className={styles.errorText} role="alert">
                           {errors.lastName}
                         </span>
                       )}
@@ -573,7 +786,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                         />
                       </AnimatedGradientBorder>
                       {errors.email && (
-                        <span id="email-error" className={styles.errorText}>
+                        <span id="email-error" className={styles.errorText} role="alert">
                           {errors.email}
                         </span>
                       )}
@@ -671,7 +884,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                       </select>
                     </AnimatedGradientBorder>
                     {errors.howDidYouHear && (
-                      <span id="howDidYouHear-error" className={styles.errorText}>
+                      <span id="howDidYouHear-error" className={styles.errorText} role="alert">
                         {errors.howDidYouHear}
                       </span>
                     )}
@@ -723,7 +936,7 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
                       {messageLength}/{MAX_MESSAGE_LENGTH} characters
                     </div>
                     {errors.message && (
-                      <span id="message-error" className={styles.errorText}>
+                      <span id="message-error" className={styles.errorText} role="alert">
                         {errors.message}
                       </span>
                     )}
@@ -816,6 +1029,5 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
         </form>
       </div>
     </>
-    
   );
 };

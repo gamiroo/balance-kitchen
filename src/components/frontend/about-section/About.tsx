@@ -256,7 +256,7 @@ export const AboutSection = () => {
               href="/waitlist"
               aria-label="Join the waitlist for Balance Kitchen"
             >
-              How Do I Start?
+              Ready to Start?
             </CTAButton>
           </div>
         </div>

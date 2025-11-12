@@ -18,10 +18,10 @@
   margin: 0 auto;
   padding: 30px;
   background: #211f02af;
-  backdrop-filter: blur(34px);
+  backdrop-filter: blur(4px);
   border-radius: 20px;
   position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.205); */
 }
 
 /* Progress Indicator */

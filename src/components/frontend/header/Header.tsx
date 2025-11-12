@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CTAButton } from '../../ui/CTAButton/CTAButton';
-import { Menu, X, FileText } from 'lucide-react';
+import { Menu, X, FileText, LogIn, LogOut, User } from 'lucide-react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from './Header.module.css';
 
 // Declare Jotform embed handler for TypeScript
@@ -18,6 +19,7 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { data: session } = useSession();
 
   /* -------------------------------------------------
      Scroll‑hide / scroll‑show logic (unchanged)
@@ -51,6 +53,15 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleAuth = async () => {
+    if (session) {
+      await signOut({ callbackUrl: '/' });
+    } else {
+      await signIn('credentials');
+    }
+    closeMenu();
+  };
 
   /* -------------------------------------------------
      Navigation items – **Legal** added here
@@ -117,23 +128,14 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
       ),
     },
     {
-      href: '/profile',
-      label: 'User Profile',
+      href: session ? '/dashboard' : '/profile',
+      label: session ? 'Dashboard' : 'User Profile',
       icon: (
-        <svg
+        <User
           className={`${styles.navIcon} ${styles.navIconMd}`}
-          fill="none"
-          stroke="#ffc33e"
-          viewBox="0 0 24 24"
+          color="#ffc33e"
           aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
+        />
       ),
     },
     {
@@ -208,6 +210,27 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
                 {item.icon}
               </Link>
             ))}
+            
+            {/* LOGIN/LOGOUT BUTTON */}
+            <button
+              onClick={handleAuth}
+              className={styles.navLink}
+              aria-label={session ? 'Sign out' : 'Sign in'}
+            >
+              {session ? (
+                <LogOut
+                  className={`${styles.navIcon} ${styles.navIconMd}`}
+                  color="#ffc33e"
+                  aria-hidden="true"
+                />
+              ) : (
+                <LogIn
+                  className={`${styles.navIcon} ${styles.navIconMd}`}
+                  color="#ffc33e"
+                  aria-hidden="true"
+                />
+              )}
+            </button>
           </nav>
 
           {/* CTA BUTTON (right side) */}
@@ -287,6 +310,34 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
                   </div>
                 </Link>
               ))}
+              
+              {/* MOBILE LOGIN/LOGOUT */}
+              <button
+                onClick={handleAuth}
+                className={styles.mobileNavLink}
+                aria-label={session ? 'Sign out' : 'Sign in'}
+              >
+                <div className={styles.mobileNavLinkContent}>
+                  <span className={styles.mobileNavIcon}>
+                    {session ? (
+                      <LogOut
+                        className={`${styles.navIcon} ${styles.navIconMd}`}
+                        color="#ffc33e"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <LogIn
+                        className={`${styles.navIcon} ${styles.navIconMd}`}
+                        color="#ffc33e"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
+                  <span className={styles.mobileNavText}>
+                    {session ? 'Sign Out' : 'Sign In'}
+                  </span>
+                </div>
+              </button>
             </nav>
           </div>
 

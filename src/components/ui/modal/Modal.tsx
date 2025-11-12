@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import styles from './Modal.module.css';
+import Image from 'next/image';
 
 interface ModalProps {
   isOpen: boolean;
@@ -73,15 +74,16 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
               fontWeight: 'bold',
               fontSize: '14px'
             }}>
-              <img src="assets/logo/balance-logo.svg" alt="balance kitchen logo" />
+              <Image src="assets/logo/balance-logo.svg" alt="balance kitchen logo" width={220} height={370} />
             </div>
           </div>
+          <h2 id="modal-title" className={styles.modalTitle}>{title}</h2>
           <button
             className={styles.modalCloseButton}
             onClick={onClose}
             aria-label="Close modal"
           >
-            <img src="assets/icons/logo-icon-svg.svg" alt="balance kitchen logo icon" />
+            <Image src="assets/icons/logo-icon-svg.svg" alt="balance kitchen logo icon" width={220} height={370} />
           </button>
         </div>
 
