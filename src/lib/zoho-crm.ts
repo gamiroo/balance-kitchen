@@ -1,7 +1,4 @@
-/* -------------------------------------------------------------
-   src/lib/zoho-crm.ts
-   ------------------------------------------------------------- */
-
+// src/lib/zoho-crm.ts
 interface ZohoCRMLead {
   Lead_Name: string;      
   Email: string;          
@@ -9,6 +6,9 @@ interface ZohoCRMLead {
   Mobile?: string;        
   Lead_Source: string;    
   Referrer?: string;      
+  First_Name?: string;
+  Last_Name?: string;
+  Description?: string;
   [key: string]: string | number | boolean | undefined;
 }
 
@@ -22,7 +22,7 @@ interface ZohoCRMResponseDataItem {
     id: string;
   };
   message?: string;
-   [key: string]: string | number | object | undefined;
+  [key: string]: string | number | object | undefined;
 }
 
 interface ZohoCRMResponse {
@@ -38,7 +38,6 @@ interface ZohoTokenResponse {
   [key: string]: string | number | object | undefined;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const HEAR_OPTIONS = [
   'Search Engine',
   'Social Media',
@@ -183,7 +182,7 @@ export class ZohoCRMService {
     console.log('Zoho API Response:', {
       status: response.status,
       statusText: response.statusText,
-      body: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '') // Truncate long responses
+      body: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '')
     });
 
     if (!response.ok) {
@@ -193,7 +192,8 @@ export class ZohoCRMService {
     let result: ZohoCRMResponse;
     try {
       result = JSON.parse(responseText) as ZohoCRMResponse;
-    } catch (parseError) {
+    } catch (_parseError) {
+      console.error(_parseError);
       throw new Error(`Failed to parse Zoho response: ${responseText.substring(0, 200)}`);
     }
 
@@ -244,44 +244,79 @@ export class ZohoCRMService {
      Main entry point – called by the API route.
      ----------------------------------------------------------------- */
   async createEnquiryLead(
-  displayName: string,
-  sanitized: SanitizedEnquiry
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-): Promise<{ leadId: string; success: boolean; error?: string }> {
-  try {
-    console.log('Creating Zoho CRM lead for:', displayName);
-    
-    // Build Lead Name from first and last name
-    const leadName = `${sanitized.firstName} ${sanitized.lastName}`.trim();
+    displayName: string,
+    sanitized: SanitizedEnquiry
+  ): Promise<{ leadId: string; success: boolean; error?: string }> {
+    try {
+      console.log('Creating Zoho CRM lead for:', displayName);
+      
+      // Build comprehensive description with all form data
+      let description = sanitized.message || '';
+      
+      // Add form metadata to description
+      const metadata: string[] = [];
+      
+      if (sanitized.preferredName) {
+        metadata.push(`Preferred Name: ${sanitized.preferredName}`);
+      }
+      
+      if (sanitized.subject && sanitized.subject !== 'Website Enquiry') {
+        metadata.push(`Subject: ${sanitized.subject}`);
+      }
+      
+      if (sanitized.referrer) {
+        metadata.push(`Referrer: ${sanitized.referrer}`);
+      }
+      
+      if (sanitized.howDidYouHear) {
+        metadata.push(`How they found us: ${sanitized.howDidYouHear}`);
+      }
+      
+      if (sanitized.utm_source || sanitized.utm_medium || sanitized.utm_campaign) {
+        const utmInfo = [
+          sanitized.utm_source ? `Source: ${sanitized.utm_source}` : '',
+          sanitized.utm_medium ? `Medium: ${sanitized.utm_medium}` : '',
+          sanitized.utm_campaign ? `Campaign: ${sanitized.utm_campaign}` : ''
+        ].filter(Boolean).join(', ');
+        if (utmInfo) {
+          metadata.push(`UTM Info: ${utmInfo}`);
+        }
+      }
+      
+      if (metadata.length > 0) {
+        description = description ? `${description}\n\n--- Form Details ---\n${metadata.join('\n')}` : metadata.join('\n');
+      }
 
-    const leadData: ZohoCRMLead = {
-      Lead_Name: leadName,
-      First_Name: sanitized.firstName,
-      Last_Name: sanitized.lastName,
-      Email: sanitized.email,
-      Phone: sanitized.phone || '',
-      Mobile: sanitized.phone || '',
-      Lead_Source: `Website - ${sanitized.howDidYouHear}`,
-      Description: sanitized.message,
-    };
+      const leadData: ZohoCRMLead = {
+        Lead_Name: displayName,
+        First_Name: sanitized.firstName,
+        Last_Name: sanitized.lastName,
+        Email: sanitized.email,
+        Phone: sanitized.phone || '',
+        Mobile: sanitized.phone || '',
+        Lead_Source: `Website - ${sanitized.howDidYouHear || 'General Enquiry'}`,
+        Description: description,
+        // Add custom fields if they exist in your Zoho setup
+        ...(sanitized.referrer && { Referrer: sanitized.referrer })
+      };
 
-    console.log('Sending lead data to Zoho:', leadData);
+      console.log('Sending lead data to Zoho:', leadData);
 
-    const leadId = await this.createLeadInZoho(leadData);
+      const leadId = await this.createLeadInZoho(leadData);
 
-    console.log('Successfully created Zoho lead:', leadId);
-    
-    return {
-      leadId,
-      success: true,
-    };
-  } catch (error) {
-    console.error('Error creating Zoho CRM lead:', error);
-    return {
-      leadId: '',
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
-    };
+      console.log('Successfully created Zoho lead:', leadId);
+      
+      return {
+        leadId,
+        success: true,
+      };
+    } catch (error) {
+      console.error('Error creating Zoho CRM lead:', error);
+      return {
+        leadId: '',
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+      };
+    }
   }
-}
 }
