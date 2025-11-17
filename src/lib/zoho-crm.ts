@@ -297,7 +297,7 @@ export class ZohoCRMService {
         Lead_Source: `Website - ${sanitized.howDidYouHear || 'General Enquiry'}`,
         Description: description,
         // Add custom fields if they exist in your Zoho setup
-        ...(sanitized.referrer && { Referrer: sanitized.referrer })
+        // ...(sanitized.referrer && { Referrer: sanitized.referrer })
       };
 
       console.log('Sending lead data to Zoho:', leadData);
