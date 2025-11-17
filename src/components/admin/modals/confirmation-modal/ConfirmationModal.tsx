@@ -1,7 +1,7 @@
 // components/admin/modals/ConfirmationModal.tsx
 "use client";
 
-import AdminModal from "./AdminModal";
+import AdminModal from "../admin-modal/AdminModal";
 
 interface ConfirmationModalProps {
   isOpen: boolean;

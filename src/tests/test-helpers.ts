@@ -1,6 +1,5 @@
 // src/tests/test-helpers.ts
-import { db } from '../lib/database/client';
-import { User } from '../lib/types/database';
+import { User, MealPack } from '../lib/types/database';
 
 // Mock the database query function for tests
 export async function createTestUser(email: string = 'test@example.com'): Promise<User> {
@@ -15,7 +14,7 @@ export async function createTestUser(email: string = 'test@example.com'): Promis
   } as User;
 }
 
-export async function createTestMealPack(userId: string, packSize: number): Promise<any> {
+export async function createTestMealPack(userId: string, packSize: number): Promise<MealPack> {
   // This is just for type safety in tests - we'll mock the actual database call
   return {
     id: 'pack-123',
@@ -23,7 +22,8 @@ export async function createTestMealPack(userId: string, packSize: number): Prom
     pack_size: packSize,
     remaining_balance: packSize,
     purchase_date: new Date(),
-    is_active: true
+    is_active: true,
+    created_at: new Date()
   };
 }
 
@@ -39,7 +39,7 @@ export function createMockUser(overrides: Partial<User> = {}): User {
   } as User;
 }
 
-export function createMockOrder(overrides: any = {}) {
+export function createMockOrder(overrides: object = {}) {
   return {
     id: 'order-' + Math.random().toString(36).substr(2, 9),
     user_id: 'user-123',
@@ -53,7 +53,7 @@ export function createMockOrder(overrides: any = {}) {
   };
 }
 
-export function createMockMenu(overrides: any = {}) {
+export function createMockMenu(overrides: object = {}) {
   return {
     id: 'menu-' + Math.random().toString(36).substr(2, 9),
     week_start_date: new Date('2024-01-15'),

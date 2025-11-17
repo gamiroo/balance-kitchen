@@ -1,7 +1,6 @@
 // src/app/api/admin/users/[id]/route.test.ts
 import { GET, DELETE } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../lib/auth/auth"
 import { adminUserService } from "../../../../../lib/services/admin/userService"
 import { captureErrorSafe } from '../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../lib/logging/logger'

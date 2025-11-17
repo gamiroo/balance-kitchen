@@ -1,7 +1,6 @@
 // src/app/api/admin/orders/[id]/status/route.test.ts
 import { PUT } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../../lib/auth/auth"
 import { adminOrderService } from "../../../../../../lib/services/admin/orderService"
 import { captureErrorSafe } from '../../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../../lib/logging/logger'
@@ -44,11 +43,12 @@ jest.mock('../../../../../../lib/logging/audit-logger', () => ({
 }))
 
 // Helper to create a mock NextRequest with JSON body
-const createMockNextRequest = (body: any = {}): NextRequest => {
+const createMockNextRequest = <T extends object = Record<string, unknown>>(body: T = {} as T): NextRequest => {
   return {
     json: async () => body
   } as unknown as NextRequest
 }
+
 
 describe('PUT /api/admin/orders/[id]/status', () => {
   const mockParams = { params: Promise.resolve({ id: 'order-123' }) }

@@ -1,7 +1,6 @@
 // src/app/api/admin/orders/stats/route.test.ts
 import { GET } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../lib/auth/auth"
 import { adminOrderService } from "../../../../../lib/services/admin/orderService"
 import { captureErrorSafe } from '../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../lib/logging/logger'
@@ -205,15 +204,6 @@ describe('GET /api/admin/orders/stats', () => {
       // average_order_value is missing
     }
 
-    const expectedStats: OrderStats = {
-      totalOrders: 50,
-      pendingOrders: 5,
-      confirmedOrders: 15,
-      deliveredOrders: 25,
-      cancelledOrders: 5,
-      totalRevenue: 1250.00,
-      averageOrderValue: 0 // Should default to 0
-    }
 
     ;(adminOrderService.getOrderStats as jest.Mock).mockResolvedValue(mockServiceStats)
 

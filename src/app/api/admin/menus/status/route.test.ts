@@ -1,19 +1,32 @@
-// src/app/api/admin/menus/status/route.test.ts
 import { GET } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../lib/auth/auth"
 import { adminStatsService } from "../../../../../lib/services/admin/statsService"
 import { captureErrorSafe } from '../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../lib/logging/logger'
 import { AuditLogger } from '../../../../../lib/logging/audit-logger'
 
+// Types for our test data
+interface MockUser {
+  id: string
+  email: string
+  role: string
+}
+
+interface MockSession {
+  user: MockUser
+}
+
+interface MenuStatusItem {
+  id: string
+  is_published: boolean
+  status: string
+}
+
 // Mock external dependencies
 jest.mock("next-auth", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({})),
   getServerSession: jest.fn()
-}))
-
-jest.mock("../../../../../lib/auth/auth", () => ({
-  authOptions: {}
 }))
 
 jest.mock("../../../../../lib/services/admin/statsService", () => ({
@@ -69,7 +82,7 @@ describe('GET /api/admin/menus/status', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -100,7 +113,7 @@ describe('GET /api/admin/menus/status', () => {
 
   it('should return menu status successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -109,7 +122,7 @@ describe('GET /api/admin/menus/status', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const mockMenuStatusItems = [
+    const mockMenuStatusItems: MenuStatusItem[] = [
       { id: 'menu-1', is_published: true, status: 'Active' },
       { id: 'menu-2', is_published: true, status: 'Active' },
       { id: 'menu-3', is_published: false, status: 'Draft' },
@@ -167,7 +180,7 @@ describe('GET /api/admin/menus/status', () => {
 
   it('should handle empty menu status', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -176,7 +189,7 @@ describe('GET /api/admin/menus/status', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const mockMenuStatusItems: any[] = []
+    const mockMenuStatusItems: MenuStatusItem[] = []
 
     ;(adminStatsService.getMenuStatus as jest.Mock).mockResolvedValue(mockMenuStatusItems)
 
@@ -200,7 +213,7 @@ describe('GET /api/admin/menus/status', () => {
 
   it('should handle service error gracefully', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',

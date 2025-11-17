@@ -1,19 +1,43 @@
-// src/app/api/admin/orders/bulk-update/route.test.ts
 import { POST } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../lib/auth/auth"
 import { adminOrderService } from "../../../../../lib/services/admin/orderService"
 import { captureErrorSafe } from '../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../lib/logging/logger'
 import { AuditLogger } from '../../../../../lib/logging/audit-logger'
 
+// Define types for test data
+interface MockUser {
+  id: string;
+  email: string;
+  role: string;
+}
+
+interface MockSession {
+  user: MockUser;
+}
+
+interface MockOrder {
+  id: string;
+  status: string;
+  updated_at: Date;
+}
+
+interface UpdatedOrder {
+  id: string;
+  status: string;
+  updated_at: string;
+}
+
+interface BulkUpdateRequest {
+  orderIds: string[];
+  status: string;
+}
+
 // Mock external dependencies
 jest.mock("next-auth", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({})),
   getServerSession: jest.fn()
-}))
-
-jest.mock("../../../../../lib/auth/auth", () => ({
-  authOptions: {}
 }))
 
 jest.mock("../../../../../lib/services/admin/orderService", () => ({
@@ -43,22 +67,9 @@ jest.mock('../../../../../lib/logging/audit-logger', () => ({
 }))
 
 // Helper to create a mock Request with JSON body
-const mockRequest = (body: any) => ({
+const mockRequest = <T>(body: T) => ({
   json: async () => body
 } as unknown as Request)
-
-// Define types for test data
-interface MockOrder {
-  id: string;
-  status: string;
-  updated_at: Date;
-}
-
-interface UpdatedOrder {
-  id: string;
-  status: string;
-  updated_at: string;
-}
 
 describe('POST /api/admin/orders/bulk-update', () => {
   beforeEach(() => {
@@ -70,7 +81,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     ;(getServerSession as jest.Mock).mockResolvedValue(null)
 
     // ACT
-    const response = await POST(mockRequest({ orderIds: ['order-1'], status: 'confirmed' }))
+    const response = await POST(mockRequest<BulkUpdateRequest>({ orderIds: ['order-1'], status: 'confirmed' }))
     const data = await response.json()
 
     // ASSERT
@@ -90,7 +101,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -100,7 +111,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
     // ACT
-    const response = await POST(mockRequest({ orderIds: ['order-1'], status: 'confirmed' }))
+    const response = await POST(mockRequest<BulkUpdateRequest>({ orderIds: ['order-1'], status: 'confirmed' }))
     const data = await response.json()
 
     // ASSERT
@@ -124,7 +135,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should return 400 when order IDs are missing', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -134,7 +145,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
     // ACT
-    const response = await POST(mockRequest({ status: 'confirmed' }))
+    const response = await POST(mockRequest<{ status: string }>({ status: 'confirmed' }))
     const data = await response.json()
 
     // ASSERT
@@ -150,7 +161,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should return 400 when order IDs is empty array', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -160,7 +171,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
     // ACT
-    const response = await POST(mockRequest({ orderIds: [], status: 'confirmed' }))
+    const response = await POST(mockRequest<BulkUpdateRequest>({ orderIds: [], status: 'confirmed' }))
     const data = await response.json()
 
     // ASSERT
@@ -176,7 +187,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should return 400 when status is missing', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -186,7 +197,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
     // ACT
-    const response = await POST(mockRequest({ orderIds: ['order-1'] }))
+    const response = await POST(mockRequest<{ orderIds: string[] }>({ orderIds: ['order-1'] }))
     const data = await response.json()
 
     // ASSERT
@@ -202,7 +213,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should return 400 when status is invalid', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -212,7 +223,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
     // ACT
-    const response = await POST(mockRequest({ orderIds: ['order-1'], status: 'invalid-status' }))
+    const response = await POST(mockRequest<BulkUpdateRequest>({ orderIds: ['order-1'], status: 'invalid-status' }))
     const data = await response.json()
 
     // ASSERT
@@ -229,7 +240,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should bulk update orders successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -238,7 +249,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = {
+    const requestBody: BulkUpdateRequest = {
       orderIds: ['order-1', 'order-2', 'order-3'],
       status: 'confirmed'
     }
@@ -324,7 +335,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should handle partial update when some orders are not found', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -333,7 +344,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = {
+    const requestBody: BulkUpdateRequest = {
       orderIds: ['order-1', 'order-2', 'order-3'],
       status: 'delivered'
     }
@@ -388,7 +399,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should handle empty result from service', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -397,7 +408,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = {
+    const requestBody: BulkUpdateRequest = {
       orderIds: ['order-1', 'order-2'],
       status: 'cancelled'
     }
@@ -422,7 +433,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
 
   it('should handle service error gracefully', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -431,7 +442,7 @@ describe('POST /api/admin/orders/bulk-update', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = {
+    const requestBody: BulkUpdateRequest = {
       orderIds: ['order-1'],
       status: 'confirmed'
     }
