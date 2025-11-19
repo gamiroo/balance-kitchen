@@ -150,8 +150,8 @@ export const MealPlanSection = () => {
 
       {isModalOpen &&
         createPortal(
-          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions">
-            <div className={`${styles.modalContent} ${styles[theme]}`}>
+          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions" theme={theme}>
+            <div className={`${styles.modalContent} ${styles[theme]}`} data-theme={theme}>
               <button
                 className={styles.themeToggle}
                 onClick={toggleTheme}

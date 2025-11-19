@@ -9,9 +9,10 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  theme?: 'light' | 'dark';
 }
 
-export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, theme }: ModalProps) => {
   // Handle escape key press and body scroll lock
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -52,13 +53,15 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
   return (
     <div
       className={styles.modalOverlay}
+      data-theme={theme}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div 
+      <div
         className={styles.modalContent}
+        data-theme={theme}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>

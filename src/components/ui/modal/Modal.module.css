@@ -10,21 +10,27 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  background: 
-    linear-gradient(rgba(0, 0, 0, 0.729), rgba(0, 0, 0, 0.86));
+  background:
+    linear-gradient(
+      var(--overlay-scrim-soft),
+      var(--overlay-scrim-strong)
+    );
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(4px);
 }
 
 .modalContent {
-  background: 
-    linear-gradient(rgba(37, 33, 8, 0.527), rgba(33, 32, 24, 0.385)),
+  background:
+    linear-gradient(
+      var(--modal-surface-glaze),
+      var(--modal-surface)
+    ),
     url('/images/elite-pack.jpg') top/cover no-repeat;
   background-blend-mode: overlay;
   border-radius: 16px;
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 25px 50px -12px color-mix(in srgb, var(--overlay-scrim-strong) 45%, transparent),
+    0 0 0 1px var(--surface-border);
   max-width: 1200px;
   width: 100%;
   max-height: 95vh;
@@ -40,11 +46,11 @@
   justify-content: space-between;
   align-items: center;
   padding: .5rem 2rem;
-  border-bottom: 1px solid rgba(85, 70, 6, 0.1);
+  border-bottom: 1px solid var(--surface-border);
   flex-shrink: 0;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  background: rgba(0, 0, 0, 0.179);
+  background: color-mix(in srgb, var(--modal-surface) 70%, transparent);
   backdrop-filter: blur(24px);
 }
 
@@ -98,13 +104,13 @@
   flex: 1;
   overflow-y: auto;
   min-height: 0;
-  background: rgba(26, 25, 25, 0.088);
+  background: var(--modal-body-surface);
   backdrop-filter: blur(6px);
-  box-shadow: inset 0 0 20px rgba(231, 214, 179, 0.05);
-  
+  box-shadow: inset 0 0 20px var(--surface-border);
+
   /* Dark theme scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: #4b5563 rgba(31, 41, 55, 0.1);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .modalBody::-webkit-scrollbar {
@@ -112,17 +118,17 @@
 }
 
 .modalBody::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.1);
+  background: var(--scrollbar-track);
   border-radius: 4px;
 }
 
 .modalBody::-webkit-scrollbar-thumb {
-  background: #4b5563;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 .modalBody::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: color-mix(in srgb, var(--scrollbar-thumb) 80%, white);
 }
 
 .modalBody #jotform-form-container {
@@ -159,7 +165,7 @@
 @media (max-width: 1024px) {
   .modalOverlay {
     padding: 0.75rem;
-    background: 
+    background:
       radial-gradient(
         circle at 10% 20%,
         rgba(255, 195, 62, 0.12) 0%,
@@ -180,7 +186,7 @@
         rgba(138, 41, 211, 0.08) 0%,
         transparent 12%
       ),
-      rgba(0, 0, 0, 0.92);
+      var(--overlay-scrim-strong);
   }
   
   .modalContent {
@@ -206,7 +212,7 @@
 @media (max-width: 768px) {
   .modalOverlay {
     padding: 0.5rem;
-    background: 
+    background:
       radial-gradient(
         circle at 5% 15%,
         rgba(255, 195, 62, 0.1) 0%,
@@ -217,7 +223,7 @@
         rgba(203, 46, 18, 0.1) 0%,
         transparent 12%
       ),
-      rgba(0, 0, 0, 0.92);
+      var(--overlay-scrim-strong);
   }
   
   .modalContent {
@@ -249,7 +255,7 @@
 @media (max-width: 480px) {
   .modalOverlay {
     padding: 0.25rem;
-    background: 
+    background:
       radial-gradient(
         circle at 0% 10%,
         rgba(255, 195, 62, 0.08) 0%,
@@ -260,7 +266,7 @@
         rgba(203, 46, 18, 0.08) 0%,
         transparent 10%
       ),
-      rgba(0, 0, 0, 0.92);
+      var(--overlay-scrim-strong);
   }
   
   .modalContent {

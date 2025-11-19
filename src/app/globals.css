@@ -2,27 +2,133 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
+  --foreground: #0f172a;
+  --surface-base: #f8fafc;
+  --surface-muted: #e2e8f0;
+  --surface-border: rgba(15, 23, 42, 0.08);
+  --surface-border-strong: rgba(15, 23, 42, 0.18);
 
-:root {
+  --overlay-scrim-soft: rgba(15, 23, 42, 0.35);
+  --overlay-scrim-strong: rgba(15, 23, 42, 0.65);
+  --modal-surface: rgba(255, 255, 255, 0.92);
+  --modal-surface-glaze: rgba(226, 232, 240, 0.82);
+  --modal-body-surface: rgba(248, 250, 252, 0.85);
+
+  --form-surface: rgba(255, 255, 255, 0.95);
+  --form-field-bg: rgba(255, 255, 255, 0.9);
+  --form-field-bg-hover: rgba(255, 255, 255, 0.95);
+  --form-field-bg-focus: #ffffff;
+  --form-field-text: #0f172a;
+  --form-field-placeholder: rgba(15, 23, 42, 0.45);
+  --form-helper-text: rgba(15, 23, 42, 0.6);
+  --form-border: rgba(15, 23, 42, 0.15);
+  --form-border-strong: rgba(15, 23, 42, 0.35);
+  --form-border-focus: #0f172a;
+  --form-border-error: #dc2626;
+  --form-border-success: #15803d;
+  --form-success-bg: #d1fae5;
+  --form-success-text: #065f46;
+  --form-error-bg: #fee2e2;
+  --form-error-text: #7f1d1d;
+  --form-review-card-bg: rgba(255, 255, 255, 0.9);
+  --form-review-card-border: rgba(15, 23, 42, 0.08);
+
+  --scrollbar-track: rgba(148, 163, 184, 0.25);
+  --scrollbar-thumb: rgba(15, 23, 42, 0.45);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+[data-theme='light'],
+:root:not([data-theme]) {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --background: #050506;
+  --foreground: #f8fafc;
+  --surface-base: #0f172a;
+  --surface-muted: #111827;
+  --surface-border: rgba(255, 255, 255, 0.05);
+  --surface-border-strong: rgba(255, 255, 255, 0.12);
+
+  --overlay-scrim-soft: rgba(2, 6, 23, 0.75);
+  --overlay-scrim-strong: rgba(0, 0, 0, 0.92);
+  --modal-surface: rgba(16, 15, 20, 0.95);
+  --modal-surface-glaze: rgba(31, 31, 36, 0.9);
+  --modal-body-surface: rgba(26, 25, 25, 0.6);
+
+  --form-surface: rgba(19, 19, 24, 0.85);
+  --form-field-bg: rgba(255, 255, 255, 0.04);
+  --form-field-bg-hover: rgba(255, 255, 255, 0.08);
+  --form-field-bg-focus: rgba(255, 255, 255, 0.12);
+  --form-field-text: #f8fafc;
+  --form-field-placeholder: rgba(248, 250, 252, 0.55);
+  --form-helper-text: rgba(248, 250, 252, 0.65);
+  --form-border: rgba(255, 255, 255, 0.12);
+  --form-border-strong: rgba(255, 255, 255, 0.2);
+  --form-border-focus: rgba(255, 255, 255, 0.45);
+  --form-border-error: #f87171;
+  --form-border-success: #34d399;
+  --form-success-bg: rgba(16, 185, 129, 0.15);
+  --form-success-text: #bbf7d0;
+  --form-error-bg: rgba(248, 113, 113, 0.15);
+  --form-error-text: #fecaca;
+  --form-review-card-bg: rgba(255, 255, 255, 0.05);
+  --form-review-card-border: rgba(255, 255, 255, 0.08);
+
+  --scrollbar-track: rgba(31, 41, 55, 0.35);
+  --scrollbar-thumb: #4b5563;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --background: #050506;
+    --foreground: #f8fafc;
+    --surface-base: #0f172a;
+    --surface-muted: #111827;
+    --surface-border: rgba(255, 255, 255, 0.05);
+    --surface-border-strong: rgba(255, 255, 255, 0.12);
+
+    --overlay-scrim-soft: rgba(2, 6, 23, 0.75);
+    --overlay-scrim-strong: rgba(0, 0, 0, 0.92);
+    --modal-surface: rgba(16, 15, 20, 0.95);
+    --modal-surface-glaze: rgba(31, 31, 36, 0.9);
+    --modal-body-surface: rgba(26, 25, 25, 0.6);
+
+    --form-surface: rgba(19, 19, 24, 0.85);
+    --form-field-bg: rgba(255, 255, 255, 0.04);
+    --form-field-bg-hover: rgba(255, 255, 255, 0.08);
+    --form-field-bg-focus: rgba(255, 255, 255, 0.12);
+    --form-field-text: #f8fafc;
+    --form-field-placeholder: rgba(248, 250, 252, 0.55);
+    --form-helper-text: rgba(248, 250, 252, 0.65);
+    --form-border: rgba(255, 255, 255, 0.12);
+    --form-border-strong: rgba(255, 255, 255, 0.2);
+    --form-border-focus: rgba(255, 255, 255, 0.45);
+    --form-border-error: #f87171;
+    --form-border-success: #34d399;
+    --form-success-bg: rgba(16, 185, 129, 0.15);
+    --form-success-text: #bbf7d0;
+    --form-error-bg: rgba(248, 113, 113, 0.15);
+    --form-error-text: #fecaca;
+    --form-review-card-bg: rgba(255, 255, 255, 0.05);
+    --form-review-card-border: rgba(255, 255, 255, 0.08);
+
+    --scrollbar-track: rgba(31, 41, 55, 0.35);
+    --scrollbar-thumb: #4b5563;
   }
 }
 
 html,
 body {
-  background-color: #ffffff;
-  color: #171717;
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', inter, sans-serif;
   min-height: 100vh;
   line-height: 1.5;
@@ -50,53 +156,51 @@ h1, h2, h3, h4, h5, h6, .heading {
   filter: blur(100px);
 }
 
-/* Global dark theme scrollbars */
-::-webkit-scrollbar {
+/* Themed scrollbars */
+[data-theme] ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.1);
+[data-theme] ::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #4b5563;
+[data-theme] ::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+[data-theme] ::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--scrollbar-thumb) 80%, white);
 }
 
-/* Firefox scrollbar */
-* {
+[data-theme] * {
   scrollbar-width: thin;
-  scrollbar-color: #4b5563 rgba(31, 41, 55, 0.1);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-/* Dark theme scrollbar for specific elements */
 .dark-scrollbar::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 .dark-scrollbar::-webkit-scrollbar-track {
-  background: rgba(56, 113, 194, 0.1);
+  background: var(--scrollbar-track);
   border-radius: 4px;
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb {
-  background: #4b5563;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: color-mix(in srgb, var(--scrollbar-thumb) 80%, white);
 }
 
 .dark-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #4b5563 rgba(31, 41, 55, 0.1);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
