@@ -1,32 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bk-color-bg: #fdfdfc;
+  --bk-color-text-primary: #0f172a;
+  --bk-color-text-muted: #475467;
+  --bk-color-text-invert: #0f172a;
+  --bk-color-accent: #ffc33e;
+  --bk-color-accent-strong: #cb2e12;
+  --bk-color-border: rgba(15, 23, 42, 0.12);
+  --bk-surface-muted: rgba(247, 247, 247, 0.9);
+  --bk-surface-strong: rgba(255, 255, 255, 0.92);
+  --bk-header-bg: rgba(255, 255, 255, 0.85);
+  --bk-header-border: rgba(15, 23, 42, 0.12);
+  --bk-mobile-overlay: rgba(255, 255, 255, 0.95);
+  --bk-logo-filter: none;
 }
 
-:root {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root[data-theme='dark'] {
+  --bk-color-bg: #030617;
+  --bk-color-text-primary: #f8fafc;
+  --bk-color-text-muted: #cbd5f5;
+  --bk-color-text-invert: #020617;
+  --bk-color-accent: #ffc33e;
+  --bk-color-accent-strong: #ff9d1f;
+  --bk-color-border: rgba(148, 163, 184, 0.35);
+  --bk-surface-muted: rgba(15, 23, 42, 0.85);
+  --bk-surface-strong: rgba(7, 11, 25, 0.95);
+  --bk-header-bg: rgba(3, 7, 18, 0.9);
+  --bk-header-border: rgba(59, 130, 246, 0.15);
+  --bk-mobile-overlay: rgba(0, 2, 12, 0.92);
+  --bk-logo-filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 195, 62, 0.3));
 }
 
 html,
 body {
-  background-color: #ffffff;
-  color: #171717;
+  background-color: var(--bk-color-bg);
+  color: var(--bk-color-text-primary);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', inter, sans-serif;
   min-height: 100vh;
   line-height: 1.5;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {
@@ -34,8 +48,9 @@ body {
 }
 
 a {
-  color: #ffc33e; /* Replace with your primary color value */
+  color: var(--bk-color-accent);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 h1, h2, h3, h4, h5, h6, .heading {
@@ -43,6 +58,17 @@ h1, h2, h3, h4, h5, h6, .heading {
   font-weight: 800;
   line-height: 1.2;
   color: #FFC33E;
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
 
 /* Additional blur utilities */

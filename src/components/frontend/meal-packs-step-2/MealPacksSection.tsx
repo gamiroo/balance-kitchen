@@ -1,19 +1,21 @@
 // src/app/components/meal-plans-step-2/MealPlanSection.tsx
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import styles from './MealPacksSection.module.css';
-import { CTAButton } from '../../ui/CTAButton/CTAButton';
-import { subscriptionPacks, bulkPacks, deliveryPacks, Pack } from './data/plansData';
-import ProductCard from './components/product-card/ProductCard';
-import { Modal } from '../../ui/modal/Modal';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+
+import { useTheme } from '@/hooks/useTheme';
+import { CTAButton } from '../../ui/CTAButton/CTAButton';
+import { Modal } from '../../ui/modal/Modal';
+import ProductCard from './components/product-card/ProductCard';
+import styles from './MealPacksSection.module.css';
+import { bulkPacks, deliveryPacks, Pack, subscriptionPacks } from './data/plansData';
 
 export const MealPlanSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const { theme, toggleTheme } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,10 +45,6 @@ export const MealPlanSection = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const allPacks: Pack[] = [
@@ -150,7 +148,12 @@ export const MealPlanSection = () => {
 
       {isModalOpen &&
         createPortal(
-          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions">
+          <Modal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            title="Meal Plans & Subscriptions"
+            theme={theme}
+          >
             <div className={`${styles.modalContent} ${styles[theme]}`}>
               <button
                 className={styles.themeToggle}
