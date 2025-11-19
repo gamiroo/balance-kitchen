@@ -1,0 +1,55 @@
+.toggleButton {
+  --toggle-height: 2.25rem;
+  --toggle-width: 3.75rem;
+  align-items: center;
+  background: var(--bk-surface-strong);
+  border: 1px solid var(--bk-color-border);
+  border-radius: 9999px;
+  color: var(--bk-color-text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 0.35rem;
+  height: var(--toggle-height);
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  position: relative;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  width: var(--toggle-width);
+}
+
+.toggleButton[data-theme-state='dark'] {
+  background: var(--bk-surface-muted);
+  color: var(--bk-color-text-invert);
+}
+
+.toggleButton:focus-visible {
+  outline: 2px solid var(--bk-color-accent);
+  outline-offset: 3px;
+}
+
+.icon {
+  display: inline-flex;
+  opacity: 0.35;
+  transition: opacity 0.2s ease;
+}
+
+.icon[data-active='true'] {
+  opacity: 1;
+}
+
+.thumb {
+  background: var(--bk-color-accent);
+  border-radius: 50%;
+  height: 1.35rem;
+  position: absolute;
+  top: 50%;
+  transform: translate(-90%, -50%);
+  transition: transform 0.3s ease;
+  width: 1.35rem;
+  z-index: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.toggleButton[data-theme-state='dark'] .thumb {
+  transform: translate(10%, -50%);
+}

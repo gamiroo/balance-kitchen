@@ -63,19 +63,14 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
       >
         <div className={styles.modalHeader}>
           <div className={styles.modalLogoWrapper}>
-            {/* Logo placeholder - replace with your actual logo component */}
-            <div style={{ 
-              width: '160px', 
-              height: '72px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffc33e',
-              fontWeight: 'bold',
-              fontSize: '14px'
-            }}>
-              <Image src="assets/logo/balance-logo.svg" alt="balance kitchen logo" width={220} height={370} />
-            </div>
+            <Image
+              src="/assets/logo/balance-logo.svg"
+              alt="Balance Kitchen"
+              width={160}
+              height={72}
+              className={styles.modalLogo}
+              priority
+            />
           </div>
           <h2 id="modal-title" className={styles.modalTitle}>{title}</h2>
           <button
@@ -83,7 +78,13 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             onClick={onClose}
             aria-label="Close modal"
           >
-            <Image src="assets/icons/logo-icon-svg.svg" alt="balance kitchen logo icon" width={220} height={370} />
+            <Image
+              src="/assets/icons/logo-icon-svg.svg"
+              alt="Balance Kitchen icon"
+              width={32}
+              height={32}
+              className={styles.closeIcon}
+            />
           </button>
         </div>
 
