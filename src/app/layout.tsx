@@ -2,6 +2,7 @@ import './globals.css'      // Tailwind base+components+utilities
 import { League_Spartan, Inter } from 'next/font/google'
 import { ZohoSalesIQ } from '../components/zoho/ZohoSalesIQ'
 import { SessionWrapper } from 'components/SessionWrapper'
+import { ThemeProvider } from '../components/providers/ThemeProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 const leagueSpartan = League_Spartan({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] })
@@ -18,9 +19,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <body className={`${inter.className} ${leagueSpartan.className}`}>
-        <SessionWrapper>{children}</SessionWrapper>
+        <SessionWrapper>
+          <ThemeProvider>{children}</ThemeProvider>
+        </SessionWrapper>
         <ZohoSalesIQ enabled={true} />
       </body>
     </html>

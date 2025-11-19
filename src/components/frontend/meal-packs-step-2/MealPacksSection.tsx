@@ -9,11 +9,12 @@ import { subscriptionPacks, bulkPacks, deliveryPacks, Pack } from './data/plansD
 import ProductCard from './components/product-card/ProductCard';
 import { Modal } from '../../ui/modal/Modal';
 import { createPortal } from 'react-dom';
+import { useTheme } from '../../../hooks/useTheme';
 
 export const MealPlanSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const { theme, toggleTheme } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,10 +44,6 @@ export const MealPlanSection = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const allPacks: Pack[] = [
@@ -150,8 +147,8 @@ export const MealPlanSection = () => {
 
       {isModalOpen &&
         createPortal(
-          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions">
-            <div className={`${styles.modalContent} ${styles[theme]}`}>
+          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions" theme={theme}>
+            <div className={`${styles.modalContent} ${styles[theme]}`}  data-theme={theme}>
               <button
                 className={styles.themeToggle}
                 onClick={toggleTheme}
