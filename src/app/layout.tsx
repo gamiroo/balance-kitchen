@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} ${leagueSpartan.className}`}>
         <SessionWrapper>
           <ThemeProvider>{children}</ThemeProvider>
