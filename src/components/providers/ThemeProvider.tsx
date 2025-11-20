@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
 type ThemeContextValue = {
   theme: Theme;
@@ -19,11 +19,27 @@ const applyDocumentTheme = (theme: Theme) => {
   document.documentElement.style.colorScheme = theme;
 };
 
+const STORAGE_KEY = 'bk-theme';
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const storedTheme = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme ?? (prefersDark ? 'dark' : 'light');
+
+    setTheme(initialTheme);
+    applyDocumentTheme(initialTheme);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     applyDocumentTheme(theme);
+    window.localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme(current => (current === 'dark' ? 'light' : 'dark'));

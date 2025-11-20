@@ -7,6 +7,15 @@
   --surface-border: rgba(15, 23, 42, 0.08);
   --surface-border-strong: rgba(15, 23, 42, 0.18);
 
+  --bk-surface-strong: #ffffff;
+  --bk-surface-muted: #f1f5f9;
+  --bk-color-border: rgba(15, 23, 42, 0.12);
+  --bk-color-text-primary: #0f172a;
+  --bk-color-text-muted: #475569;
+  --bk-color-text-invert: #0b1120;
+  --bk-color-accent: #ffc33e;
+  --bk-logo-filter: brightness(0);
+
   --overlay-scrim-soft: rgba(15, 23, 42, 0.35);
   --overlay-scrim-strong: rgba(15, 23, 42, 0.65);
   --modal-surface: rgba(255, 255, 255, 0.92);
@@ -49,6 +58,15 @@
   --surface-muted: #111827;
   --surface-border: rgba(255, 255, 255, 0.05);
   --surface-border-strong: rgba(255, 255, 255, 0.12);
+
+  --bk-surface-strong: #0f172a;
+  --bk-surface-muted: #111827;
+  --bk-color-border: rgba(255, 255, 255, 0.14);
+  --bk-color-text-primary: #e2e8f0;
+  --bk-color-text-muted: #94a3b8;
+  --bk-color-text-invert: #020617;
+  --bk-color-accent: #ffc33e;
+  --bk-logo-filter: brightness(0) saturate(100%) invert(100%) contrast(105%);
 
   --overlay-scrim-soft: rgba(2, 6, 23, 0.75);
   --overlay-scrim-strong: rgba(0, 0, 0, 0.92);
