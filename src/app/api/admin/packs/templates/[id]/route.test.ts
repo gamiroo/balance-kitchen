@@ -1,6 +1,5 @@
 import { GET, PUT, DELETE } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../../lib/auth/auth"
 import { adminPackService } from "../../../../../../lib/services/admin/packService"
 import { captureErrorSafe } from '../../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../../lib/logging/logger'
@@ -57,9 +56,9 @@ interface PackTemplate {
 }
 
 // Helper to create a mock NextRequest
-const createMockNextRequest = (options: { 
+const createMockNextRequest = <T = unknown > (options: { 
   method?: string; 
-  body?: any;
+  body?: T;
 } = {}): NextRequest => {
   return {
     method: options.method || 'GET',

@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { Moon, SunMedium } from 'lucide-react';
-import { useTheme } from '@/hooks/useTheme';
+import { useTheme } from '../../../hooks/useTheme';
 import styles from './ThemeToggle.module.css';
 
 interface ThemeToggleProps {

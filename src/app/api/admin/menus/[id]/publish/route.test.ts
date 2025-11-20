@@ -1,7 +1,6 @@
 // src/app/api/admin/menus/[id]/publish/route.test.ts
 import { POST } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../../lib/auth/auth"
 import { adminMenuService } from "../../../../../../lib/services/admin/menuService"
 import { captureErrorSafe } from '../../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../../lib/logging/logger'

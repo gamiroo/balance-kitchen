@@ -28,7 +28,8 @@ export const AboutSection = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        // Handle case where entry might be undefined
+        if (entry && entry.isIntersecting) {
           setInView(true);
         }
       },

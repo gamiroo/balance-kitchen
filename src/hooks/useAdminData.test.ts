@@ -42,7 +42,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // ASSERT - Initial state
       expect(result.current.loading).toBe(true);
@@ -80,7 +80,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any[]>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown[]>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -101,7 +101,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -124,7 +124,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -147,7 +147,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -169,7 +169,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -186,7 +186,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockRejectedValue(error);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -202,7 +202,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockRejectedValue('String error');
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -222,7 +222,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for async operation
       await act(async () => {
@@ -256,7 +256,7 @@ describe('useAdminData', () => {
         .mockResolvedValueOnce(mockResponse2);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // Wait for initial fetch
       await act(async () => {
@@ -292,7 +292,7 @@ describe('useAdminData', () => {
       const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
       // ACT
-      const { result, unmount } = renderHook(() => useAdminData<any>(mockEndpoint, {
+      const { unmount } = renderHook(() => useAdminData<unknown>(mockEndpoint, {
         revalidateOnFocus: true
       }));
 
@@ -333,7 +333,7 @@ describe('useAdminData', () => {
       const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
       // ACT
-      const { result, unmount } = renderHook(() => useAdminData<any>(mockEndpoint, {
+      const { unmount } = renderHook(() => useAdminData<unknown>(mockEndpoint, {
         revalidateOnReconnect: true
       }));
 
@@ -381,7 +381,7 @@ describe('useAdminData', () => {
       const setIntervalSpy = jest.spyOn(global, 'setInterval');
 
       // ACT
-      renderHook(() => useAdminData<any>(mockEndpoint, {
+      renderHook(() => useAdminData<unknown>(mockEndpoint, {
         refreshInterval: 1000
       }));
 
@@ -406,7 +406,7 @@ describe('useAdminData', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const { result } = renderHook(() => useAdminData<any>(mockEndpoint));
+      const { result } = renderHook(() => useAdminData<unknown>(mockEndpoint));
 
       // ASSERT - During initial fetch
       expect(result.current.loading).toBe(true);

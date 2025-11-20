@@ -17,7 +17,8 @@ Object.defineProperty(global, 'crypto', {
 describe('performance-monitor', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    delete (global as any).requestId
+    delete (global as unknown as { requestId?: string }).requestId;
+
   })
 
   describe('withPerformanceMonitoring', () => {
@@ -38,7 +39,7 @@ describe('performance-monitor', () => {
       }
 
       // ACT
-      const result = await monitoredHandler(mockRequest as any)
+      const result = await monitoredHandler(mockRequest as unknown as Request);
 
       // ASSERT
       expect(result.status).toBe(200)
@@ -71,7 +72,7 @@ describe('performance-monitor', () => {
       }
 
       // ACT
-      const result = await monitoredHandler(mockRequest as any)
+      const result = await monitoredHandler(mockRequest as unknown as Request);
 
       // ASSERT
       expect(result.status).toBe(200)
@@ -92,7 +93,7 @@ describe('performance-monitor', () => {
       }
 
       // ACT & ASSERT
-      await expect(monitoredHandler(mockRequest as any)).rejects.toThrow('API Error')
+      await expect(monitoredHandler(mockRequest as unknown as Request)).rejects.toThrow('API Error')
       expect(captureErrorSafe).toHaveBeenCalledWith(
         error,
         expect.objectContaining({
@@ -106,7 +107,7 @@ describe('performance-monitor', () => {
 
     it('should use global requestId when available', async () => {
       // ARRANGE
-      ;(global as any).requestId = 'global-request-id'
+      ;(global as unknown as {requestId?: string}).requestId = 'global-request-id'
       const mockHandler = jest.fn().mockResolvedValue(new Response('Success', { status: 200 }))
       const monitoredHandler = withPerformanceMonitoring(mockHandler)
       const mockRequest = {
@@ -118,7 +119,7 @@ describe('performance-monitor', () => {
       }
 
       // ACT
-      await monitoredHandler(mockRequest as any)
+      await monitoredHandler(mockRequest as unknown as Request);
 
       // ASSERT
       expect(logger.info).toHaveBeenCalledWith('API request completed', expect.objectContaining({
