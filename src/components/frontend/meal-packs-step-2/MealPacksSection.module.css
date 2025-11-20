@@ -3,9 +3,13 @@
 /* Base Styles */
 .menuPlanSection {
   padding: 5rem 1.5rem;
-  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.15), rgba(211, 181, 10, 0.129));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--surface-muted) 75%, transparent),
+    color-mix(in srgb, var(--bk-color-accent) 22%, var(--surface-base))
+  );
   backdrop-filter: blur(25px);
-  color: white;
+  color: var(--bk-color-text-primary);
   position: relative;
   max-width: 1400px;
   margin: 0 auto;
@@ -60,15 +64,15 @@
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  color: #fbbf24;
-  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  color: var(--bk-color-accent);
+  background: linear-gradient(45deg, var(--bk-color-accent), color-mix(in srgb, var(--bk-color-accent) 85%, #f59e0b));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .sectionDescription {
-  color: #d1d5db;
+  color: var(--bk-color-text-muted);
   font-size: 1.125rem;
   line-height: 1.7;
   margin-bottom: 2.5rem;
@@ -89,7 +93,7 @@
   background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
   background-size: 300% 300%;
   animation: gradientShift 3s ease infinite;
-  color: white;
+  color: var(--bk-color-text-primary);
   width: 32px;
   height: 32px;
   border-radius: 50%;
