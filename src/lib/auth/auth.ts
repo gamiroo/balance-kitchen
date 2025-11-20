@@ -7,6 +7,14 @@ import { captureErrorSafe } from '../utils/error-utils'
 import { logger } from '../logging/logger'
 import { AuditLogger } from '../logging/audit-logger'
 
+
+const authSecret = process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET
+
+if (!authSecret && process.env.NODE_ENV === "production") {
+  // This will fail fast with a clearer error than the NextAuth generic one
+  throw new Error("Missing NEXTAUTH_SECRET / AUTH_SECRET in production environment")
+}
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -216,7 +224,7 @@ export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt" as SessionStrategy,
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: authSecret,
 }
 
 export const handler = NextAuth(authOptions)
