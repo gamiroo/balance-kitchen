@@ -2,9 +2,6 @@
 import { POST } from './route'
 import { db } from '../../../../lib/database/client'
 import { getServerSession } from 'next-auth'
-import { AuditLogger } from '../../../../lib/logging/audit-logger'
-import { logger } from '../../../../lib/logging/logger'
-import { captureErrorSafe } from '../../../../lib/utils/error-utils'
 
 // Mock dependencies
 jest.mock('next-auth')
@@ -18,7 +15,7 @@ jest.mock('@/lib/logging/logger')
 jest.mock('@/lib/logging/audit-logger')
 jest.mock('@/lib/utils/error-utils')
 
-const mockRequest = (body: any) => ({
+const mockRequest = <T = unknown>(body: T) => ({
   json: async () => body
 } as unknown as Request)
 

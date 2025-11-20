@@ -104,7 +104,7 @@ class AdminCache {
     let expiredCount = 0;
     
     // Count expired entries
-    for (const [key, item] of this.cache.entries()) {
+    for (const [ , item] of this.cache.entries()) {
       if (now - item.timestamp > item.ttl) {
         expiredCount++;
       }

@@ -1,7 +1,6 @@
 // src/app/api/admin/users/route.test.ts
 import { GET } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../lib/auth/auth"
 import { db } from "../../../../lib/database/client"
 import { captureErrorSafe } from '../../../../lib/utils/error-utils'
 import { logger } from '../../../../lib/logging/logger'

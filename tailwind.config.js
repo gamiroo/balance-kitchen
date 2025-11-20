@@ -1,15 +1,41 @@
 // tailwind.config.js
+
+const semanticColors = {
+  surface: {
+    DEFAULT: 'var(--surface)',
+    muted: 'var(--surface-muted)',
+    hover: 'var(--surface-hover)',
+  },
+  text: {
+    DEFAULT: 'var(--text)',
+    muted: 'var(--text-muted)',
+  },
+  accent: {
+    DEFAULT: 'var(--accent)',
+    foreground: 'var(--accent-foreground)',
+  },
+  border: 'var(--border)',
+  muted: {
+    DEFAULT: 'var(--muted)',
+    foreground: 'var(--muted-foreground)',
+  },
+};
+
+
 module.exports = {
+  darkMode: ['class', '[data-theme="dark"]'],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}"
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
-      colors: {
-        primary: '#5A9E3D',   // Fresh green – tweak later
-        secondary: '#F4E1A9', // Warm yellow
-        accent: '#FFC107',    // Highlight
+      colors: semanticColors,
+      backgroundColor: semanticColors,
+      borderColor: {
+        DEFAULT: 'var(--border)',
+        ...semanticColors,
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

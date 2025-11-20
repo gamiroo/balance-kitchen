@@ -657,6 +657,11 @@ export const EnquiryForm: React.FC<EnquiryFormProps> = ({
     setFocusedInput(fieldName === focusedInput ? null : focusedInput);
   };
 
+    // Early return if not open
+  if (!isOpen) {
+    return null;
+  }
+
   return (
     <>
       <div className={styles.modalBackground}></div>

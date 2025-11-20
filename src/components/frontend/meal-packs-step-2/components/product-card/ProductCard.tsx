@@ -2,7 +2,7 @@ import React from 'react';
 import { Pack } from '../../data/plansData';
 import Image from 'next/image';
 import styles from './ProductCard.module.css';
-import { MovingBorder } from '../../../../ui/animated-border/AnimatedBorderBox';
+import { AnimatedGradientBorder } from '../../../../ui/animated-border/AnimatedGradientBorder';
 import { CTAButton } from 'components/ui/CTAButton/CTAButton';
 
 interface ProductCardProps {
@@ -45,16 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ pack }) => {
 
   return (
     <div className={styles.cardWrapper}>
-      <MovingBorder
-        width="fit"
-        height="fit"
-        strokeWidth={highlight ? 3 : 2}
-        duration={highlight ? 15 : 28}
-        opacity={highlight ? 1 : 0.8}
-        blur={highlight ? 2 : 1}
-        radius={16}
-        gradientColors={highlight ? ["#ffc33e", "#fbbf24"] : ["#A94CF0", "#8A29D3"]}
-        background="transparent"
+      <AnimatedGradientBorder
       >
         <div className={`${styles.productCard} ${highlight ? styles.highlighted : ''}`}>
           {/* Top Section - Image with overlaid content */}
@@ -113,7 +104,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ pack }) => {
             </div>
           </div>
         </div>
-      </MovingBorder>
+      </AnimatedGradientBorder>
     </div>
   );
 };

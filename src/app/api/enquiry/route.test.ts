@@ -178,7 +178,6 @@ describe('POST /api/enquiry', () => {
 
     // ACT
     const response = await mockPOST(mockRequest)
-    const data = await response.json()
 
     // ASSERT
     expect(response.status).toBe(200)
@@ -214,7 +213,7 @@ describe('POST /api/enquiry', () => {
     // Mock the actual implementation behavior
     mockPOST.mockImplementationOnce(async () => {
       // Simulate what the real implementation would do
-      const zohoService = new (ZohoCRMService as any)()
+      const zohoService = new (ZohoCRMService as typeof ZohoCRMService)()
       await zohoService.createEnquiryLead('John Doe', {
         firstName: 'John',
         lastName: 'Doe',
@@ -274,7 +273,7 @@ describe('POST /api/enquiry', () => {
     // Mock the actual implementation behavior
     mockPOST.mockImplementationOnce(async () => {
       // Simulate what the real implementation would do
-      const zohoService = new (ZohoCRMService as any)()
+      const zohoService = new (ZohoCRMService as typeof ZohoCRMService)()
       await zohoService.createEnquiryLead('John Doe', {
         firstName: 'John',
         lastName: 'Doe',
@@ -282,7 +281,7 @@ describe('POST /api/enquiry', () => {
         subject: 'Test Subject',
         howDidYouHear: 'Search Engine',
         message: 'Test message content'
-      } as any)
+      })
       
       return new Response(JSON.stringify({ 
         success: true,

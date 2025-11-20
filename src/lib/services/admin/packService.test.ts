@@ -263,7 +263,9 @@ describe('adminPackService', () => {
       }
 
       // ACT & ASSERT
-      await expect(adminPackService.createPackTemplate(invalidData as any)).rejects.toThrow('Name, size, and price are required')
+     await expect(adminPackService.createPackTemplate(invalidData as unknown as Parameters<typeof adminPackService.createPackTemplate>[0])).rejects.toThrow('Name, size, and price are required');
+
+
       expect(db.query).not.toHaveBeenCalled()
       expect(captureErrorSafe).not.toHaveBeenCalled()
     })
@@ -278,7 +280,7 @@ describe('adminPackService', () => {
       }
 
       // ACT & ASSERT
-      await expect(adminPackService.createPackTemplate(invalidData as any)).rejects.toThrow('Name, size, and price are required')
+      await expect(adminPackService.createPackTemplate(invalidData as unknown as Parameters<typeof adminPackService.createPackTemplate>[0])).rejects.toThrow('Name, size, and price are required');
       expect(db.query).not.toHaveBeenCalled()
     })
 
@@ -292,7 +294,7 @@ describe('adminPackService', () => {
       }
 
       // ACT & ASSERT
-      await expect(adminPackService.createPackTemplate(invalidData as any)).rejects.toThrow('Name, size, and price are required')
+      await expect(adminPackService.createPackTemplate(invalidData as unknown as Parameters<typeof adminPackService.createPackTemplate>[0])).rejects.toThrow('Name, size, and price are required');
       expect(db.query).not.toHaveBeenCalled()
     })
 
