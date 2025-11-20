@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const NodeEnvironment = require('jest-environment-node').TestEnvironment;
 
 class MinimalDomEnvironment extends NodeEnvironment {
