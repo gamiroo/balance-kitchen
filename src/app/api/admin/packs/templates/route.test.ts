@@ -1,6 +1,5 @@
 import { GET, POST } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../lib/auth/auth"
 import { adminPackService } from "../../../../../lib/services/admin/packService"
 import { captureErrorSafe } from '../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../lib/logging/logger'
@@ -56,9 +55,9 @@ interface PackTemplate {
 }
 
 // Helper to create a mock NextRequest
-const createMockNextRequest = (options: { 
+const createMockNextRequest = <T = unknown>(options: { 
   url?: string;
-  body?: any;
+  body?: T;
   method?: string;
 } = {}): NextRequest => {
   return {
@@ -67,6 +66,7 @@ const createMockNextRequest = (options: {
     json: options.body ? async () => options.body : undefined
   } as unknown as NextRequest
 }
+
 
 describe('GET /api/admin/packs/templates', () => {
   beforeEach(() => {

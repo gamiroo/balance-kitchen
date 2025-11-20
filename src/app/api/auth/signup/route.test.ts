@@ -16,7 +16,7 @@ jest.mock('bcryptjs')
 jest.mock('@/lib/logging/logger')
 jest.mock('@/lib/logging/audit-logger')
 
-const mockRequest = (body: any) => ({
+const mockRequest = <T = unknown>(body: T) => ({
   json: async () => body
 } as unknown as Request)
 

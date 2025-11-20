@@ -1,20 +1,15 @@
 // src/app/components/meal-plans-step-2/MealPlanSection.tsx
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-
-import { useTheme } from "../../../hooks/useTheme";
-import { CTAButton } from "../../ui/CTAButton/CTAButton";
-import { Modal } from "../../ui/modal/Modal";
-import ProductCard from "./components/product-card/ProductCard";
-import styles from "./MealPacksSection.module.css";
-import {
-  bulkPacks,
-  deliveryPacks,
-  Pack,
-  subscriptionPacks,
-} from "./data/plansData";
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
+import styles from './MealPacksSection.module.css';
+import { CTAButton } from '../../ui/CTAButton/CTAButton';
+import { subscriptionPacks, bulkPacks, deliveryPacks, Pack } from './data/plansData';
+import ProductCard from './components/product-card/ProductCard';
+import { Modal } from '../../ui/modal/Modal';
+import { createPortal } from 'react-dom';
+import { useTheme } from '../../../hooks/useTheme';
 
 export const MealPlanSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -153,29 +148,17 @@ export const MealPlanSection = () => {
         </div>
       </section>
 
-      {isModalOpen ? (
-        <Modal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          title="Meal Plans & Subscriptions"
-          theme={theme}
-        >
-          <div className={`${styles.modalContent} ${styles[theme]}`}>
-            <button
-              className={styles.themeToggle}
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? "☀️" : "🌙"}
-            </button>
-
-            <div className={styles.modalWrapper}>
-              <div className={styles.modalHeader}>
-                <h2 className={styles.modalTitle}>Our Meal Plans Explained</h2>
-                <p className={styles.modalSubtitle}>
-                  Choose the perfect plan for your lifestyle
-                </p>
-              </div>
+      {isModalOpen &&
+        createPortal(
+          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions" theme={theme}>
+            <div className={`${styles.modalContent} ${styles[theme]}`}  data-theme={theme}>
+              <button
+                className={styles.themeToggle}
+                onClick={toggleTheme}
+                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              >
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
 
               <div className={styles.tabContainer}>
                 <div className={styles.tabHeaders}>

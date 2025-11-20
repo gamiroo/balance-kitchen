@@ -1,7 +1,6 @@
 // src/app/api/admin/orders/route.test.ts
 import { GET } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../lib/auth/auth"
 import { adminOrderService } from "../../../../lib/services/admin/orderService"
 import { captureErrorSafe } from '../../../../lib/utils/error-utils'
 import { logger } from '../../../../lib/logging/logger'

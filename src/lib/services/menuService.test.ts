@@ -5,7 +5,6 @@ import {
   getDishesByCategory, 
   getCurrentMenuId 
 } from './menuService'
-import { dishData } from '../../data/dishData'
 
 // Mock dishData
 jest.mock('../../data/dishData', () => ({

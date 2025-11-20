@@ -2,13 +2,13 @@
 "use client";
 
 import { useState, useRef } from "react";
-import AdminModal from "./AdminModal";
+import AdminModal from "../admin-modal/AdminModal";
 import Image from "next/image";
 
 interface ImageUploadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload: (imageUrl: string) => void;
+  onUpload: (imageUrl: string) => Promise<void> | void;  // Updated to support both sync and async
   currentImage?: string;
   title?: string;
 }
@@ -69,7 +69,13 @@ export default function ImageUploadModal({
       
       // Mock URL - replace with actual upload logic
       const mockUrl = previewUrl || URL.createObjectURL(selectedFile);
-      onUpload(mockUrl);
+      
+      // Handle both sync and async onUpload functions
+      const uploadResult = onUpload(mockUrl);
+      if (uploadResult instanceof Promise) {
+        await uploadResult;
+      }
+      
       onClose();
     } catch (err) {
       console.error(err);
