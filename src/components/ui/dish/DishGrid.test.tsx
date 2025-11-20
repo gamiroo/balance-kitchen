@@ -34,7 +34,7 @@ jest.mock('./DishGrid.module.css', () => ({
 
 // Mock DishCard component
 jest.mock('./DishCard', () => {
-  const MockDishCard = ({ dish, enableSwipe }: { dish: any; enableSwipe?: boolean }) => (
+  const MockDishCard = ({ dish, enableSwipe }: { dish: Dish; enableSwipe?: boolean }) => (
     <div 
       data-testid="mock-dish-card" 
       data-enable-swipe={enableSwipe}
@@ -80,8 +80,7 @@ jest.mock('../../ui/CTAButton/CTAButton', () => {
 jest.mock('next/link', () => {
   const MockLink = ({ 
     children, 
-    href,
-    passHref
+    href
   }: { 
     children: React.ReactNode;
     href: string;

@@ -5,7 +5,7 @@ import { useState } from "react";
 import FormContainer from "../form-container/FormContainer";
 import FormField from "../form-field/FormField";
 
-interface PackFormData {
+export interface PackFormData {
   name: string;
   size: number;
   price: number;
@@ -14,7 +14,7 @@ interface PackFormData {
 }
 
 interface PackFormProps {
-  initialData?: PackFormData;
+  initialData?: Partial<PackFormData>;
   onSubmit: (data: PackFormData) => void;
   isSubmitting?: boolean;
 }

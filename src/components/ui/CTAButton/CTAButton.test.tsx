@@ -17,18 +17,7 @@ jest.mock('./CTAButton.module.css', () => ({
 
 // Mock framer-motion
 jest.mock('framer-motion', () => {
-  const MockMotionButton = ({ 
-    children, 
-    onClick, 
-    type,
-    disabled,
-    'aria-label': ariaLabel,
-    'aria-disabled': ariaDisabled,
-    'aria-busy': ariaBusy,
-    whileHover,
-    whileTap,
-    ...props
-  }: { 
+  type MotionButtonProps = {
     children: React.ReactNode;
     onClick?: () => void;
     type?: 'button' | 'submit' | 'reset';
@@ -36,14 +25,22 @@ jest.mock('framer-motion', () => {
     'aria-label'?: string;
     'aria-disabled'?: boolean;
     'aria-busy'?: boolean;
-    whileHover?: any;
-    whileTap?: any;
-    [key: string]: any;
-  }) => {
-    // Simulate the actual behavior from the component
-    const isDisabled = disabled || props['aria-busy'] === 'true';
-    const shouldHaveAnimations = !isDisabled;
-    
+    whileHover?: Record<string, unknown> | undefined;
+    whileTap?: Record<string, unknown> | undefined;
+  } & Record<string, unknown>;
+
+  const MockMotionButton = ({
+    children,
+    onClick,
+    type,
+    disabled,
+    'aria-label': ariaLabel,
+    'aria-disabled': ariaDisabled,
+    'aria-busy': ariaBusy,
+    ...rest
+  }: MotionButtonProps) => {
+    const isDisabled = Boolean(disabled || ariaBusy === true);
+
     return (
       <button
         onClick={onClick}
@@ -52,21 +49,21 @@ jest.mock('framer-motion', () => {
         aria-label={ariaLabel}
         aria-disabled={ariaDisabled}
         aria-busy={ariaBusy}
-        data-while-hover={shouldHaveAnimations ? 'true' : 'false'}
-        data-while-tap={shouldHaveAnimations ? 'true' : 'false'}
-        {...props}
+        data-while-hover={isDisabled ? 'false' : 'true'}
+        data-while-tap={isDisabled ? 'false' : 'true'}
+        {...rest}
       >
         {children}
       </button>
     );
   };
+
   return {
     __esModule: true,
-    motion: {
-      button: MockMotionButton,
-    },
+    motion: { button: MockMotionButton },
   };
 });
+
 
 describe('CTAButton', () => {
   const mockOnClick = jest.fn();

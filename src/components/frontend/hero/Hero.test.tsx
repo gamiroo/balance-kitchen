@@ -2,8 +2,13 @@
 // src/components/frontend/hero/Hero.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
+import type { ReactNode, HTMLAttributes } from 'react';
 import { Hero } from './Hero';
 import '@testing-library/jest-dom';
+
+type MotionMockProps<T extends HTMLElement> = HTMLAttributes<T> & {
+  children?: ReactNode;
+};
 
 // Mock framer-motion
 jest.mock('framer-motion', () => {
@@ -11,9 +16,15 @@ jest.mock('framer-motion', () => {
   return {
     ...actual,
     motion: {
-      h1: ({ children, ...props }: any) => <h1 {...props}>{children}</h1>,
-      p: ({ children, ...props }: any) => <p {...props}>{children}</p>,
-      div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      h1: ({ children, ...props }: MotionMockProps<HTMLHeadingElement>) => (
+        <h1 {...props}>{children}</h1>
+      ),
+      p: ({ children, ...props }: MotionMockProps<HTMLParagraphElement>) => (
+        <p {...props}>{children}</p>
+      ),
+      div: ({ children, ...props }: MotionMockProps<HTMLDivElement>) => (
+        <div {...props}>{children}</div>
+      ),
     },
   };
 });
@@ -40,7 +51,7 @@ jest.mock('lucide-react', () => ({
 // Mock CTAButton component
 jest.mock('../../../ui/CTAButton/CTAButton', () => {
   return {
-    CTAButton: ({ children, onClick, href, 'aria-label': ariaLabel }: { 
+    CTAButton: ({ children, onClick, 'aria-label': ariaLabel }: { 
       children: React.ReactNode; 
       onClick: () => void;
       href: string;
@@ -265,11 +276,12 @@ describe('Hero', () => {
       const scrollIntoViewSpy = jest.fn(() => {
         throw new Error('Scroll error');
       });
+
+      const element = document.createElement('div');
+      element.scrollIntoView = scrollIntoViewSpy;
       
       // Mock document.getElementById to return element with mocked scrollIntoView
-      const getElementByIdSpy = jest.spyOn(document, 'getElementById').mockImplementation(() => ({
-        scrollIntoView: scrollIntoViewSpy,
-      } as any));
+      const getElementByIdSpy = jest.spyOn(document, 'getElementById').mockImplementation(() => element);
       
       const scrollButton = screen.getByLabelText('Scroll to next section');
       
@@ -283,41 +295,45 @@ describe('Hero', () => {
   describe('Interaction Cases', () => {
     it('should scroll to next section when CTA button is clicked', () => {
       render(<Hero />);
-      
-      // Mock document.getElementById to return a mock element
-      const mockElement = {
-        scrollIntoView: jest.fn(),
-      };
-      const getElementByIdSpy = jest.spyOn(document, 'getElementById').mockImplementation(() => mockElement as any);
-      
+
+      const scrollIntoViewMock: (arg?: boolean | ScrollIntoViewOptions) => void = jest.fn();
+      const element = document.createElement('div');
+      element.scrollIntoView = scrollIntoViewMock;
+
+      const getElementByIdSpy = jest
+        .spyOn(document, 'getElementById')
+        .mockImplementation(() => element);
+
       const ctaButton = screen.getByText('Find out more');
       fireEvent.click(ctaButton);
-      
-      expect(mockElement.scrollIntoView).toHaveBeenCalledWith({
+
+      expect(scrollIntoViewMock).toHaveBeenCalledWith({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       });
-      
+
       getElementByIdSpy.mockRestore();
     });
 
     it('should scroll to next section when scroll indicator is clicked', () => {
       render(<Hero />);
-      
-      // Mock document.getElementById to return a mock element
-      const mockElement = {
-        scrollIntoView: jest.fn(),
-      };
-      const getElementByIdSpy = jest.spyOn(document, 'getElementById').mockImplementation(() => mockElement as any);
-      
+
+      const scrollIntoViewMock: (arg?: boolean | ScrollIntoViewOptions) => void = jest.fn();
+      const element = document.createElement('div');
+      element.scrollIntoView = scrollIntoViewMock;
+
+      const getElementByIdSpy = jest
+        .spyOn(document, 'getElementById')
+        .mockImplementation(() => element);
+
       const scrollButton = screen.getByLabelText('Scroll to next section');
       fireEvent.click(scrollButton);
-      
-      expect(mockElement.scrollIntoView).toHaveBeenCalledWith({
+
+      expect(scrollIntoViewMock).toHaveBeenCalledWith({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       });
-      
+
       getElementByIdSpy.mockRestore();
     });
 

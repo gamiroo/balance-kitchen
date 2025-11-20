@@ -1,7 +1,7 @@
 /** @jest-environment jsdom */
 // components/admin/forms/pack-form/PackForm.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
-import PackForm from './PackForm';
+import PackForm, {PackFormData} from './PackForm';
 import '@testing-library/jest-dom';
 
 describe('PackForm', () => {
@@ -251,7 +251,6 @@ describe('PackForm', () => {
     const sizeInput = document.getElementById('size');
     const priceInput = document.getElementById('price');
     const descriptionTextarea = document.getElementById('description');
-    const activeCheckbox = document.getElementById('is_active');
     
     fireEvent.change(nameInput!, { target: { value: 'Test Pack' } });
     fireEvent.change(sizeInput!, { target: { value: '8' } });
@@ -369,13 +368,13 @@ describe('PackForm', () => {
   });
 
   it('should handle partial initial data gracefully', () => {
-    const partialData = {
+    const partialData: Partial<PackFormData> = {
       name: 'Partial Pack',
       price: 25.99,
       // size and other fields missing
     };
     
-    render(<PackForm {...defaultProps} initialData={partialData as any} />);
+    render(<PackForm {...defaultProps} initialData={partialData} />);
     
     const nameInput = document.getElementById('name') as HTMLInputElement;
     const sizeInput = document.getElementById('size') as HTMLInputElement;

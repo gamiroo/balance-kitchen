@@ -5,14 +5,14 @@ import { useState } from "react";
 import FormContainer from "../form-container/FormContainer";
 import FormField from "../form-field/FormField";
 
-interface MenuFormData {
+export interface MenuFormData {
   week_start_date: string;
   week_end_date: string;
   is_published: boolean;
 }
 
 interface MenuFormProps {
-  initialData?: MenuFormData;
+  initialData?:  Partial<MenuFormData>;
   onSubmit: (data: MenuFormData) => void;
   isSubmitting?: boolean;
 }

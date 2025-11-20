@@ -87,13 +87,19 @@ jest.mock('../../ui/universal-card/UniversalCard', () => {
 
 // Mock next/image
 jest.mock('next/image', () => {
-  const MockImage = ({ alt, ...props }: { alt: string; [key: string]: any }) => {
+  type MockImageProps = {
+    alt: string;
+  } & Record<string, unknown>;
+
+  const MockImage = ({ alt, ...props }: MockImageProps) => {
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={alt} {...props} />;
   };
+
   MockImage.displayName = 'MockImage';
   return MockImage;
 });
+
 
 // Mock lucide-react icons
 jest.mock('lucide-react', () => {
@@ -279,32 +285,20 @@ it('should render dish information on front card', () => {
   });
 
   it('should not render fiber information when not provided', () => {
-    // ARRANGE
-    const dishWithoutFiber: Dish = {
-      ...mockDish,
-      fiber: undefined,
-      name: 'No Fiber Dish',
-    };
+  const dishWithoutFiber: Dish = {
+    ...mockDish,
+    fiber: undefined,
+    name: 'No Fiber Dish',
+  };
 
-    // ACT
-    render(<DishCard dish={dishWithoutFiber} onLike={mockOnLike} />);
+  render(<DishCard dish={dishWithoutFiber} onLike={mockOnLike} />);
 
-    // Get the back content
-    const backContent = screen.getByTestId('back-content');
+  const backContent = screen.getByTestId('back-content');
 
-    // ASSERT
-    // Check that "Fiber" text is not in the back content when fiber is undefined
-    const fiberTextElements = backContent.querySelectorAll('*');
-    let hasFiberText = false;
-    fiberTextElements.forEach(element => {
-      if (element.textContent && element.textContent.includes('Fiber') && element.textContent !== 'No Fiber Dish') {
-        hasFiberText = true;
-      }
-    });
-    // Since fiber is undefined, we shouldn't have fiber-specific content
-    // But we need to be more specific - the dish name contains "Fiber" so we need to be careful
-    expect(backContent.textContent).not.toMatch(/[\d]+g\s+Fiber/);
-  });
+  // Since fiber is undefined, we shouldn't have a numeric fiber line like "2g Fiber"
+  expect(backContent.textContent).not.toMatch(/\d+g\s+Fiber/);
+});
+
 
   it('should pass enableSwipe prop to UniversalCard', () => {
     // ARRANGE & ACT
@@ -401,7 +395,6 @@ it('should render dish information on front card', () => {
 
     // ASSERT
     const ingredientText = backContent.textContent || '';
-    const ingredientOrder = ['Salmon', 'Lemon', 'Herbs', 'Olive Oil'];
     
     // Check that ingredients appear in the correct order in the text content
     const salmonIndex = ingredientText.indexOf('Salmon');

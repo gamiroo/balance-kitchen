@@ -3,7 +3,7 @@
  */
 // components/admin/forms/menu-item-form/MenuItemForm.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
-import MenuItemForm from './MenuItemForm';
+import MenuItemForm, {MenuItemFormData} from './MenuItemForm';
 import '@testing-library/jest-dom';
 
 describe('MenuItemForm', () => {
@@ -311,7 +311,6 @@ describe('MenuItemForm', () => {
     const categorySelect = document.getElementById('category');
     const priceInput = document.getElementById('price');
     const descriptionTextarea = document.getElementById('description');
-    const availableCheckbox = document.getElementById('is_available');
     
     fireEvent.change(nameInput!, { target: { value: 'Test Item' } });
     fireEvent.change(categorySelect!, { target: { value: 'Dessert' } });
@@ -462,13 +461,13 @@ describe('MenuItemForm', () => {
   });
 
   it('should handle partial initial data gracefully', () => {
-    const partialData = {
+    const partialData: Partial<MenuItemFormData> = {
       name: 'Partial Item',
       price: 10.50,
       // Other fields missing
     };
     
-    render(<MenuItemForm {...defaultProps} initialData={partialData as any} />);
+    render(<MenuItemForm {...defaultProps} initialData={partialData} />);
     
     const nameInput = document.getElementById('name') as HTMLInputElement;
     const categorySelect = document.getElementById('category') as HTMLSelectElement;
@@ -502,7 +501,6 @@ describe('MenuItemForm', () => {
     const fatInput = document.getElementById('fat');
     const ingredientsTextarea = document.getElementById('ingredients');
     const allergensTextarea = document.getElementById('allergens');
-    const availableCheckbox = document.getElementById('is_available');
     
     fireEvent.change(nameInput!, { target: { value: 'Complete Item' } });
     fireEvent.change(categorySelect!, { target: { value: 'Main Course' } });

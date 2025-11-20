@@ -5,7 +5,7 @@ import { useState } from "react";
 import FormContainer from "../form-container/FormContainer";
 import FormField from "../form-field/FormField";
 
-interface MenuItemFormData {
+export interface MenuItemFormData {
   name: string;
   description: string;
   price: number;
@@ -22,7 +22,7 @@ interface MenuItemFormData {
 }
 
 interface MenuItemFormProps {
-  initialData?: MenuItemFormData;
+  initialData?: Partial<MenuItemFormData>;
   onSubmit: (data: MenuItemFormData) => void;
   isSubmitting?: boolean;
 }

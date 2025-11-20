@@ -1,9 +1,17 @@
 /** @jest-environment jsdom */
 // components/admin/modals/confirmation-modal/ConfirmationModal.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import ConfirmationModal from './ConfirmationModal';
 import '@testing-library/jest-dom';
 
+interface MockAdminModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+}
 // Mock the AdminModal component to isolate testing
 jest.mock('../admin-modal/AdminModal', () => {
   return function MockAdminModal({ 
@@ -12,7 +20,7 @@ jest.mock('../admin-modal/AdminModal', () => {
     title, 
     children,
     size 
-  }: any) {
+  }: MockAdminModalProps) {
     if (!isOpen) return null;
     
     return (

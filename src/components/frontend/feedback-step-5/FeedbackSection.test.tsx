@@ -7,20 +7,33 @@ import '@testing-library/jest-dom';
 import React from 'react';
 
 // Mock next/image since it doesn't work in Jest environment
+type MockNextImageProps = {
+  alt: string;
+  src: string;
+} & Record<string, unknown>;
+
 jest.mock('next/image', () => {
-  return function MockImage({ alt, src, ...props }: { alt: string; src: string; [key: string]: any }) {
+  return function MockImage({ alt, src, ...props }: MockNextImageProps) {
     // Convert boolean props to strings for DOM compatibility
-    const domProps = { ...props };
-    Object.keys(domProps).forEach(key => {
-      if (typeof domProps[key] === 'boolean') {
-        domProps[key] = domProps[key].toString();
+    const domProps: Record<string, string | number | undefined> = {};
+
+    Object.entries(props).forEach(([key, value]) => {
+      if (typeof value === 'boolean') {
+        domProps[key] = value.toString();
+      } else if (
+        typeof value === 'string' ||
+        typeof value === 'number' ||
+        typeof value === 'undefined'
+      ) {
+        domProps[key] = value;
       }
     });
-    
+
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={alt} src={src} {...domProps} />;
   };
 });
+
 
 // Mock CTAButton component
 jest.mock('../../ui/CTAButton/CTAButton', () => {
@@ -73,23 +86,25 @@ jest.mock('./FeedbackSection.module.css', () => ({
 
 // Set up IntersectionObserver mock before all tests
 const mockIntersectionObserver = jest.fn();
-let mockIntersectionObserverCallback: Function;
+let mockIntersectionObserverCallback: (entries: unknown[]) => void;
 
 beforeAll(() => {
-  // Mock IntersectionObserver globally
   Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     configurable: true,
-    value: mockIntersectionObserver.mockImplementation((callback) => {
-      mockIntersectionObserverCallback = callback;
-      return {
-        observe: jest.fn(),
-        unobserve: jest.fn(),
-        disconnect: jest.fn(),
-      };
-    }),
+    value: mockIntersectionObserver.mockImplementation(
+      (callback: (entries: unknown[]) => void) => {
+        mockIntersectionObserverCallback = callback;
+        return {
+          observe: jest.fn(),
+          unobserve: jest.fn(),
+          disconnect: jest.fn(),
+        };
+      }
+    ),
   });
 });
+
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -251,15 +266,18 @@ describe('FeedbackSection', () => {
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
       // Create a mock implementation that simulates an error during observe
-      const errorObserverMock = jest.fn().mockImplementation((callback) => {
-        return {
-          observe: jest.fn(() => {
-            // Simulate an error during observation
-          }),
-          unobserve: jest.fn(),
-          disconnect: jest.fn(),
-        };
-      });
+      const errorObserverMock = jest
+        .fn()
+        .mockImplementation(() => {
+          return {
+            observe: jest.fn(() => {
+              // Simulate an error during observation
+            }),
+            unobserve: jest.fn(),
+            disconnect: jest.fn(),
+          };
+        });
+
 
       // Replace the IntersectionObserver with our error mock
       Object.defineProperty(window, 'IntersectionObserver', {

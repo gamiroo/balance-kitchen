@@ -3,9 +3,9 @@
  */
 // app/components/MenuDishCard.test.tsx
 
-'use client'
+'use client';
 
-import React from 'react';
+import React, { ImgHTMLAttributes } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import MenuDishCard from './MenuDishCard';
 
@@ -37,9 +37,13 @@ jest.mock('./MenuDishCard.module.css', () => ({
   mealLabel: 'mealLabel',
 }));
 
+interface MockImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+  alt: string;
+}
+
 // Mock next/image since it requires special handling in tests
 jest.mock('next/image', () => {
-  const MockImage = ({ alt, ...props }: { alt: string; [key: string]: any }) => {
+  const MockImage = ({ alt, ...props }: MockImageProps) => {
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={alt} {...props} />;
   };
@@ -50,36 +54,42 @@ jest.mock('next/image', () => {
 // Mock lucide-react icons with unique test IDs
 jest.mock('lucide-react', () => {
   // Create a mock icon component that can have different test IDs
-  const MockIcon = ({ 
-    size, 
-    className, 
-    'data-testid': testId 
-  }: { 
-    size: number; 
+  const MockIcon = ({
+    size,
+    className,
+    'data-testid': testId,
+  }: {
+    size: number;
     className?: string;
     'data-testid'?: string;
   }) => (
-    <div 
-      data-testid={testId || 'mock-icon'} 
-      style={{ width: size, height: size }} 
-      className={className} 
+    <div
+      data-testid={testId || 'mock-icon'}
+      style={{ width: size, height: size }}
+      className={className}
     />
   );
   MockIcon.displayName = 'MockIcon';
-  
+
   return {
-    Heart: (props: { size: number; className?: string }) => 
-      <MockIcon {...props} data-testid="heart-icon" />,
-    Wheat: (props: { size: number; className?: string }) => 
-      <MockIcon {...props} data-testid="wheat-icon" />,
-    Milk: (props: { size: number; className?: string }) => 
-      <MockIcon {...props} data-testid="milk-icon" />,
-    Egg: (props: { size: number; className?: string }) => 
-      <MockIcon {...props} data-testid="egg-icon" />,
-    Fish: (props: { size: number; className?: string }) => 
-      <MockIcon {...props} data-testid="fish-icon" />,
-    Nut: (props: { size: number; className?: string }) => 
-      <MockIcon {...props} data-testid="nut-icon" />,
+    Heart: (props: { size: number; className?: string }) => (
+      <MockIcon {...props} data-testid="heart-icon" />
+    ),
+    Wheat: (props: { size: number; className?: string }) => (
+      <MockIcon {...props} data-testid="wheat-icon" />
+    ),
+    Milk: (props: { size: number; className?: string }) => (
+      <MockIcon {...props} data-testid="milk-icon" />
+    ),
+    Egg: (props: { size: number; className?: string }) => (
+      <MockIcon {...props} data-testid="egg-icon" />
+    ),
+    Fish: (props: { size: number; className?: string }) => (
+      <MockIcon {...props} data-testid="fish-icon" />
+    ),
+    Nut: (props: { size: number; className?: string }) => (
+      <MockIcon {...props} data-testid="nut-icon" />
+    ),
   };
 });
 
@@ -105,7 +115,9 @@ describe('MenuDishCard', () => {
     isAvailable: true,
   };
 
-  const mockOnQuantityChange = jest.fn();
+  const mockOnQuantityChange = jest.fn(() => {});
+
+
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -114,16 +126,18 @@ describe('MenuDishCard', () => {
   it('should render dish information correctly', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     // ASSERT
     expect(screen.getByText('Vegetable Curry')).toBeTruthy();
-    expect(screen.getByText('Delicious vegetable curry with rice')).toBeTruthy();
+    expect(
+      screen.getByText('Delicious vegetable curry with rice'),
+    ).toBeTruthy();
     expect(screen.getByText('Vegetarian')).toBeTruthy();
     expect(screen.getByAltText('Vegetable Curry')).toBeTruthy();
   });
@@ -131,11 +145,11 @@ describe('MenuDishCard', () => {
   it('should render allergen icons and labels', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     // ASSERT
@@ -153,11 +167,11 @@ describe('MenuDishCard', () => {
     };
 
     render(
-      <MenuDishCard 
-        dish={dishWithoutAllergens} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={dishWithoutAllergens}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     // ASSERT
@@ -168,14 +182,16 @@ describe('MenuDishCard', () => {
   it('should call onQuantityChange when increasing quantity', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={2} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={2}
+      />,
     );
 
-    const increaseButton = screen.getByLabelText('Increase quantity of Vegetable Curry');
+    const increaseButton = screen.getByLabelText(
+      'Increase quantity of Vegetable Curry',
+    );
 
     // ACT
     fireEvent.click(increaseButton);
@@ -187,14 +203,16 @@ describe('MenuDishCard', () => {
   it('should call onQuantityChange when decreasing quantity', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={3} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={3}
+      />,
     );
 
-    const decreaseButton = screen.getByLabelText('Decrease quantity of Vegetable Curry');
+    const decreaseButton = screen.getByLabelText(
+      'Decrease quantity of Vegetable Curry',
+    );
 
     // ACT
     fireEvent.click(decreaseButton);
@@ -206,14 +224,16 @@ describe('MenuDishCard', () => {
   it('should disable decrease button when quantity is 0', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
-    const decreaseButton = screen.getByLabelText('Decrease quantity of Vegetable Curry');
+    const decreaseButton = screen.getByLabelText(
+      'Decrease quantity of Vegetable Curry',
+    );
 
     // ASSERT
     expect((decreaseButton as HTMLButtonElement).disabled).toBe(true);
@@ -222,14 +242,16 @@ describe('MenuDishCard', () => {
   it('should not disable decrease button when quantity is greater than 0', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={1} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={1}
+      />,
     );
 
-    const decreaseButton = screen.getByLabelText('Decrease quantity of Vegetable Curry');
+    const decreaseButton = screen.getByLabelText(
+      'Decrease quantity of Vegetable Curry',
+    );
 
     // ASSERT
     expect((decreaseButton as HTMLButtonElement).disabled).toBe(false);
@@ -238,11 +260,11 @@ describe('MenuDishCard', () => {
   it('should display correct quantity', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={5} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={5}
+      />,
     );
 
     // ASSERT
@@ -253,11 +275,11 @@ describe('MenuDishCard', () => {
   it('should toggle like state when like button is clicked', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     const likeButton = screen.getByLabelText('Like Vegetable Curry');
@@ -285,26 +307,32 @@ describe('MenuDishCard', () => {
   it('should update like button aria-label when toggled', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
-    const likeButton = screen.getByLabelText('Like Vegetable Curry') as HTMLButtonElement;
+    const likeButton = screen.getByLabelText(
+      'Like Vegetable Curry',
+    ) as HTMLButtonElement;
 
     // ACT - Click to like
     fireEvent.click(likeButton);
 
     // ASSERT - Label updated
-    expect(likeButton.getAttribute('aria-label')).toBe('Unlike Vegetable Curry');
+    expect(likeButton.getAttribute('aria-label')).toBe(
+      'Unlike Vegetable Curry',
+    );
 
     // ACT - Click to unlike
     fireEvent.click(likeButton);
 
     // ASSERT - Label updated back
-    expect(likeButton.getAttribute('aria-label')).toBe('Like Vegetable Curry');
+    expect(likeButton.getAttribute('aria-label')).toBe(
+      'Like Vegetable Curry',
+    );
   });
 
   it('should render different category badges', () => {
@@ -315,11 +343,11 @@ describe('MenuDishCard', () => {
     };
 
     render(
-      <MenuDishCard 
-        dish={dishWithDifferentCategory} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={dishWithDifferentCategory}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     // ASSERT
@@ -334,11 +362,11 @@ describe('MenuDishCard', () => {
     };
 
     render(
-      <MenuDishCard 
-        dish={dishWithAllAllergens} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={dishWithAllAllergens}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     // ASSERT - Use getAllByTestId since there are multiple wheat icons (gluten and soy both use wheat)
@@ -357,11 +385,11 @@ describe('MenuDishCard', () => {
     };
 
     render(
-      <MenuDishCard 
-        dish={dishWithUnknownAllergen} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={0} 
-      />
+      <MenuDishCard
+        dish={dishWithUnknownAllergen}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={0}
+      />,
     );
 
     // ASSERT
@@ -372,14 +400,16 @@ describe('MenuDishCard', () => {
   it('should handle edge case of very high quantity', () => {
     // ARRANGE
     render(
-      <MenuDishCard 
-        dish={mockDish} 
-        onQuantityChange={mockOnQuantityChange} 
-        quantity={999} 
-      />
+      <MenuDishCard
+        dish={mockDish}
+        onQuantityChange={mockOnQuantityChange}
+        quantity={999}
+      />,
     );
 
-    const increaseButton = screen.getByLabelText('Increase quantity of Vegetable Curry');
+    const increaseButton = screen.getByLabelText(
+      'Increase quantity of Vegetable Curry',
+    );
 
     // ACT
     fireEvent.click(increaseButton);

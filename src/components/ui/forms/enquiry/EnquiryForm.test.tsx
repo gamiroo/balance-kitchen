@@ -61,7 +61,7 @@ jest.mock('../../animated-border/AnimatedGradientBorder', () => {
     ...props 
   }: { 
     children: React.ReactNode; 
-    [key: string]: any 
+    [key: string]: unknown 
   }) => (
     <div data-animated-border="true" {...props}>
       {children}

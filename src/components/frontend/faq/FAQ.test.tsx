@@ -4,21 +4,23 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import FAQAccordion from './FAQAccordion';
 import '@testing-library/jest-dom';
 
-// Define the FAQItem interface for testing
-interface FAQItem {
-  id: number;
-  question: string;
-  answer: string;
-}
+import type { FAQItem } from '../../../data/faqData';
 
 // Mock framer-motion with simplified implementation for testing
 jest.mock('framer-motion', () => {
   return {
     motion: {
-      div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      div: ({
+        children,
+        ...props
+      }: {
+        children: React.ReactNode;
+        [key: string]: unknown;
+      }) => <div {...props}>{children}</div>,
     },
   };
 });
+
 
 // Mock lucide-react ChevronDown icon
 jest.mock('lucide-react', () => ({
@@ -60,17 +62,17 @@ jest.mock('./FAQ.module.css', () => ({
 // Mock FAQ data with proper typing
 const mockFAQs: FAQItem[] = [
   {
-    id: 1,
+    id: '1',
     question: 'How do I place an order?',
     answer: 'You can place an order through our website or mobile app by selecting your meals and choosing a delivery time.'
   },
   {
-    id: 2,
+    id: '2',
     question: 'What are your delivery hours?',
     answer: 'We deliver from 7:00 AM to 9:00 PM, Monday through Sunday.'
   },
   {
-    id: 3,
+    id: '3',
     question: 'Can I modify my order after placing it?',
     answer: 'Yes, you can modify your order up to 2 hours before your scheduled delivery time.'
   }
@@ -91,6 +93,7 @@ describe('FAQAccordion', () => {
         expect(screen.queryByText(faq.answer)).toBeInTheDocument();
         // Check that the answer content is not visible (opacity 0 or hidden)
         const answerElement = screen.getByText(faq.answer);
+        expect(answerElement).toBeInTheDocument();
         // In collapsed state, answers should not be visible to user
         // We'll check this by ensuring they're not in the visible viewport area
       });
@@ -169,12 +172,12 @@ describe('FAQAccordion', () => {
     it('should handle FAQ items with special characters', () => {
       const specialFAQs: FAQItem[] = [
         {
-          id: 1,
+          id: '1',
           question: 'What if I have "special" dietary needs?',
           answer: 'We offer options for gluten-free, dairy-free, and other dietary restrictions.'
         },
         {
-          id: 2,
+          id: '2',
           question: 'Can I get a refund?',
           answer: 'Yes, refunds are available within 24 hours of purchase.'
         }
@@ -191,7 +194,7 @@ describe('FAQAccordion', () => {
     it('should handle FAQ items with long content', () => {
       const longFAQs: FAQItem[] = [
         {
-          id: 1,
+          id: '1',
           question: 'What is your full refund policy?',
           answer: 'Our refund policy is comprehensive and designed to ensure customer satisfaction. We offer full refunds within 24 hours of purchase, partial refunds for items not delivered as specified, and special consideration for extenuating circumstances. All refund requests must be submitted through our customer service portal with detailed information about the issue.'
         }
@@ -229,7 +232,7 @@ describe('FAQAccordion', () => {
   describe('Error Cases', () => {
     it('should handle undefined FAQ prop gracefully', () => {
       // Test with default prop value (empty array)
-      expect(() => render(<FAQAccordion faqs={undefined as any} />)).not.toThrow();
+      expect(() => render(<FAQAccordion faqs={undefined as unknown as FAQItem[]} />)).not.toThrow();
     });
   });
 
@@ -280,7 +283,7 @@ describe('FAQAccordion', () => {
     it('should sanitize FAQ content to prevent XSS', () => {
       const maliciousFAQs: FAQItem[] = [
         {
-          id: 1,
+          id: '1',
           question: 'Safe question',
           answer: 'Safe answer with <script>alert("XSS")</script> content'
         }
@@ -300,7 +303,7 @@ describe('FAQAccordion', () => {
     it('should not execute javascript in FAQ content', () => {
       const javascriptFAQs: FAQItem[] = [
         {
-          id: 1,
+          id: '1',
           question: 'JavaScript test',
           answer: 'Answer with javascript:alert("XSS") link'
         }

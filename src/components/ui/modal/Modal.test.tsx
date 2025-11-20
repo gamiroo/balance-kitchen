@@ -21,7 +21,7 @@ jest.mock('./Modal.module.css', () => ({
 
 // Mock next/image
 jest.mock('next/image', () => {
-  const MockImage = ({ alt, ...props }: { alt: string; [key: string]: any }) => {
+  const MockImage = ({ alt, ...props }: { alt: string; [key: string]: unknown }) => {
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={alt} {...props} />;
   };

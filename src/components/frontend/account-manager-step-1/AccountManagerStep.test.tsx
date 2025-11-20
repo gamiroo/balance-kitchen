@@ -6,28 +6,35 @@ import { AccountManagerStep } from './AccountManagerStep';
 import '@testing-library/jest-dom';
 import React from 'react';
 
+// ---------- Types for mocks ----------
+type MockImageProps = {
+  alt: string;
+  src: string;
+} & Record<string, string | number | boolean | undefined>;
+
+// IntersectionObserver callback type we actually use in tests
+type MockIntersectionObserverCallback = (
+  entries: Array<{ isIntersecting: boolean } | undefined>
+) => void;
+
 // Mock next/image since it doesn't work in Jest environment
 jest.mock('next/image', () => {
-  return function MockImage({ alt, src, ...props }: { alt: string; src: string; [key: string]: any }) {
-    // Convert boolean props to strings for DOM compatibility
-    const domProps = { ...props };
-    Object.keys(domProps).forEach(key => {
-      if (typeof domProps[key] === 'boolean') {
-        domProps[key] = domProps[key].toString();
-      }
-    });
-    
+  return function MockImage({ alt, src, ...props }: MockImageProps) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img alt={alt} src={src} {...domProps} />;
+    return <img alt={alt} src={src} {...props} />;
   };
 });
 
 // Mock CTAButton component
 jest.mock('../../ui/CTAButton/CTAButton', () => {
   return {
-    CTAButton: ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
-      <button onClick={onClick}>{children}</button>
-    ),
+    CTAButton: ({
+      children,
+      onClick,
+    }: {
+      children: React.ReactNode;
+      onClick: () => void;
+    }) => <button onClick={onClick}>{children}</button>,
   };
 });
 
@@ -83,21 +90,23 @@ jest.mock('./AccountManagerStep.module.css', () => ({
 
 // Set up IntersectionObserver mock before all tests
 const mockIntersectionObserver = jest.fn();
-let mockIntersectionObserverCallback: Function;
+let mockIntersectionObserverCallback: MockIntersectionObserverCallback | undefined;
 
 beforeAll(() => {
   // Mock IntersectionObserver globally
   Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     configurable: true,
-    value: mockIntersectionObserver.mockImplementation((callback) => {
-      mockIntersectionObserverCallback = callback;
-      return {
-        observe: jest.fn(),
-        unobserve: jest.fn(),
-        disconnect: jest.fn(),
-      };
-    }),
+    value: mockIntersectionObserver.mockImplementation(
+      (callback: MockIntersectionObserverCallback) => {
+        mockIntersectionObserverCallback = callback;
+        return {
+          observe: jest.fn(),
+          unobserve: jest.fn(),
+          disconnect: jest.fn(),
+        };
+      }
+    ),
   });
 });
 
@@ -122,29 +131,36 @@ describe('AccountManagerStep', () => {
 
       // Trigger the intersection observer callback to simulate visibility
       act(() => {
-        mockIntersectionObserverCallback([{ isIntersecting: true }]);
+        mockIntersectionObserverCallback?.([{ isIntersecting: true }]);
       });
-      
+
       // Use a more flexible text matcher to handle special characters
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
-      
-      expect(screen.getByText(/When you sign up, a dedicated Balance Kitchen Account Manager/)).toBeInTheDocument();
-      expect(screen.getByText('Chat with an Account Manager')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          /When you sign up, a dedicated Balance Kitchen Account Manager/
+        )
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText('Chat with an Account Manager')
+      ).toBeInTheDocument();
     });
 
     it('should display user avatars', () => {
       render(<AccountManagerStep />);
 
-      // Trigger the intersection observer callback to simulate visibility
       act(() => {
-        mockIntersectionObserverCallback([{ isIntersecting: true }]);
+        mockIntersectionObserverCallback?.([{ isIntersecting: true }]);
       });
-      
-      // Check that avatars are rendered
+
       expect(screen.getByAltText('User 1')).toBeInTheDocument();
       expect(screen.getByAltText('User 2')).toBeInTheDocument();
       expect(screen.getByAltText('User 3')).toBeInTheDocument();
@@ -155,30 +171,28 @@ describe('AccountManagerStep', () => {
     it('should start chat when CTA button is clicked', () => {
       render(<AccountManagerStep />);
 
-      // Trigger the intersection observer callback to simulate visibility
       act(() => {
-        mockIntersectionObserverCallback([{ isIntersecting: true }]);
+        mockIntersectionObserverCallback?.([{ isIntersecting: true }]);
       });
-      
+
       const ctaButton = screen.getByText('Chat with an Account Manager');
       fireEvent.click(ctaButton);
-      
-      // Check that chat elements are rendered
+
       expect(screen.getByText('Balance Kitchen')).toBeInTheDocument();
     });
 
     it('should display device frame and chat interface', () => {
       render(<AccountManagerStep />);
 
-      // Trigger the intersection observer callback to simulate visibility
       act(() => {
-        mockIntersectionObserverCallback([{ isIntersecting: true }]);
+        mockIntersectionObserverCallback?.([{ isIntersecting: true }]);
       });
-      
-      // Check that device elements are rendered
+
       expect(screen.getByAltText('Device frame')).toBeInTheDocument();
       expect(screen.getByText('Balance Kitchen')).toBeInTheDocument();
-      expect(screen.getByAltText('Balance Kitchen avatar')).toBeInTheDocument();
+      expect(
+        screen.getByAltText('Balance Kitchen avatar')
+      ).toBeInTheDocument();
     });
   });
 
@@ -186,81 +200,86 @@ describe('AccountManagerStep', () => {
     it('should handle section becoming visible', () => {
       render(<AccountManagerStep />);
 
-      // Simulate section becoming visible
       act(() => {
-        mockIntersectionObserverCallback([{ isIntersecting: true }]);
+        mockIntersectionObserverCallback?.([{ isIntersecting: true }]);
       });
-      
-      // Use a more flexible text matcher
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
     });
 
     it('should handle section not intersecting', () => {
       render(<AccountManagerStep />);
 
-      // Simulate section not intersecting
       act(() => {
-        mockIntersectionObserverCallback([{ isIntersecting: false }]);
+        mockIntersectionObserverCallback?.([{ isIntersecting: false }]);
       });
-      
-      // Component should still render
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
     });
 
     it('should handle empty intersection observer entries', () => {
       render(<AccountManagerStep />);
 
-      // Simulate empty entries array (this should not cause errors)
       act(() => {
-        mockIntersectionObserverCallback([]);
+        mockIntersectionObserverCallback?.([]);
       });
-      
-      // Component should still render
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
     });
 
     it('should handle undefined intersection observer entry', () => {
       render(<AccountManagerStep />);
 
-      // Simulate undefined entry (this should not cause errors)
       act(() => {
-        mockIntersectionObserverCallback([undefined]);
+        mockIntersectionObserverCallback?.([undefined]);
       });
-      
-      // Component should still render
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
     });
 
     it('should handle missing section ref gracefully', () => {
-      // Mock useRef to return null ref
       const useRefSpy = jest.spyOn(React, 'useRef');
       useRefSpy.mockImplementationOnce(() => ({ current: null }));
 
       expect(() => render(<AccountManagerStep />)).not.toThrow();
-      
-      // Use a more flexible text matcher
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
-      
+
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
+
       useRefSpy.mockRestore();
     });
   });
@@ -268,11 +287,14 @@ describe('AccountManagerStep', () => {
   describe('Error Cases', () => {
     it('should handle IntersectionObserver errors gracefully', () => {
       // Create a mock implementation that simulates an error during observe
-      const errorObserverMock = jest.fn().mockImplementation((callback) => {
+      const errorObserverMock = jest.fn().mockImplementation(() => {
         return {
           observe: jest.fn(() => {
             // Simulate an error during observation
-            console.warn('IntersectionObserver not supported in this environment');
+            // (component should handle this gracefully)
+            console.warn(
+              'IntersectionObserver not supported in this environment'
+            );
           }),
           unobserve: jest.fn(),
           disconnect: jest.fn(),
@@ -286,16 +308,17 @@ describe('AccountManagerStep', () => {
         value: errorObserverMock,
       });
 
-      // This should not throw an error - component should handle gracefully
       expect(() => render(<AccountManagerStep />)).not.toThrow();
-      
-      // Component should still render basic content
-      expect(screen.getByText((content) => 
-        typeof content === 'string' && 
-        content.includes('Step') && 
-        content.includes('Meet Your Account Manager')
-      )).toBeInTheDocument();
-      
+
+      expect(
+        screen.getByText(
+          (content) =>
+            typeof content === 'string' &&
+            content.includes('Step') &&
+            content.includes('Meet Your Account Manager')
+        )
+      ).toBeInTheDocument();
+
       // Restore original mock
       Object.defineProperty(window, 'IntersectionObserver', {
         writable: true,
@@ -309,17 +332,18 @@ describe('AccountManagerStep', () => {
     it('should sanitize text content to prevent XSS', () => {
       render(<AccountManagerStep />);
 
-      // Check that content is rendered as text, not HTML
-      const description = screen.getByText(/When you sign up, a dedicated Balance Kitchen Account Manager/);
+      const description = screen.getByText(
+        /When you sign up, a dedicated Balance Kitchen Account Manager/
+      );
       expect(description).toBeInTheDocument();
-      // Since we're using React, content should automatically be escaped
     });
 
     it('should not execute javascript in content', () => {
       render(<AccountManagerStep />);
 
-      // All content should be treated as text
-      const allText = screen.getByText(/When you sign up, a dedicated Balance Kitchen Account Manager/);
+      const allText = screen.getByText(
+        /When you sign up, a dedicated Balance Kitchen Account Manager/
+      );
       expect(allText).toBeInTheDocument();
     });
   });

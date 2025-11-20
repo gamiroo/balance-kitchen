@@ -3,7 +3,7 @@
  */
 // components/admin/forms/menu-form/MenuForm.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react';
-import MenuForm from './MenuForm';
+import MenuForm, {MenuFormData} from './MenuForm';
 import '@testing-library/jest-dom';
 
 describe('MenuForm', () => {
@@ -270,13 +270,12 @@ describe('MenuForm', () => {
   });
 
   it('should handle partial initial data gracefully', () => {
-    const partialData = {
+    const partialData: Partial<MenuFormData> = {
       week_start_date: '2023-01-01',
-      // week_end_date is missing
       is_published: true
     };
     
-    render(<MenuForm {...defaultProps} initialData={partialData as any} />);
+    render(<MenuForm {...defaultProps} initialData={partialData} />);
     
     const startDateInput = document.getElementById('week_start_date') as HTMLInputElement;
     const endDateInput = document.getElementById('week_end_date') as HTMLInputElement;

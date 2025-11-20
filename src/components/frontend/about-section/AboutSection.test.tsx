@@ -296,7 +296,7 @@ describe('AboutSection', () => {
           try {
             return originalAddEventListener.call(window, event, handler);
           } catch (e) {
-            // Error handled gracefully
+            console.error(e);
             return;
           }
         }

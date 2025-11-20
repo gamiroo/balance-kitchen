@@ -6,21 +6,25 @@ import { DeliverySection } from './DeliverySection';
 import '@testing-library/jest-dom';
 import React from 'react';
 
-// Mock next/image since it doesn't work in Jest environment
+type MockImageExtraProps = Record<string, string | number | boolean | undefined>;
+
 jest.mock('next/image', () => {
-  return function MockImage({ alt, src, ...props }: { alt: string; src: string; [key: string]: any }) {
-    // Convert boolean props to strings for DOM compatibility
-    const domProps = { ...props };
-    Object.keys(domProps).forEach(key => {
+  return function MockImage(
+    { alt, src, ...props }: { alt: string; src: string } & MockImageExtraProps
+  ) {
+    const domProps: MockImageExtraProps = { ...props };
+
+    Object.keys(domProps).forEach((key) => {
       if (typeof domProps[key] === 'boolean') {
-        domProps[key] = domProps[key].toString();
+        domProps[key] = String(domProps[key]);
       }
     });
-    
+
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={alt} src={src} {...domProps} />;
   };
 });
+
 
 // Mock CTAButton component
 jest.mock('../../ui/CTAButton/CTAButton', () => {
@@ -64,23 +68,25 @@ jest.mock('./DeliverySection.module.css', () => ({
 
 // Set up IntersectionObserver mock before all tests
 const mockIntersectionObserver = jest.fn();
-let mockIntersectionObserverCallback: Function;
+let mockIntersectionObserverCallback: (entries: Partial<IntersectionObserverEntry>[]) => void;
 
 beforeAll(() => {
-  // Mock IntersectionObserver globally
   Object.defineProperty(window, 'IntersectionObserver', {
     writable: true,
     configurable: true,
-    value: mockIntersectionObserver.mockImplementation((callback) => {
-      mockIntersectionObserverCallback = callback;
-      return {
-        observe: jest.fn(),
-        unobserve: jest.fn(),
-        disconnect: jest.fn(),
-      };
-    }),
+    value: mockIntersectionObserver.mockImplementation(
+      (callback: (entries: Partial<IntersectionObserverEntry>[]) => void) => {
+        mockIntersectionObserverCallback = callback;
+        return {
+          observe: jest.fn(),
+          unobserve: jest.fn(),
+          disconnect: jest.fn(),
+        };
+      }
+    ),
   });
 });
+
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -235,7 +241,9 @@ describe('DeliverySection', () => {
 
       // Simulate undefined entry (this should not cause errors)
       act(() => {
-        mockIntersectionObserverCallback([undefined]);
+        mockIntersectionObserverCallback(
+          [undefined as unknown as Partial<IntersectionObserverEntry>]
+        );
       });
       
       // Component should still render
@@ -249,7 +257,7 @@ describe('DeliverySection', () => {
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       
       // Create a mock implementation that simulates an error during observe
-      const errorObserverMock = jest.fn().mockImplementation((callback) => {
+      const errorObserverMock = jest.fn().mockImplementation(() => {
         return {
           observe: jest.fn(() => {
             // Simulate an error during observation

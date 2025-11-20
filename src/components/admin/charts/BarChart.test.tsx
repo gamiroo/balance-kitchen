@@ -194,7 +194,7 @@ describe('BarChart', () => {
   });
 
   it('should use default color when color prop is not provided', () => {
-    const { color, ...propsWithoutColor } = defaultProps;
+    const { ...propsWithoutColor } = defaultProps;
     render(<BarChart {...propsWithoutColor} />);
     
     // Should use blue as default color

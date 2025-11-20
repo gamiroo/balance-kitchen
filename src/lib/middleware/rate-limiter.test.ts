@@ -192,11 +192,10 @@ describe('rate-limiter', () => {
 
     it('should allow requests from banned IP after ban expires', async () => {
       // Re-import after reset
-      const { rateLimit, banIP } = await import('./rate-limiter')
+      const { banIP } = await import('./rate-limiter')
       
       // ARRANGE
       const config = { maxRequests: 10, windowMs: 60000 }
-      const middleware = rateLimit(config)
       const req = mockRequest({
         headers: {
           get: jest.fn().mockImplementation((name) => {
