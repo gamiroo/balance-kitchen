@@ -2,8 +2,8 @@
 
 .orderingSection {
   padding: 5rem 1.5rem;
-  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.15), rgba(144, 9, 9, 0.048));
-  color: white;
+  background: linear-gradient(to bottom, var(--surface-muted), color-mix(in srgb, var(--bk-color-accent) 18%, var(--surface-base)));
+  color: var(--bk-color-text-primary);
   position: relative;
   overflow: hidden;
   max-width: 1400px;
@@ -28,13 +28,13 @@
 .sectionTitle {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fbbf24;
+  color: var(--bk-color-accent);
   margin-bottom: 1.5rem;
   line-height: 1.2;
 }
 
 .sectionDescription {
-  color: #d1d5db;
+  color: var(--bk-color-text-muted);
   font-size: 1.125rem;
   line-height: 1.7;
   margin-bottom: 2.5rem;
@@ -54,7 +54,7 @@
   background: linear-gradient(45deg, #A94CF0, #8A29D3, #AF2C97, #A94CF0);
   background-size: 300% 300%;
   animation: gradientShift 3s ease infinite;
-  color: white;
+  color: var(--bk-color-text-primary);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -83,11 +83,11 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 0.25rem;
-  color: #fbbf24;
+  color: var(--bk-color-accent);
 }
 
 .featureDescription {
-  color: #9ca3af;
+  color: var(--bk-color-text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
 }

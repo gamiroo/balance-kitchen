@@ -2,8 +2,8 @@
 
 /* Main Container */
 .landingPage {
-  background-color: black;
-  color: white;
+  background-color: var(--background);
+  color: var(--bk-color-text-primary);
   width: 100%;
   overflow-x: hidden;
   position: relative;
@@ -43,14 +43,14 @@
 .howItWorksTitle {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #fbbf24;
+  color: var(--bk-color-accent);
   margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .howItWorksSubtitle {
   font-size: 1.25rem;
-  color: #d1d5db;
+  color: var(--bk-color-text-muted);
   line-height: 1.6;
   max-width: 600px;
   margin: 0 auto;
@@ -63,7 +63,11 @@
   padding-bottom: 5rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(2, 6, 23, 1));
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--surface-base) 92%, transparent),
+    color-mix(in srgb, var(--background) 92%, transparent)
+  );
   position: relative;
   overflow: hidden;
 }
@@ -84,17 +88,17 @@
 .missionTitle {
   font-size: 2.25rem;
   font-weight: 700;
-  color: white;
+  color: var(--bk-color-text-primary);
   margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .missionTitleHighlight {
-  color: #fbbf24;
+  color: var(--bk-color-accent);
 }
 
 .missionDescription {
-  color: #9ca3af;
+  color: var(--bk-color-text-muted);
   max-width: 42rem;
   margin-left: auto;
   margin-right: auto;
@@ -126,9 +130,9 @@
   text-align: center;
   padding: 2rem;
   border-radius: 1rem;
-  background-color: rgba(30, 41, 59, 0.3);
+  background-color: color-mix(in srgb, var(--surface-muted) 70%, transparent);
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  border: 1px solid var(--surface-border);
   transition: transform 0.3s ease;
 }
 
@@ -143,12 +147,12 @@
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  background-color: rgba(251, 191, 36, 0.1);
+  background-color: color-mix(in srgb, var(--bk-color-accent) 12%, transparent);
   margin-bottom: 1.5rem;
 }
 
 .missionIcon {
-  color: #fbbf24;
+  color: var(--bk-color-accent);
   width: 2rem;
   height: 2rem;
 }
@@ -156,13 +160,13 @@
 .missionCardTitle {
   font-size: 1.25rem;
   font-weight: 600;
-  color: white;
+  color: var(--bk-color-text-primary);
   margin-bottom: 1rem;
   line-height: 1.3;
 }
 
 .missionCardDescription {
-  color: #d1d5db;
+  color: var(--bk-color-text-muted);
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -173,7 +177,7 @@
   padding-bottom: 5rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  background: linear-gradient(to bottom, #020617, #000000);
+  background: linear-gradient(to bottom, var(--surface-base), var(--background));
   position: relative;
   overflow: hidden;
 }
@@ -193,7 +197,7 @@
 .faqTitle {
   font-size: 2.25rem;
   font-weight: 700;
-  color: white;
+  color: var(--bk-color-text-primary);
   margin-top: 6rem;
   margin-bottom: 1rem;
   line-height: 1.2;
