@@ -1,7 +1,6 @@
 // jest.config.js
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: '<rootDir>/src/tests/minimal-dom-environment.js',
   roots: ['<rootDir>/src'],
   testMatch: [
     '**/__tests__/**/*.+(ts|tsx|js)',
@@ -17,6 +16,9 @@ module.exports = {
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/app/(.*)$': '<rootDir>/src/app/$1',
+    'next-auth/react': '<rootDir>/src/tests/mocks/next-auth-react.ts',
+    '@testing-library/jest-dom': '<rootDir>/src/tests/mocks/jest-dom.ts',
+    '@babel/runtime/helpers/(.*)$': '<rootDir>/src/tests/mocks/babel-helper.js',
     '\\.(css|less|scss|sass)$': '<rootDir>/src/tests/styleMock.js'
   },
   collectCoverageFrom: [
