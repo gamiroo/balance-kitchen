@@ -215,8 +215,15 @@ describe('adminMenuService', () => {
         // missing week_end_date and created_by
       }
 
-      // ACT & ASSERT
-      await expect(adminMenuService.createMenu(invalidData as any)).rejects.toThrow()
+      interface CreateMenuData {
+        week_start_date: string;
+        week_end_date: string;
+        created_by: string;
+        // ... other required fields
+      }
+
+      await expect(adminMenuService.createMenu(invalidData as unknown as CreateMenuData)).rejects.toThrow();
+
       expect(db.query).not.toHaveBeenCalled()
     })
 

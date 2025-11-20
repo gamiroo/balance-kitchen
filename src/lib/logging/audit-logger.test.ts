@@ -1,5 +1,3 @@
-// src/lib/logging/audit-logger.test.ts
-
 import { AuditLogger } from './audit-logger';
 
 // Since we can't reliably mock the logger due to module loading issues,
@@ -7,13 +5,13 @@ import { AuditLogger } from './audit-logger';
 describe('AuditLogger', () => {
   beforeEach(() => {
     // Properly simulate server environment by deleting window property
-    // @ts-ignore
+    // @ts-expect-error - Testing server environment by removing window object
     delete global.window;
   });
 
   afterEach(() => {
     // Clean up after tests
-    // @ts-ignore
+    // @ts-expect-error - Cleaning up window object after tests
     delete global.window;
   });
 
@@ -36,7 +34,7 @@ describe('AuditLogger', () => {
 
     it('should not log audit entries on client side', () => {
       // ARRANGE - Simulate browser environment
-      // @ts-ignore
+      // @ts-expect-error - Simulating browser environment for testing
       global.window = {};
 
       const entry = {
@@ -54,7 +52,7 @@ describe('AuditLogger', () => {
 
     it('should not throw error when logging audit entries without userId', () => {
       // ARRANGE - Ensure we're in server environment
-      // @ts-ignore
+      // @ts-expect-error - Ensuring server environment by removing window
       delete global.window;
 
       const entry = {
@@ -81,7 +79,7 @@ describe('AuditLogger', () => {
 
     it('should not log user actions on client side', () => {
       // ARRANGE - Simulate browser environment
-      // @ts-ignore
+      // @ts-expect-error - Simulating browser environment for client-side test
       global.window = {};
 
       // ACT & ASSERT
@@ -119,7 +117,7 @@ describe('AuditLogger', () => {
 
     it('should not log failed actions on client side', () => {
       // ARRANGE - Simulate browser environment
-      // @ts-ignore
+      // @ts-expect-error - Simulating browser environment for client-side test
       global.window = {};
 
       // ACT & ASSERT

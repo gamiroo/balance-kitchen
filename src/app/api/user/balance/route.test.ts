@@ -18,7 +18,6 @@ jest.mock('@/lib/logging/logger')
 jest.mock('@/lib/logging/audit-logger')
 jest.mock('@/lib/utils/error-utils')
 
-const mockRequest = {} as unknown as Request
 
 describe('GET /api/user/balance', () => {
   const mockSession = {

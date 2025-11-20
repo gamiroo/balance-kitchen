@@ -38,16 +38,6 @@ interface ZohoTokenResponse {
   [key: string]: string | number | object | undefined;
 }
 
-const HEAR_OPTIONS = [
-  'Search Engine',
-  'Social Media',
-  'Friend / Family',
-  'Google Ads',
-  'Influencer / Blogger',
-  'Event / Conference',
-  'Online Forum / Community',
-  'Other',
-] as const;
 
 /* -----------------------------------------------------------------
    A small type that mirrors the payload we get from the API route.
@@ -60,7 +50,7 @@ export interface SanitizedEnquiry {
   email: string;
   phone?: string;
   subject: string;
-  howDidYouHear: (typeof HEAR_OPTIONS)[number]; // reuse the array from the route
+  howDidYouHear: 'Search Engine' | 'Social Media' | 'Friend / Family' | 'Google Ads' | 'Influencer / Blogger' | 'Event / Conference' | 'Online Forum / Community' | 'Other';
   referrer?: string;
   message: string;
   utm_source?: string | null;
@@ -80,6 +70,13 @@ export class ZohoCRMService {
   private apiDomain: string;
 
   constructor() {
+    console.log('ZOHO ENV CHECK:', {
+      clientId: process.env.ZOHO_CLIENT_ID ? 'SET' : 'MISSING',
+      clientSecret: process.env.ZOHO_CLIENT_SECRET ? 'SET' : 'MISSING',
+      refreshToken: process.env.ZOHO_REFRESH_TOKEN ? 'SET' : 'MISSING',
+      dataCenter: process.env.ZOHO_DATA_CENTER || 'DEFAULT'
+    });
+
     this.clientId = process.env.ZOHO_CLIENT_ID!;
     this.clientSecret = process.env.ZOHO_CLIENT_SECRET!;
     this.refreshToken = process.env.ZOHO_REFRESH_TOKEN!;
@@ -297,7 +294,7 @@ export class ZohoCRMService {
         Lead_Source: `Website - ${sanitized.howDidYouHear || 'General Enquiry'}`,
         Description: description,
         // Add custom fields if they exist in your Zoho setup
-        ...(sanitized.referrer && { Referrer: sanitized.referrer })
+        // ...(sanitized.referrer && { Referrer: sanitized.referrer })
       };
 
       console.log('Sending lead data to Zoho:', leadData);

@@ -1,9 +1,9 @@
-// components/admin/forms/OrderStatusForm.tsx
+// components/admin/forms/order-status-form/OrderStatusForm.tsx
 "use client";
 
 import { useState } from "react";
-import FormContainer from "./FormContainer";
-import FormField from "./FormField";
+import FormContainer from "../form-container/FormContainer";
+import FormField from "../form-field/FormField";
 
 interface OrderStatusFormData {
   status: string;

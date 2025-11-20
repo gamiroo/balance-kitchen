@@ -671,9 +671,10 @@ describe('adminUserService', () => {
 
     it('should throw error when user IDs array is not provided', async () => {
       // ACT & ASSERT
-      await expect(adminUserService.bulkUpdateUserStatus(null as any, true)).rejects.toThrow(
+      await expect(adminUserService.bulkUpdateUserStatus(null as unknown as string[], true)).rejects.toThrow(
         'User IDs array is required and cannot be empty'
       )
+
       expect(db.query).not.toHaveBeenCalled()
     })
 

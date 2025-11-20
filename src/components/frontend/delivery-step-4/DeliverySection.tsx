@@ -1,4 +1,4 @@
-// src/components/delivery-step-4/DeliverySection.tsx
+// src/components/frontend/delivery-step-4/DeliverySection.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -14,9 +14,14 @@ export const DeliverySection = () => {
   // Detect when section comes into viewport
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSectionVisible(true);
+      (entries) => {
+        // Handle case where entries might be empty
+        if (entries && entries.length > 0) {
+          const entry = entries[0];
+          // Handle case where entry might be undefined and check isIntersecting
+          if (entry && entry.isIntersecting) {
+            setSectionVisible(true);
+          }
         }
       },
       { threshold: 0.2 }

@@ -1,4 +1,3 @@
-// src/app/api/admin/menus/[id]/route.test.ts
 import { GET, PUT, DELETE } from './route'
 import { getServerSession } from "next-auth"
 import { adminMenuService } from "../../../../../lib/services/admin/menuService"
@@ -7,13 +6,41 @@ import { logger } from '../../../../../lib/logging/logger'
 import { AuditLogger } from '../../../../../lib/logging/audit-logger'
 import { NextRequest } from "next/server"
 
+// Types for our test data
+interface MockUser {
+  id: string
+  email: string
+  role: string
+}
+
+interface MockSession {
+  user: MockUser
+}
+
+interface MockMenu {
+  id: string
+  week_start_date: string
+  week_end_date: string
+  created_by: string
+  is_published: boolean
+  status: string
+}
+
+interface UpdateMenuRequest {
+  week_start_date?: string
+  week_end_date?: string
+  is_published?: boolean
+}
+
+interface MockParams {
+  params: Promise<{ id: string }>
+}
+
 // Mock external dependencies
 jest.mock("next-auth", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({})), // Mock NextAuth function
   getServerSession: jest.fn()
-}))
-
-jest.mock("../../../../../lib/auth/auth", () => ({
-  authOptions: {}
 }))
 
 jest.mock("../../../../../lib/services/admin/menuService", () => ({
@@ -45,9 +72,9 @@ jest.mock('../../../../../lib/logging/audit-logger', () => ({
 }))
 
 // Helper to create a mock NextRequest
-const createMockNextRequest = (options: { 
+const createMockNextRequest = <T>(options: { 
   method?: string; 
-  body?: any;
+  body?: T;
   url?: string;
 } = {}): NextRequest => {
   return {
@@ -58,7 +85,7 @@ const createMockNextRequest = (options: {
 }
 
 describe('GET /api/admin/menus/[id]', () => {
-  const mockParams = { params: Promise.resolve({ id: 'menu-123' }) }
+  const mockParams: MockParams = { params: Promise.resolve({ id: 'menu-123' }) }
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -87,7 +114,7 @@ describe('GET /api/admin/menus/[id]', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -119,7 +146,7 @@ describe('GET /api/admin/menus/[id]', () => {
 
   it('should return 400 when menu ID is missing', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -128,7 +155,7 @@ describe('GET /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const mockParamsWithoutId = { params: Promise.resolve({ id: '' }) }
+    const mockParamsWithoutId: MockParams = { params: Promise.resolve({ id: '' }) }
 
     // ACT
     const response = await GET(createMockNextRequest(), mockParamsWithoutId)
@@ -142,7 +169,7 @@ describe('GET /api/admin/menus/[id]', () => {
 
   it('should return menu details successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -151,7 +178,7 @@ describe('GET /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const mockMenu = {
+    const mockMenu: MockMenu = {
       id: 'menu-123',
       week_start_date: '2023-01-01T00:00:00.000Z',
       week_end_date: '2023-01-07T00:00:00.000Z',
@@ -190,7 +217,7 @@ describe('GET /api/admin/menus/[id]', () => {
 
   it('should return 404 when menu is not found', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -216,7 +243,7 @@ describe('GET /api/admin/menus/[id]', () => {
 
   it('should handle service error gracefully', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -254,8 +281,8 @@ describe('GET /api/admin/menus/[id]', () => {
 })
 
 describe('PUT /api/admin/menus/[id]', () => {
-  const mockParams = { params: Promise.resolve({ id: 'menu-123' }) }
-  const mockRequest = (body: any) => ({
+  const mockParams: MockParams = { params: Promise.resolve({ id: 'menu-123' }) }
+  const mockRequest = <T>(body: T) => ({
     json: async () => body
   } as NextRequest)
 
@@ -286,7 +313,7 @@ describe('PUT /api/admin/menus/[id]', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -318,7 +345,7 @@ describe('PUT /api/admin/menus/[id]', () => {
 
   it('should return 400 when menu ID is missing', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -327,7 +354,7 @@ describe('PUT /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const mockParamsWithoutId = { params: Promise.resolve({ id: '' }) }
+    const mockParamsWithoutId: MockParams = { params: Promise.resolve({ id: '' }) }
 
     // ACT
     const response = await PUT(mockRequest({}), mockParamsWithoutId)
@@ -341,7 +368,7 @@ describe('PUT /api/admin/menus/[id]', () => {
 
   it('should update menu successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -350,13 +377,13 @@ describe('PUT /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = {
+    const requestBody: UpdateMenuRequest = {
       week_start_date: '2023-01-01',
       week_end_date: '2023-01-07',
       is_published: true
     }
 
-    const updatedMenu = {
+    const updatedMenu: MockMenu = {
       id: 'menu-123',
       week_start_date: '2023-01-01T00:00:00.000Z',
       week_end_date: '2023-01-07T00:00:00.000Z',
@@ -399,7 +426,7 @@ describe('PUT /api/admin/menus/[id]', () => {
 
   it('should return 404 when menu to update is not found', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -408,7 +435,7 @@ describe('PUT /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = { is_published: true }
+    const requestBody: UpdateMenuRequest = { is_published: true }
     ;(adminMenuService.updateMenu as jest.Mock).mockResolvedValue(null)
 
     // ACT
@@ -426,7 +453,7 @@ describe('PUT /api/admin/menus/[id]', () => {
 
   it('should handle service error during update gracefully', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -435,7 +462,7 @@ describe('PUT /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const requestBody = { is_published: true }
+    const requestBody: UpdateMenuRequest = { is_published: true }
     const serviceError = new Error('Update failed')
     ;(adminMenuService.updateMenu as jest.Mock).mockRejectedValue(serviceError)
 
@@ -465,7 +492,7 @@ describe('PUT /api/admin/menus/[id]', () => {
 })
 
 describe('DELETE /api/admin/menus/[id]', () => {
-  const mockParams = { params: Promise.resolve({ id: 'menu-123' }) }
+  const mockParams: MockParams = { params: Promise.resolve({ id: 'menu-123' }) }
   const mockRequest = () => ({ method: 'DELETE' } as NextRequest)
 
   beforeEach(() => {
@@ -495,7 +522,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -527,7 +554,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
 
   it('should return 400 when menu ID is missing', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -536,7 +563,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const mockParamsWithoutId = { params: Promise.resolve({ id: '' }) }
+    const mockParamsWithoutId: MockParams = { params: Promise.resolve({ id: '' }) }
 
     // ACT
     const response = await DELETE(mockRequest(), mockParamsWithoutId)
@@ -550,7 +577,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
 
   it('should delete menu successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -559,7 +586,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
     }
     ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
 
-    const deletedMenu = {
+    const deletedMenu: MockMenu = {
       id: 'menu-123',
       week_start_date: '2023-01-01T00:00:00.000Z',
       week_end_date: '2023-01-07T00:00:00.000Z',
@@ -598,7 +625,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
 
   it('should return 404 when menu to delete is not found', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -624,7 +651,7 @@ describe('DELETE /api/admin/menus/[id]', () => {
 
   it('should handle service error during deletion gracefully', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',

@@ -1,7 +1,19 @@
-const mockRedirect = jest.fn()
-const mockJson = jest.fn()
+import { NextResponse } from 'next/server'
 
-// Mock all dependencies first
+// Create mock functions
+const mockRedirect = NextResponse.redirect as jest.Mock
+const mockJson = NextResponse.json as jest.Mock
+
+// Mock next/server with our functions USING FACTORY FUNCTION
+jest.mock('next/server', () => ({
+  NextResponse: {
+    redirect: jest.fn(),
+    json: jest.fn()
+  }
+}))
+
+
+// Mock other dependencies
 jest.mock('../../../../lib/utils/error-utils', () => ({
   captureErrorSafe: jest.fn()
 }))
@@ -21,21 +33,12 @@ jest.mock('../../../../lib/logging/audit-logger', () => ({
   }
 }))
 
-// Mock next/server with our functions
-jest.doMock('next/server', () => ({
-  NextResponse: {
-    redirect: mockRedirect,
-    json: mockJson
-  }
-}), { virtual: true })
+import { GET } from './route'
+import { captureErrorSafe } from '../../../../lib/utils/error-utils'
+import { logger } from '../../../../lib/logging/logger'
+import { AuditLogger } from '../../../../lib/logging/audit-logger'
 
-// Now we can safely import
-const { GET } = require('./route')
 
-// Import the mocked modules for use in tests
-const { captureErrorSafe } = require('../../../../lib/utils/error-utils')
-const { logger } = require('../../../../lib/logging/logger')
-const { AuditLogger } = require('../../../../lib/logging/audit-logger')
 
 describe('GET /api/zoho/auth', () => {
   const originalEnv = { ...process.env }

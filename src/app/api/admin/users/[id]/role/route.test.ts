@@ -1,7 +1,6 @@
 // src/app/api/admin/users/[id]/role/route.test.ts
 import { PUT } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../../../lib/auth/auth"
 import { adminUserService } from "../../../../../../lib/services/admin/userService"
 import { captureErrorSafe } from '../../../../../../lib/utils/error-utils'
 import { logger } from '../../../../../../lib/logging/logger'
@@ -54,7 +53,7 @@ interface User {
 }
 
 // Helper to create a mock NextRequest
-const createMockNextRequest = (body: any = {}): NextRequest => {
+const createMockNextRequest = (body: Record<string, unknown> = {}): NextRequest => {
   return {
     json: async () => body
   } as unknown as NextRequest

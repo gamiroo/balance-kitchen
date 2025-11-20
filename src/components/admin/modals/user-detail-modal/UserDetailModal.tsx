@@ -1,8 +1,8 @@
-// components/admin/modals/UserDetailModal.tsx
+// components/admin/modals/user-detail-modal/UserDetailModal.tsx
 "use client";
 
-import AdminModal from "./AdminModal";
-import StatusBadge from "../StatusBadge";
+import AdminModal from "../admin-modal/AdminModal";
+import StatusBadge from "../../StatusBadge";
 
 interface UserDetailModalProps {
   isOpen: boolean;
