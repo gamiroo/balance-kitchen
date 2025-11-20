@@ -7,6 +7,7 @@ import { CTAButton } from '../../ui/CTAButton/CTAButton';
 import { Menu, X, FileText, LogIn, LogOut, User } from 'lucide-react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from './Header.module.css';
+import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle';
 
 // Declare Jotform embed handler for TypeScript
 declare global {
@@ -171,9 +172,9 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
             aria-label="Balance Kitchen Home"
           >
             <Image
-              src="assets/logo/balance-logo.svg"
+              src="/assets/logo/balance-logo.svg"
               alt="Balance Kitchen"
-              className={`${styles.logoImage} ${styles.logoImageMd}`}
+              className={`${styles.logoImage} ${styles.logoImageMd} ${styles.themeAwareLogo}`}
               width={120}
               height={40}
               priority
@@ -233,6 +234,10 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
             </button>
           </nav>
 
+          <div className={styles.themeToggleWrapper}>
+            <ThemeToggle />
+          </div>
+
           {/* CTA BUTTON (right side) */}
           <div>
             <CTAButton
@@ -264,9 +269,9 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
               aria-label="Balance Kitchen Home"
             >
               <Image
-                src="/balance-logo.svg"
+                src="/assets/logo/balance-logo.svg"
                 alt="Balance Kitchen"
-                className={styles.mobileLogoImage}
+                className={`${styles.mobileLogoImage} ${styles.themeAwareLogo}`}
                 width={140}
                 height={45}
               />
@@ -343,6 +348,10 @@ export const Header = ({ onOpenModal }: { onOpenModal: () => void }) => {
 
           {/* BOTTOM – CTA */}
           <div className={styles.mobileMenuBottom}>
+            <div className={styles.mobileToggleRow}>
+              <span className={styles.mobileToggleLabel}>Theme</span>
+              <ThemeToggle className={styles.mobileToggle} />
+            </div>
             <CTAButton
               onClick={() => {
                 onOpenModal();
