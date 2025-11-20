@@ -3,7 +3,7 @@
  */
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '../../theme/ThemeProvider';
+import { ThemeProvider } from '../../providers/ThemeProvider';
 import { ThemeToggle } from './ThemeToggle';
 
 describe('ThemeToggle', () => {

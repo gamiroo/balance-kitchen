@@ -30,7 +30,7 @@ describe('dbService', () => {
   })
 
   describe('getUserById', () => {
-    const mockUserRow: any = {
+    const mockUserRow: object = {
       id: 'user-123',
       email: 'test@example.com',
       name: 'Test User',

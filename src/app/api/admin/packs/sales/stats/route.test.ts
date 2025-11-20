@@ -65,7 +65,8 @@ describe('GET /api/admin/packs/sales/stats', () => {
         get: jest.fn().mockReturnValue(null)
       }
     };
-    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as any;
+    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as unknown as typeof URL;
+
 
     // ACT
     const response = await GET();
@@ -103,7 +104,8 @@ describe('GET /api/admin/packs/sales/stats', () => {
         get: jest.fn().mockReturnValue(null)
       }
     };
-    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as any;
+    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as unknown as typeof URL;
+
 
     // ACT
     const response = await GET();
@@ -157,7 +159,8 @@ describe('GET /api/admin/packs/sales/stats', () => {
         get: jest.fn().mockReturnValue(null)  // No query params for this test
       }
     };
-    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as any;
+    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as unknown as typeof URL;
+
 
     // ACT
     const response = await GET();
@@ -203,7 +206,8 @@ describe('GET /api/admin/packs/sales/stats', () => {
         get: jest.fn().mockReturnValue(null)
       }
     };
-    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as any;
+    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as unknown as typeof URL;
+
 
     // ACT
     const response = await GET();
@@ -235,7 +239,8 @@ describe('GET /api/admin/packs/sales/stats', () => {
         get: jest.fn().mockReturnValue(null)
       }
     };
-    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as any;
+    globalThis.URL = jest.fn().mockImplementation(() => mockUrl) as unknown as typeof URL;
+
 
     // ACT
     const response = await GET();

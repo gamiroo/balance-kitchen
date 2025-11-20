@@ -1,4 +1,4 @@
-// src/components/feedback-step-5/FeedbackSection.tsx
+// src/components/frontend/feedback-step-5/FeedbackSection.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -14,9 +14,14 @@ export const FeedbackSection = () => {
   // Detect when section comes into viewport
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSectionVisible(true);
+      (entries) => {
+        // Handle case where entries might be empty
+        if (entries && entries.length > 0) {
+          const entry = entries[0];
+          // Handle case where entry might be undefined and check isIntersecting
+          if (entry && entry.isIntersecting) {
+            setSectionVisible(true);
+          }
         }
       },
       { threshold: 0.2 }

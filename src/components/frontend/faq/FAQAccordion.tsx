@@ -1,17 +1,22 @@
-// app/components/FAQ.tsx
+// app/components/FAQAccordion.tsx
 'use client';
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import styles from './FAQ.module.css';
-import { type FAQItem } from '../../../data/faqData';
+
+interface FAQItem {
+  id: number;
+  question: string;
+  answer: string;
+}
 
 interface FAQAccordionProps {
   faqs: FAQItem[];
 }
 
-export default function FAQAccordion({ faqs }: FAQAccordionProps) {
+export default function FAQAccordion({ faqs = [] }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [isLoading] = useState(false); // Keep isLoading but don't destructure setIsLoading
 
@@ -37,9 +42,8 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
             key={index}
             className={styles.accordionItem}
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
-            viewport={{ once: true }}
             role="group"
             aria-label={`Question: ${faq.question}`}
           >

@@ -18,7 +18,7 @@ jest.mock('@/lib/logging/logger')
 jest.mock('@/lib/logging/audit-logger')
 jest.mock('@/lib/utils/error-utils')
 
-const mockRequest = (body: any) => ({
+const mockRequest = <T = unknown>(body: T) => ({
   json: async () => body
 } as unknown as Request)
 

@@ -29,13 +29,11 @@ global.fetch = jest.fn()
 
 describe('GET /api/zoho/callback', () => {
   const originalEnv = process.env
-  let nodeEnvValue: string | undefined
 
   beforeEach(() => {
     jest.clearAllMocks()
     jest.resetModules()
     process.env = { ...originalEnv }
-    nodeEnvValue = process.env.NODE_ENV
   })
 
   afterEach(() => {
