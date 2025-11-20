@@ -22,7 +22,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "baseUrl": "./src",
+    "baseUrl": ".",
   },
   "include": ["next-env.d.ts", "src/tests/test-helpers.d.ts", "types/**/*.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "../balance-pantry/src/lib/types.ts", "../balance-pantry/src/lib/utils.ts"],
   "exclude": ["node_modules"]
