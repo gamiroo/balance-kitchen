@@ -1,19 +1,26 @@
-// src/app/api/admin/menus/route.test.ts
 import { GET, POST } from './route'
 import { getServerSession } from "next-auth"
-import { authOptions } from "../../../../lib/auth/auth"
 import { db } from "../../../../lib/database/client"
 import { captureErrorSafe } from '../../../../lib/utils/error-utils'
 import { logger } from '../../../../lib/logging/logger'
 import { AuditLogger } from '../../../../lib/logging/audit-logger'
 
+// Types for our test data
+interface MockUser {
+  id: string
+  email: string
+  role: string
+}
+
+interface MockSession {
+  user: MockUser
+}
+
 // Mock external dependencies
 jest.mock("next-auth", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({})),
   getServerSession: jest.fn()
-}))
-
-jest.mock("../../../../lib/auth/auth", () => ({
-  authOptions: {}
 }))
 
 jest.mock("../../../../lib/database/client", () => ({
@@ -53,7 +60,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should return 401 when user is not authenticated', async () => {
     // ARRANGE
-    ;(getServerSession as jest.Mock).mockResolvedValue(null)
+    (getServerSession as jest.Mock).mockResolvedValue(null)
 
     // ACT
     const response = await GET(mockRequest())
@@ -73,7 +80,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -104,7 +111,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should return menus list successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -167,7 +174,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should filter menus by published status', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -192,7 +199,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should filter menus by start date', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -217,7 +224,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should filter menus by end date', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -242,7 +249,7 @@ describe('GET /api/admin/menus', () => {
 
   it('should handle database error gracefully', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -276,7 +283,7 @@ describe('GET /api/admin/menus', () => {
 })
 
 describe('POST /api/admin/menus', () => {
-  const mockRequest = (body: any) => ({
+  const mockRequest = <T>(body: T) => ({
     json: async () => body
   } as Request)
 
@@ -286,7 +293,7 @@ describe('POST /api/admin/menus', () => {
 
   it('should return 401 when user is not authenticated', async () => {
     // ARRANGE
-    ;(getServerSession as jest.Mock).mockResolvedValue(null)
+    (getServerSession as jest.Mock).mockResolvedValue(null)
 
     // ACT
     const response = await POST(mockRequest({}))
@@ -306,7 +313,7 @@ describe('POST /api/admin/menus', () => {
 
   it('should return 403 when user is not admin', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'user-123',
         email: 'user@example.com',
@@ -337,7 +344,7 @@ describe('POST /api/admin/menus', () => {
 
   it('should return 400 when required dates are missing', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -360,7 +367,7 @@ describe('POST /api/admin/menus', () => {
 
   it('should create menu successfully for admin user', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',
@@ -421,7 +428,7 @@ describe('POST /api/admin/menus', () => {
 
   it('should handle database error during menu creation', async () => {
     // ARRANGE
-    const mockSession = {
+    const mockSession: MockSession = {
       user: {
         id: 'admin-123',
         email: 'admin@example.com',

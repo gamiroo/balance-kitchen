@@ -4,6 +4,7 @@ import { adminApi } from './client';
 import { captureErrorSafe } from '../../utils/error-utils';
 import { logger } from '../../logging/logger';
 
+
 // Mock dependencies
 jest.mock("next-auth");
 jest.mock('../../utils/error-utils');
@@ -29,7 +30,7 @@ describe('AdminApiClient', () => {
   describe('getHeaders', () => {
     it('should return headers with user ID when session exists', async () => {
       // ACT
-      const headers = await (adminApi as any).getHeaders();
+    const headers = await (adminApi as unknown as { getHeaders(): Promise<Record<string, string>> }).getHeaders();
 
       // ASSERT
       expect(headers).toEqual({
@@ -43,7 +44,7 @@ describe('AdminApiClient', () => {
       (getServerSession as jest.Mock).mockResolvedValue(null);
 
       // ACT
-      const headers = await (adminApi as any).getHeaders();
+      const headers = await (adminApi as unknown as { getHeaders(): Promise<Record<string, string>> }).getHeaders();
 
       // ASSERT
       expect(headers).toEqual({
@@ -62,7 +63,7 @@ describe('AdminApiClient', () => {
       };
 
       // ACT
-      const result = await (adminApi as any).handleResponse(mockResponse);
+      const result = await (adminApi as unknown as { handleResponse(response: unknown): Promise<unknown> }).handleResponse(mockResponse);
 
       // ASSERT
       expect(result).toEqual({ data: 'test' });
@@ -82,7 +83,7 @@ describe('AdminApiClient', () => {
       };
 
       // ACT & ASSERT
-      await expect((adminApi as any).handleResponse(mockResponse)).rejects.toThrow('Bad Request');
+      await expect((adminApi as unknown as { handleResponse(response: unknown): Promise<unknown> }).handleResponse(mockResponse)).rejects.toThrow('Bad Request');
       expect(logger.warn).toHaveBeenCalledWith('API request failed', {
         status: 400,
         url: 'http://test.com/api/test',
@@ -100,7 +101,7 @@ describe('AdminApiClient', () => {
       };
 
       // ACT & ASSERT
-      await expect((adminApi as any).handleResponse(mockResponse)).rejects.toThrow('Not Found');
+      await expect((adminApi as unknown as { handleResponse(response: unknown): Promise<unknown> }).handleResponse(mockResponse)).rejects.toThrow('Not Found');
     });
 
     it('should handle error responses with default message', async () => {
@@ -113,7 +114,7 @@ describe('AdminApiClient', () => {
       };
 
       // ACT & ASSERT
-      await expect((adminApi as any).handleResponse(mockResponse)).rejects.toThrow('HTTP error! status: 500');
+      await expect((adminApi as unknown as { handleResponse(response: unknown): Promise<unknown> }).handleResponse(mockResponse)).rejects.toThrow('HTTP error! status: 500');
     });
 
     it('should handle JSON parsing errors', async () => {
@@ -125,7 +126,8 @@ describe('AdminApiClient', () => {
       };
 
       // ACT & ASSERT
-      await expect((adminApi as any).handleResponse(mockResponse)).rejects.toThrow('Invalid JSON');
+      await expect((adminApi as unknown as { handleResponse(response: unknown): Promise<unknown> }).handleResponse(mockResponse)).rejects.toThrow('Invalid JSON');
+
       expect(logger.error).toHaveBeenCalledWith('API response handling failed', {
         error: 'Invalid JSON',
         stack: expect.any(String),
@@ -145,7 +147,7 @@ describe('AdminApiClient', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const result = await (adminApi as any).makeRequest('/api/test', { method: 'GET' });
+      const result = await (adminApi as unknown as { makeRequest: (endpoint: string, options: RequestInit) => Promise<unknown> }).makeRequest('/api/test', { method: 'GET' });
 
       // ASSERT
       expect(result).toEqual({ success: true });
@@ -169,7 +171,7 @@ describe('AdminApiClient', () => {
       (global.fetch as jest.Mock).mockRejectedValue(error);
 
       // ACT & ASSERT
-      await expect((adminApi as any).makeRequest('/api/test')).rejects.toThrow('Network error');
+      await expect((adminApi as unknown as { makeRequest(endpoint: string, options?: RequestInit): Promise<unknown> }).makeRequest('/api/test')).rejects.toThrow('Network error');
       expect(captureErrorSafe).toHaveBeenCalledWith(error, {
         action: 'admin_api_request',
         url: '/api/test',
@@ -344,25 +346,19 @@ describe('AdminApiClient', () => {
     });
 
     it('should create pack template with validation', async () => {
-      // ARRANGE
-      const templateData = {
-        name: 'Test Pack',
-        size: 10,
-        price: 50
-      };
 
       // ACT & ASSERT
       await expect(adminApi.createPackTemplate({
         name: '',
         size: 10,
         price: 50
-      } as any)).rejects.toThrow('Name, size, and price are required');
+      })).rejects.toThrow('Name, size, and price are required');
 
       await expect(adminApi.createPackTemplate({
         name: 'Test Pack',
         size: 0,
         price: 50
-      } as any)).rejects.toThrow('Name, size, and price are required');
+      })).rejects.toThrow('Name, size, and price are required');
     });
 
     it('should update pack template', async () => {

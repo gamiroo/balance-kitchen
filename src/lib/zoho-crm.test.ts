@@ -29,8 +29,8 @@ describe('ZohoCRMService', () => {
   describe('constructor', () => {
     it('should initialize with AU data center by default', () => {
       // ASSERT
-      expect((zohoService as any).dataCenter).toBe('https://accounts.zoho.com.au');
-      expect((zohoService as any).apiDomain).toBe('https://www.zohoapis.com.au');
+      expect((zohoService as unknown as {dataCenter: string}).dataCenter).toBe('https://accounts.zoho.com.au');
+      expect((zohoService as unknown as {apiDomain: string}).apiDomain).toBe('https://www.zohoapis.com.au');
     });
 
     it('should initialize with US data center when specified', () => {
@@ -41,8 +41,8 @@ describe('ZohoCRMService', () => {
       const service = new ZohoCRMService();
       
       // ASSERT
-      expect((service as any).dataCenter).toBe('https://accounts.zoho.com');
-      expect((service as any).apiDomain).toBe('https://www.zohoapis.com');
+      expect((service as unknown as {dataCenter: string}).dataCenter).toBe('https://accounts.zoho.com');
+      expect((service as unknown as {apiDomain: string}).apiDomain).toBe('https://www.zohoapis.com');
     });
 
     it('should initialize with EU data center when specified', () => {
@@ -53,8 +53,8 @@ describe('ZohoCRMService', () => {
       const service = new ZohoCRMService();
       
       // ASSERT
-      expect((service as any).dataCenter).toBe('https://accounts.zoho.eu');
-      expect((service as any).apiDomain).toBe('https://www.zohoapis.eu');
+      expect((service as unknown as {dataCenter: string}).dataCenter).toBe('https://accounts.zoho.eu');
+      expect((service as unknown as {apiDomain: string}).apiDomain).toBe('https://www.zohoapis.eu');
     });
 
     it('should default to AU data center for unknown regions', () => {
@@ -65,18 +65,18 @@ describe('ZohoCRMService', () => {
       const service = new ZohoCRMService();
       
       // ASSERT
-      expect((service as any).dataCenter).toBe('https://accounts.zoho.com.au');
-      expect((service as any).apiDomain).toBe('https://www.zohoapis.com.au');
+      expect((service as unknown as {dataCenter: string}).dataCenter).toBe('https://accounts.zoho.com.au');
+      expect((service as unknown as {apiDomain: string}).apiDomain).toBe('https://www.zohoapis.com.au');
     });
   });
 
   describe('getAccessToken', () => {
     it('should return existing access token if available', async () => {
       // ARRANGE
-      (zohoService as any).accessToken = 'existing-token';
+      (zohoService as unknown as {accessToken: string}).accessToken = 'existing-token';
 
       // ACT
-      const token = await (zohoService as any).getAccessToken();
+      const token = await (zohoService as unknown as {getAccessToken: () => Promise<string>}).getAccessToken();
 
       // ASSERT
       expect(token).toBe('existing-token');
@@ -95,11 +95,11 @@ describe('ZohoCRMService', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT
-      const token = await (zohoService as any).getAccessToken();
+      const token = await (zohoService as unknown as {getAccessToken: () => Promise<string>}).getAccessToken();
 
       // ASSERT
       expect(token).toBe('new-access-token');
-      expect((zohoService as any).accessToken).toBe('new-access-token');
+      expect((zohoService as unknown as {accessToken: string}).accessToken).toBe('new-access-token');
       expect(global.fetch).toHaveBeenCalledWith(
         'https://accounts.zoho.com.au/oauth/v2/token',
         expect.objectContaining({
@@ -120,7 +120,7 @@ describe('ZohoCRMService', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT & ASSERT
-      await expect((zohoService as any).getAccessToken()).rejects.toThrow(
+      await expect((zohoService as unknown as {getAccessToken: () => Promise<string>}).getAccessToken()).rejects.toThrow(
         'Failed to refresh Zoho access token: 400 - Invalid refresh token'
       );
     });
@@ -137,7 +137,7 @@ describe('ZohoCRMService', () => {
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
       // ACT & ASSERT
-      await expect((zohoService as any).getAccessToken()).rejects.toThrow(
+      await expect((zohoService as unknown as {getAccessToken: () => Promise<string>}).getAccessToken()).rejects.toThrow(
         'Invalid access token response from Zoho - no access_token field'
       );
     });
@@ -146,7 +146,7 @@ describe('ZohoCRMService', () => {
   describe('createLeadInZoho', () => {
     beforeEach(() => {
       // Mock getAccessToken to return a token
-      (zohoService as any).getAccessToken = jest.fn().mockResolvedValue('test-access-token');
+      (zohoService as unknown as {getAccessToken: () => Promise<string>}).getAccessToken = jest.fn().mockResolvedValue('test-access-token');
     });
 
     it('should create lead successfully with details.id format', async () => {
@@ -171,7 +171,7 @@ describe('ZohoCRMService', () => {
       };
 
       // ACT
-      const result = await (zohoService as any).createLeadInZoho(leadData);
+      const result = await (zohoService as unknown as {createLeadInZoho: (leadData: object) => Promise<string>}).createLeadInZoho(leadData);
 
       // ASSERT
       expect(result).toBe('lead-123');
@@ -207,7 +207,7 @@ describe('ZohoCRMService', () => {
       };
 
       // ACT
-      const result = await (zohoService as any).createLeadInZoho(leadData);
+      const result = await (zohoService as unknown as {createLeadInZoho: (leadData: object) => Promise<string>}).createLeadInZoho(leadData);
 
       // ASSERT
       expect(result).toBe('lead-456');
@@ -235,7 +235,7 @@ describe('ZohoCRMService', () => {
       };
 
       // ACT
-      const result = await (zohoService as any).createLeadInZoho(leadData);
+      const result = await (zohoService as unknown as {createLeadInZoho: (leadData: object) => Promise<string>}).createLeadInZoho(leadData);
 
       // ASSERT
       expect(result).toBe('lead-789');
@@ -257,7 +257,7 @@ describe('ZohoCRMService', () => {
       };
 
       // ACT & ASSERT
-      await expect((zohoService as any).createLeadInZoho(leadData)).rejects.toThrow(
+      await expect((zohoService as unknown as {createLeadInZoho: (leadData: object) => Promise<string>}).createLeadInZoho(leadData)).rejects.toThrow(
         'Failed to create lead in Zoho: 500 - Internal Server Error'
       );
     });
@@ -270,14 +270,20 @@ describe('ZohoCRMService', () => {
         };
         (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-        const leadData = {
+        interface ZohoLeadData {
+          Lead_Name: string;
+          Email: string;
+          Lead_Source: string;
+          // ... other optional fields
+        }
+
+        const leadData: ZohoLeadData = {
           Lead_Name: 'John Doe',
           Email: 'john@example.com',
           Lead_Source: 'Website - Search Engine'
         };
 
-        // ACT & ASSERT
-        await expect((zohoService as any).createLeadInZoho(leadData)).rejects.toThrow(/Failed to parse Zoho response/);
+        await expect((zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho(leadData)).rejects.toThrow(/Failed to parse Zoho response/);
       });
 
     it('should throw error when API returns error status', async () => {
@@ -293,16 +299,20 @@ describe('ZohoCRMService', () => {
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
-      const leadData = {
+      interface ZohoLeadData {
+        Lead_Name: string;
+        Email: string;
+        Lead_Source: string;
+        // ... other optional fields
+      }
+
+      const leadData: ZohoLeadData = {
         Lead_Name: 'John Doe',
         Email: 'john@example.com',
         Lead_Source: 'Website - Search Engine'
       };
 
-      // ACT & ASSERT
-      await expect((zohoService as any).createLeadInZoho(leadData)).rejects.toThrow(
-        'Zoho API Error: Invalid field value'
-      );
+      await expect((zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho(leadData)).rejects.toThrow('Zoho API Error: Invalid field value');
     });
 
     it('should throw error when no ID is returned in success response', async () => {
@@ -317,131 +327,168 @@ describe('ZohoCRMService', () => {
         }))
       };
       (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+      interface ZohoLeadData {
+        Lead_Name: string;
+        Email: string;
+        Lead_Source: string;
+        // ... other optional fields
+      }
 
-      const leadData = {
+      const leadData: ZohoLeadData = {
         Lead_Name: 'John Doe',
         Email: 'john@example.com',
         Lead_Source: 'Website - Search Engine'
       };
 
-      // ACT & ASSERT
-      await expect((zohoService as any).createLeadInZoho(leadData)).rejects.toThrow(
-        'Lead created successfully but no ID returned'
-      );
+      await expect((zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho(leadData)).rejects.toThrow('Lead created successfully but no ID returned');
     });
   });
 
   describe('createEnquiryLead', () => {
-    it('should create enquiry lead successfully', async () => {
-      // ARRANGE
-      (zohoService as any).createLeadInZoho = jest.fn().mockResolvedValue('lead-123');
+  it('should create enquiry lead successfully', async () => {
+    // ARRANGE
+    interface ZohoLeadData {
+      Lead_Name: string;
+      Email: string;
+      Lead_Source: string;
+      // ... other optional fields
+    }
+    (zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho = jest.fn().mockResolvedValue('lead-123');
 
-      const sanitizedEnquiry = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        subject: 'Test Subject',
-        howDidYouHear: 'Search Engine' as const,
-        message: 'Test message'
-      };
+    const sanitizedEnquiry = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      subject: 'Test Subject',
+      howDidYouHear: 'Search Engine' as const,
+      message: 'Test message'
+    };
 
-      // ACT
-      const result = await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
+    // ACT
+    const result = await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
 
-      // ASSERT
-      expect(result).toEqual({
-        leadId: 'lead-123',
-        success: true
-      });
-      expect((zohoService as any).createLeadInZoho).toHaveBeenCalledWith({
-        Lead_Name: 'John Doe',
-        First_Name: 'John',
-        Last_Name: 'Doe',
-        Email: 'john@example.com',
-        Phone: '',
-        Mobile: '',
-        Lead_Source: 'Website - Search Engine',
-        Description: 'Test message'
-      });
+    // ASSERT
+    expect(result).toEqual({
+      leadId: 'lead-123',
+      success: true
     });
+    expect((zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho).toHaveBeenCalledWith({
+      Lead_Name: 'John Doe',
+      First_Name: 'John',
+      Last_Name: 'Doe',
+      Email: 'john@example.com',
+      Phone: '',
+      Mobile: '',
+      Lead_Source: 'Website - Search Engine',
+      Description: `Test message
 
-    it('should handle errors gracefully and return failure response', async () => {
-      // ARRANGE
-      const error = new Error('Zoho API Error');
-      (zohoService as any).createLeadInZoho = jest.fn().mockRejectedValue(error);
-
-      const sanitizedEnquiry = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        subject: 'Test Subject',
-        howDidYouHear: 'Search Engine' as const,
-        message: 'Test message'
-      };
-
-      // ACT
-      const result = await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
-
-      // ASSERT
-      expect(result).toEqual({
-        leadId: '',
-        success: false,
-        error: 'Zoho API Error'
-      });
-    });
-
-    it('should handle non-Error objects gracefully', async () => {
-      // ARRANGE
-      (zohoService as any).createLeadInZoho = jest.fn().mockRejectedValue('String error');
-
-      const sanitizedEnquiry = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        subject: 'Test Subject',
-        howDidYouHear: 'Search Engine' as const,
-        message: 'Test message'
-      };
-
-      // ACT
-      const result = await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
-
-      // ASSERT
-      expect(result).toEqual({
-        leadId: '',
-        success: false,
-        error: 'Unknown error occurred'
-      });
-    });
-
-    it('should include phone number in lead data when provided', async () => {
-      // ARRANGE
-      (zohoService as any).createLeadInZoho = jest.fn().mockResolvedValue('lead-123');
-
-      const sanitizedEnquiry = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        phone: '+1234567890',
-        subject: 'Test Subject',
-        howDidYouHear: 'Search Engine' as const,
-        message: 'Test message'
-      };
-
-      // ACT
-      await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
-
-      // ASSERT
-      expect((zohoService as any).createLeadInZoho).toHaveBeenCalledWith({
-        Lead_Name: 'John Doe',
-        First_Name: 'John',
-        Last_Name: 'Doe',
-        Email: 'john@example.com',
-        Phone: '+1234567890',
-        Mobile: '+1234567890',
-        Lead_Source: 'Website - Search Engine',
-        Description: 'Test message'
-      });
+--- Form Details ---
+Subject: Test Subject
+How they found us: Search Engine`
     });
   });
+
+
+    it('should handle errors gracefully and return failure response', async () => {
+    // ARRANGE
+    interface ZohoLeadData {
+      Lead_Name: string;
+      Email: string;
+      Lead_Source: string;
+      // ... other optional fields
+    }
+    const error = new Error('Zoho API Error');
+    (zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho = jest.fn().mockRejectedValue(error);
+
+    const sanitizedEnquiry = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      subject: 'Test Subject',
+      howDidYouHear: 'Search Engine' as const,
+      message: 'Test message'
+    };
+
+    // ACT
+    const result = await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
+
+    // ASSERT
+    expect(result).toEqual({
+      leadId: '',
+      success: false,
+      error: 'Zoho API Error'
+    });
+  });
+
+    it('should handle non-Error objects gracefully', async () => {
+    interface ZohoLeadData {
+      Lead_Name: string;
+      Email: string;
+      Lead_Source: string;
+      // ... other optional fields
+    }
+    // ARRANGE
+    (zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho = jest.fn().mockRejectedValue('String error');
+
+    const sanitizedEnquiry = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      subject: 'Test Subject',
+      howDidYouHear: 'Search Engine' as const,
+      message: 'Test message'
+    };
+
+    // ACT
+    const result = await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
+
+    // ASSERT
+    expect(result).toEqual({
+      leadId: '',
+      success: false,
+      error: 'Unknown error occurred'
+    });
+  });
+
+
+    it('should include phone number in lead data when provided', async () => {
+    // ARRANGE
+    interface ZohoLeadData {
+      Lead_Name: string;
+      Email: string;
+      Lead_Source: string;
+      // ... other optional fields
+    }
+    (zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho = jest.fn().mockResolvedValue('lead-123');
+
+    const sanitizedEnquiry = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      phone: '+1234567890',
+      subject: 'Test Subject',
+      howDidYouHear: 'Search Engine' as const,
+      message: 'Test message'
+    };
+
+    // ACT
+    await zohoService.createEnquiryLead('John Doe', sanitizedEnquiry);
+
+    // ASSERT
+    expect((zohoService as unknown as {createLeadInZoho: (leadData: ZohoLeadData) => Promise<string>}).createLeadInZoho).toHaveBeenCalledWith({
+      Lead_Name: 'John Doe',
+      First_Name: 'John',
+      Last_Name: 'Doe',
+      Email: 'john@example.com',
+      Phone: '+1234567890',
+      Mobile: '+1234567890',
+      Lead_Source: 'Website - Search Engine',
+      Description: `Test message
+
+--- Form Details ---
+Subject: Test Subject
+How they found us: Search Engine`
+    });
+  });
+});
 });

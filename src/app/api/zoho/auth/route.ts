@@ -5,6 +5,10 @@ import { logger } from '../../../../lib/logging/logger'
 import { AuditLogger } from '../../../../lib/logging/audit-logger'
 
 export async function GET() {
+    console.log('=== DEBUG ENV VARS ===')
+  console.log('CLIENT_ID:', process.env.ZOHO_CLIENT_ID ? 'SET' : 'MISSING')
+  console.log('CLIENT_ID_VALUE:', process.env.ZOHO_CLIENT_ID?.substring(0, 10) + '...')
+  console.log('=====================')
   try {
     const clientId = process.env.ZOHO_CLIENT_ID
     
@@ -50,7 +54,7 @@ export async function GET() {
     }
     
     const redirectUri = encodeURIComponent('https://balance-kitchen.vercel.app/api/zoho/callback')
-    const scope = encodeURIComponent('ZohoCRM.modules.CREATE')
+    const scope = encodeURIComponent('ZohoCRM.modules.CREATE,ZohoCRM.users.ALL,ZohoCRM.org.ALL')
     const prompt = encodeURIComponent('consent')
     
     const authUrl = `${authDomain}/oauth/v2/auth?scope=${scope}&client_id=${clientId}&response_type=code&access_type=offline&redirect_uri=${redirectUri}&prompt=${prompt}`

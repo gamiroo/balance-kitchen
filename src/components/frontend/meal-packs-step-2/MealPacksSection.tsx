@@ -8,9 +8,8 @@ import { createPortal } from 'react-dom';
 import { useTheme } from '@/hooks/useTheme';
 import { CTAButton } from '../../ui/CTAButton/CTAButton';
 import { Modal } from '../../ui/modal/Modal';
-import ProductCard from './components/product-card/ProductCard';
-import styles from './MealPacksSection.module.css';
-import { bulkPacks, deliveryPacks, Pack, subscriptionPacks } from './data/plansData';
+import { createPortal } from 'react-dom';
+import { useTheme } from '../../../hooks/useTheme';
 
 export const MealPlanSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -148,13 +147,8 @@ export const MealPlanSection = () => {
 
       {isModalOpen &&
         createPortal(
-          <Modal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            title="Meal Plans & Subscriptions"
-            theme={theme}
-          >
-            <div className={`${styles.modalContent} ${styles[theme]}`}>
+          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions" theme={theme}>
+            <div className={`${styles.modalContent} ${styles[theme]}`}  data-theme={theme}>
               <button
                 className={styles.themeToggle}
                 onClick={toggleTheme}

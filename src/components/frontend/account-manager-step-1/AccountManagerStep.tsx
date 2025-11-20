@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import styles from './AccountManagerStep.module.css';
-import { CTAButton } from 'components/ui/CTAButton/CTAButton';
+import { CTAButton } from '../../ui/CTAButton/CTAButton';
 
 /* -----------------------------------------------------------------
    1️⃣  Chat data
@@ -339,13 +339,18 @@ export const AccountManagerStep = () => {
   // Detect when section comes into viewport
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSectionVisible(true);
-          // Start chat after a small delay to allow entrance animations to complete
-          setTimeout(() => {
-            setChatStarted(true);
-          }, 800);
+      (entries) => {
+        // Handle case where entries might be empty or undefined
+        if (entries && entries.length > 0) {
+          const entry = entries[0];
+          // Handle case where entry might be undefined
+          if (entry && entry.isIntersecting) {
+            setSectionVisible(true);
+            // Start chat after a small delay to allow entrance animations to complete
+            setTimeout(() => {
+              setChatStarted(true);
+            }, 800);
+          }
         }
       },
       { threshold: 0.2 } // Trigger when 20% of section is visible
