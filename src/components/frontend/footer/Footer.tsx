@@ -16,7 +16,7 @@ export const Footer = () => (
         </a>
       </div>
       <div className={styles.utilityRow}>
-        <div className={styles.themeGroup}>
+        <div className={`${styles.themeGroup} ${styles.floatingToggle}`}>
           <span className={styles.themeLabel}>Theme</span>
           <ThemeToggle className={styles.footerToggle} />
         </div>
