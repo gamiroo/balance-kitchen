@@ -2,8 +2,8 @@
 
 /* Header Container */
 .header {
-  background-color: rgba(3, 9, 24, 0.477);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.6);
+  background-color: var(--bk-header-bg);
+  border-bottom: 1px solid var(--bk-header-border);
   backdrop-filter: blur(4px);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   width: 100%;
@@ -59,13 +59,18 @@
   display: block;
 }
 
+.themeAwareLogo {
+  filter: var(--bk-logo-filter);
+  transition: filter 0.3s ease;
+}
+
 .logoImageMd {
   height: 2.5rem;
 }
 
 /* Mobile Menu Button */
 .menuButton {
-  color: #FFC33E;
+  color: var(--bk-color-accent);
   transition: color 0.2s ease;
   padding: 0.5rem;
   border-radius: 0.375rem;
@@ -78,7 +83,7 @@
 }
 
 .menuButton:hover {
-  color: #CB2E12;
+  color: var(--bk-color-accent-strong);
 }
 
 .menuButton:focus {
@@ -106,6 +111,11 @@
   gap: 2rem;
 }
 
+.themeToggleWrapper {
+  display: flex;
+  align-items: center;
+}
+
 /* Nav Links Container */
 .navLinks {
   display: flex;
@@ -115,7 +125,7 @@
 
 /* Nav Link */
 .navLink {
-  color: #d1d5db;
+  color: var(--bk-color-text-muted);
   transition: color 0.2s ease;
   border-radius: 9999px;
   padding: 0.5rem;
@@ -126,7 +136,7 @@
 }
 
 .navLink:hover {
-  color: white;
+  color: var(--bk-color-text-primary);
 }
 
 .navLink:focus {
@@ -164,7 +174,7 @@
   position: fixed;
   height: 100vh;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.958);
+  background-color: var(--bk-mobile-overlay);
   backdrop-filter: blur(10px);
   z-index: 40;
 }
@@ -175,7 +185,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid rgba(15, 21, 29, 0.8);
+  border-bottom: 1px solid var(--bk-color-border);
 }
 
 .mobileLogoLink {
@@ -300,6 +310,23 @@
   padding: 1.5rem;
   border-top: 1px solid rgba(51, 65, 85, 0.5);
   background-color: rgba(15, 23, 42, 0.3);
+}
+
+.mobileToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mobileToggleLabel {
+  color: var(--bk-color-text-muted);
+  font-size: 0.95rem;
+}
+
+.mobileToggle {
+  transform: scale(0.9);
 }
 
 /* MODAL STYLES */

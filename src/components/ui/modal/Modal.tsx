@@ -1,17 +1,34 @@
 'use client';
 
-import { useEffect } from 'react';
-import styles from './Modal.module.css';
+import clsx from 'clsx';
 import Image from 'next/image';
+import { useEffect } from 'react';
+
+import type { Theme } from '@/components/theme/ThemeProvider';
+import styles from './Modal.module.css';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  /**
+   * Optional theme override so callers can align the modal with the current appearance
+   * without having to wrap the content in a theme-specific container.
+   */
+  theme?: Theme;
+  /** Allow consumers to append layout-specific class names to the modal content wrapper */
+  className?: string;
 }
 
-export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  children,
+  theme,
+  className,
+}: ModalProps) => {
   // Handle escape key press and body scroll lock
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -52,30 +69,27 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
   return (
     <div
       className={styles.modalOverlay}
+      data-theme={theme}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div 
-        className={styles.modalContent}
+      <div
+        className={clsx(styles.modalContent, className)}
+        data-theme={theme}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.modalHeader}>
           <div className={styles.modalLogoWrapper}>
-            {/* Logo placeholder - replace with your actual logo component */}
-            <div style={{ 
-              width: '160px', 
-              height: '72px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#ffc33e',
-              fontWeight: 'bold',
-              fontSize: '14px'
-            }}>
-              <Image src="assets/logo/balance-logo.svg" alt="balance kitchen logo" width={220} height={370} />
-            </div>
+            <Image
+              src="/assets/logo/balance-logo.svg"
+              alt="Balance Kitchen"
+              width={160}
+              height={72}
+              className={styles.modalLogo}
+              priority
+            />
           </div>
           <h2 id="modal-title" className={styles.modalTitle}>{title}</h2>
           <button
@@ -83,7 +97,13 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             onClick={onClose}
             aria-label="Close modal"
           >
-            <Image src="assets/icons/logo-icon-svg.svg" alt="balance kitchen logo icon" width={220} height={370} />
+            <Image
+              src="/assets/icons/logo-icon-svg.svg"
+              alt="Balance Kitchen icon"
+              width={32}
+              height={32}
+              className={styles.closeIcon}
+            />
           </button>
         </div>
 

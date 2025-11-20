@@ -1,5 +1,6 @@
 import styles from './Footer.module.css';
 import Image from "next/image";
+import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle';
 
 export const Footer = () => (
   <footer className={styles.footer}>
@@ -15,15 +16,21 @@ export const Footer = () => (
           Terms of Use
         </a>
       </div>
-      <div className={styles.formBadge}>
-        <span className={styles.badgeText}>Designed & Built by</span>
-        <Image
-          src="/assets/gamiroo.svg"
-          alt="Gamiroo logo"
-          width={60}
-          height={20}
-          className={styles.gamirooLogo}
-        />
+      <div className={styles.utilityRow}>
+        <div className={styles.themeGroup}>
+          <span className={styles.themeLabel}>Theme</span>
+          <ThemeToggle className={styles.footerToggle} />
+        </div>
+        <div className={styles.formBadge}>
+          <span className={styles.badgeText}>Designed &amp; Built by</span>
+          <Image
+            src="/assets/gamiroo.svg"
+            alt="Gamiroo logo"
+            width={60}
+            height={20}
+            className={styles.gamirooLogo}
+          />
+        </div>
       </div>
     </div>
   </footer>
