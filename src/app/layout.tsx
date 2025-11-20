@@ -1,7 +1,7 @@
 import './globals.css'      // Tailwind base+components+utilities
 import { League_Spartan, Inter } from 'next/font/google'
 import { ZohoSalesIQ } from '../components/zoho/ZohoSalesIQ'
-import { SessionWrapper } from 'components/SessionWrapper'
+import { SessionWrapper } from '../components/SessionWrapper'
 import { ThemeProvider } from '../components/providers/ThemeProvider'
 
 const inter = Inter({ subsets: ['latin'] })

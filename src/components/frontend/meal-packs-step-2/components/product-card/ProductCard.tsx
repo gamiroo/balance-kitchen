@@ -3,7 +3,7 @@ import { Pack } from '../../data/plansData';
 import Image from 'next/image';
 import styles from './ProductCard.module.css';
 import { AnimatedGradientBorder } from '../../../../ui/animated-border/AnimatedGradientBorder';
-import { CTAButton } from 'components/ui/CTAButton/CTAButton';
+import { CTAButton } from '../../../../ui/CTAButton/CTAButton';
 
 interface ProductCardProps {
   pack: Pack;

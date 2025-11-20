@@ -9,14 +9,14 @@ import TestimonialsSection from "../../../components/frontend/testimonials/Testi
 import FAQAccordion from "../../../components/frontend/faq/FAQAccordion";
 import styles from './page.module.css';
 import { faqs } from "../../../data/faqData";
-import { AccountManagerStep } from "components/frontend/account-manager-step-1/AccountManagerStep";
+import { AccountManagerStep } from "../../../components/frontend/account-manager-step-1/AccountManagerStep";
 import { MealPlanSection } from "../../../components/frontend/meal-packs-step-2/MealPacksSection";
-import { OrderingSection } from "components/frontend/ordering-step-3/OrderingSection";
-import { DeliverySection } from "components/frontend/delivery-step-4/DeliverySection";
-import { FeedbackSection } from "components/frontend/feedback-step-5/FeedbackSection";
-import { Footer } from "components/frontend/footer/Footer";
+import { OrderingSection } from "../../../components/frontend/ordering-step-3/OrderingSection";
+import { DeliverySection } from "../../../components/frontend/delivery-step-4/DeliverySection";
+import { FeedbackSection } from "../../../components/frontend/feedback-step-5/FeedbackSection";
+import { Footer } from "../../../components/frontend/footer/Footer";
 import { Modal } from "../../../components/ui/modal/Modal";
-import { EnquiryForm } from "components/ui/forms/enquiry/EnquiryForm";
+import { EnquiryForm } from "../../../components/ui/forms/enquiry/EnquiryForm";
 
 export default function MainPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
