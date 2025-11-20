@@ -1,19 +1,20 @@
 // src/app/components/meal-plans-step-2/MealPlanSection.tsx
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import styles from './MealPacksSection.module.css';
+import { useEffect, useRef, useState } from 'react';
+
+import { useTheme } from '../../../hooks/useTheme';
 import { CTAButton } from '../../ui/CTAButton/CTAButton';
-import { subscriptionPacks, bulkPacks, deliveryPacks, Pack } from './data/plansData';
-import ProductCard from './components/product-card/ProductCard';
 import { Modal } from '../../ui/modal/Modal';
-import { createPortal } from 'react-dom';
+import ProductCard from './components/product-card/ProductCard';
+import styles from './MealPacksSection.module.css';
+import { bulkPacks, deliveryPacks, Pack, subscriptionPacks } from './data/plansData';
 
 export const MealPlanSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const { theme, toggleTheme } = useTheme();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,10 +44,6 @@ export const MealPlanSection = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const allPacks: Pack[] = [
@@ -148,53 +145,57 @@ export const MealPlanSection = () => {
         </div>
       </section>
 
-      {isModalOpen &&
-        createPortal(
-          <Modal isOpen={isModalOpen} onClose={closeModal} title="Meal Plans & Subscriptions">
-            <div className={`${styles.modalContent} ${styles[theme]}`}>
-              <button
-                className={styles.themeToggle}
-                onClick={toggleTheme}
-                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              >
-                {theme === 'dark' ? '☀️' : '🌙'}
-              </button>
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title="Meal Plans & Subscriptions"
+          theme={theme}
+        >
+          <div className={`${styles.modalContent} ${styles[theme]}`}>
+            <button
+              className={styles.themeToggle}
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
 
-              <div className={styles.modalWrapper}>
-                <div className={styles.modalHeader}>
-                  <h2 className={styles.modalTitle}>Our Meal Plans Explained</h2>
-                  <p className={styles.modalSubtitle}>Choose the perfect plan for your lifestyle</p>
+            <div className={styles.modalWrapper}>
+              <div className={styles.modalHeader}>
+                <h2 className={styles.modalTitle}>Our Meal Plans Explained</h2>
+                <p className={styles.modalSubtitle}>Choose the perfect plan for your lifestyle</p>
+              </div>
+
+              <div className={styles.tabContainer}>
+                <div className={styles.tabHeaders}>
+                  <button
+                    className={`${styles.tabButton} ${activeStep === 0 ? styles.active : ''}`}
+                    onClick={() => setActiveStep(0)}
+                  >
+                    Meal Sizes
+                  </button>
+                  <button
+                    className={`${styles.tabButton} ${activeStep === 1 ? styles.active : ''}`}
+                    onClick={() => setActiveStep(1)}
+                  >
+                    Customization
+                  </button>
+                  <button
+                    className={`${styles.tabButton} ${activeStep === 2 ? styles.active : ''}`}
+                    onClick={() => setActiveStep(2)}
+                  >
+                    Delivery
+                  </button>
+                  <button
+                    className={`${styles.tabButton} ${activeStep === 3 ? styles.active : ''}`}
+                    onClick={() => setActiveStep(3)}
+                  >
+                    Summary
+                  </button>
                 </div>
 
-                <div className={styles.tabContainer}>
-                  <div className={styles.tabHeaders}>
-                    <button
-                      className={`${styles.tabButton} ${activeStep === 0 ? styles.active : ''}`}
-                      onClick={() => setActiveStep(0)}
-                    >
-                      Meal Sizes
-                    </button>
-                    <button
-                      className={`${styles.tabButton} ${activeStep === 1 ? styles.active : ''}`}
-                      onClick={() => setActiveStep(1)}
-                    >
-                      Customization
-                    </button>
-                    <button
-                      className={`${styles.tabButton} ${activeStep === 2 ? styles.active : ''}`}
-                      onClick={() => setActiveStep(2)}
-                    >
-                      Delivery
-                    </button>
-                    <button
-                      className={`${styles.tabButton} ${activeStep === 3 ? styles.active : ''}`}
-                      onClick={() => setActiveStep(3)}
-                    >
-                      Summary
-                    </button>
-                  </div>
-
-                  <div className={styles.tabContent}>
+                <div className={styles.tabContent}>
                     {activeStep === 0 && (
                       <div className={styles.stepContent}>
                         <h3 className={styles.modalSubheading}>Step 1: Choose Your Meal Size</h3>
