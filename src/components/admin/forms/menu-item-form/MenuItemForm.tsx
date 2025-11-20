@@ -1,9 +1,9 @@
-// components/admin/forms/MenuItemForm.tsx
+// components/admin/forms/menu-item-form/MenuItemForm.tsx
 "use client";
 
 import { useState } from "react";
-import FormContainer from "./FormContainer";
-import FormField from "./FormField";
+import FormContainer from "../form-container/FormContainer";
+import FormField from "../form-field/FormField";
 
 interface MenuItemFormData {
   name: string;

@@ -160,8 +160,12 @@ describe('database client', () => {
       // Check that it's a DatabaseError by checking the name
       try {
         await db.query('SELECT * FROM users')
-      } catch (error: any) {
-        expect(error.name).toBe('DatabaseError')
+      } catch (error: unknown) {
+          if (error instanceof Error) {
+            expect(error.name).toBe('DatabaseError');
+          } else {
+            fail('Expected error to be an instance of Error');
+          }
       }
       
       // Check error logging
@@ -196,8 +200,12 @@ describe('database client', () => {
       // Check that it's a DatabaseError by checking the name
       try {
         await db.query('SELECT * FROM users')
-      } catch (error: any) {
-        expect(error.name).toBe('DatabaseError')
+      } catch (error: unknown) {
+          if (error instanceof Error) {
+            expect(error.name).toBe('DatabaseError');
+          } else {
+            fail('Expected error to be an instance of Error');
+          }
       }
       
       // Check error logging
@@ -217,8 +225,8 @@ describe('database client', () => {
       mockQuery.mockResolvedValueOnce(mockResult)
       
       // Mock global requestId
-      const originalRequestId = (global as any).requestId
-      ;(global as any).requestId = 'test-request-id'
+      const originalRequestId = (global as unknown as { requestId: string }).requestId;
+      (global as unknown as { requestId: string }).requestId = 'test-request-id';
       
       // ACT
       await db.query('SELECT * FROM users')
@@ -232,7 +240,7 @@ describe('database client', () => {
       )
       
       // Cleanup
-      ;(global as any).requestId = originalRequestId
+      ;(global as unknown as { requestId: string }).requestId = originalRequestId
     })
 
     it('should use "unknown" as requestId when not available', async () => {
@@ -243,8 +251,9 @@ describe('database client', () => {
       mockQuery.mockResolvedValueOnce(mockResult)
       
       // Remove global requestId if it exists
-      const originalRequestId = (global as any).requestId
-      delete (global as any).requestId
+      const originalRequestId = (global as unknown as { requestId: string }).requestId;
+      delete (global as unknown as { requestId?: string }).requestId;
+
       
       // ACT
       await db.query('SELECT * FROM users')
@@ -259,7 +268,7 @@ describe('database client', () => {
       
       // Cleanup
       if (originalRequestId) {
-        ;(global as any).requestId = originalRequestId
+        ;(global as unknown as { requestId: string }).requestId = originalRequestId
       }
     })
   })

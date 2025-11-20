@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { AboutSection } from "../../../components/frontend/about-section/About";
+import { AboutSection } from "../../../components/frontend/about-section/AboutSection";
 import { Header } from "../../../components/frontend/header/Header";
 import { Hero } from "../../../components/frontend/hero/Hero";
 import TestimonialsSection from "../../../components/frontend/testimonials/TestimonialSection";
