@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import FAQAccordion from './FAQAccordion';
 import '@testing-library/jest-dom';
 
-import type { FAQItem } from '../../../data/faqData';
+import type { FAQItem } from '@/app/(site)/data/faqData';
 
 // Mock framer-motion with simplified implementation for testing
 jest.mock('framer-motion', () => {

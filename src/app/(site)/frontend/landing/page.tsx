@@ -9,7 +9,7 @@ import { Hero } from "@/shared/components/frontend/hero/Hero";
 import TestimonialsSection from "@/shared/components/frontend/testimonials/TestimonialSection";
 import FAQAccordion from "@/shared/components/frontend/faq/FAQAccordion";
 import styles from './page.module.css';
-import { faqs } from "@/data/faqData";
+import { faqs } from "@/app/(site)/data/faqData";
 import { AccountManagerStep } from "@/shared/components/frontend/account-manager-step-1/AccountManagerStep";
 import { MealPlanSection } from "@/shared/components/frontend/meal-packs-step-2/MealPacksSection";
 import { OrderingSection } from "@/shared/components/frontend/ordering-step-3/OrderingSection";

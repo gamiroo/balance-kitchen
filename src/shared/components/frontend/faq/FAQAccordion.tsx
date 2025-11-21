@@ -7,7 +7,7 @@ import { ChevronDown } from 'lucide-react';
 import styles from './FAQ.module.css';
 
 // ✅ Use the real FAQItem type from your data file
-import type { FAQItem } from '../../../data/faqData';
+import type { FAQItem } from '@/app/(site)/data/faqData';
 
 interface FAQAccordionProps {
   faqs: FAQItem[];
