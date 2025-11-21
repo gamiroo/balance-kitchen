@@ -1,5 +1,5 @@
 // src/tests/test-helpers.d.ts
-import { User, Order, Menu } from '../lib/types/database';
+import { User, Order, Menu } from '@/shared/lib/types/database';
 export {};
 
 declare global {

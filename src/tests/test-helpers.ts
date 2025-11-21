@@ -1,5 +1,5 @@
 // src/tests/test-helpers.ts
-import { User, MealPack } from '../lib/types/database';
+import { User, MealPack } from '@/shared/lib/types/database';
 
 // Mock the database query function for tests
 export async function createTestUser(email: string = 'test@example.com'): Promise<User> {

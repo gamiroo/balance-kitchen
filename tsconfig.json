@@ -20,7 +20,12 @@
     ],
     "typeRoots": ["./types", "./node_modules/@types"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/lib/*": ["./src/shared/lib/*"],
+      "@/components/*": ["./src/shared/components/*"],
+      "@/hooks/*": ["./src/shared/hooks/*"],
+      "@/theme/*": ["./src/shared/theme/*"]
     },
     "baseUrl": "./src",
   },

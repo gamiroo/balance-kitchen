@@ -13,8 +13,11 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/src/tests/test-setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
-    '^@/components/(.*)$': '<rootDir>/src/components/$1',
+    '^@/shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/shared/lib/$1',
+    '^@/components/(.*)$': '<rootDir>/src/shared/components/$1',
+    '^@/hooks/(.*)$': '<rootDir>/src/shared/hooks/$1',
+    '^@/theme/(.*)$': '<rootDir>/src/shared/theme/$1',
     '^@/app/(.*)$': '<rootDir>/src/app/$1',
     'next-auth/react': '<rootDir>/src/tests/mocks/next-auth-react.ts',
     '@testing-library/jest-dom': '<rootDir>/src/tests/mocks/jest-dom.ts',

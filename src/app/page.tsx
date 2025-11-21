@@ -1,4 +1,4 @@
-import MainPage from "./frontend/landing/page";
+import MainPage from "./(site)/frontend/landing/page";
 
 export default function HomePage() {
     return (

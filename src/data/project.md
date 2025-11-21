@@ -300,7 +300,7 @@ src/
 - `src/app/signup/page.tsx` - Registration interface
 
 ### 2. Dashboard System
-**Location:** `src/app/backend/dashboard/`
+**Location:** `src/app/(client)/dashboard/`
 
 **Features:**
 - User meal balance display
@@ -310,9 +310,9 @@ src/
 - Protected access
 
 **Key Files:**
-- `src/app/backend/dashboard/page.tsx` - Main dashboard
-- `src/app/backend/dashboard/layout.tsx` - Dashboard layout with sidebar
-- `src/components/backend/dashboard/Sidebar.tsx` - Navigation sidebar
+- `src/app/(client)/dashboard/page.tsx` - Main dashboard
+- `src/app/(client)/dashboard/layout.tsx` - Dashboard layout with sidebar
+- `src/shared/components/backend/dashboard/Sidebar.tsx` - Navigation sidebar
 
 ### 3. Admin Management System
 **Location:** `src/app/admin/`
@@ -333,7 +333,7 @@ src/
 - `src/app/admin/users/page.tsx` - User management
 
 ### 4. Meal Pack Purchase System
-**Location:** `src/app/backend/dashboard/packs/`
+**Location:** `src/app/(client)/dashboard/packs/`
 
 **Features:**
 - Multiple pack size options (10, 20, 40, 80 meals)
@@ -342,11 +342,11 @@ src/
 - Purchase history tracking
 
 **Key Files:**
-- `src/app/backend/dashboard/packs/page.tsx` - Purchase interface
+- `src/app/(client)/dashboard/packs/page.tsx` - Purchase interface
 - `src/app/api/packs/purchase/route.ts` - Purchase API
 
 ### 5. Meal Ordering System
-**Location:** `src/app/backend/dashboard/order/`
+**Location:** `src/app/(client)/dashboard/orders/`
 
 **Features:**
 - Weekly menu display with dish details
@@ -355,12 +355,12 @@ src/
 - Order confirmation with balance deduction
 
 **Key Files:**
-- `src/app/backend/dashboard/order/page.tsx` - Order interface
-- `src/app/backend/dashboard/order/OrderMealsClient.tsx` - Client-side ordering
+- `src/app/(client)/dashboard/orders/page.tsx` - Order interface
+- `src/app/(client)/dashboard/orders/OrderMealsClient.tsx` - Client-side ordering
 - `src/app/api/orders/create/route.ts` - Order processing API
 
 ### 6. History System
-**Location:** `src/app/backend/dashboard/history/`
+**Location:** `src/app/(client)/dashboard/history/`
 
 **Features:**
 - Order history with status tracking
@@ -369,8 +369,8 @@ src/
 - Detailed order information
 
 **Key Files:**
-- `src/app/backend/dashboard/history/orders/page.tsx` - Order history
-- `src/app/backend/dashboard/history/purchases/page.tsx` - Purchase history
+- `src/app/(client)/dashboard/history/orders/page.tsx` - Order history
+- `src/app/(client)/dashboard/history/purchases/page.tsx` - Purchase history
 
 ### 7. Zoho CRM Integration
 **Location:** `src/lib/zoho-crm.ts`, `src/app/api/zoho/`
